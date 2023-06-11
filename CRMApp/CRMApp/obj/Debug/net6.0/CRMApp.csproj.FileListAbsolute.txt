@@ -1,0 +1,6 @@
+C:\Users\User\Desktop\CRM-Backend\CRMApp\CRMApp\obj\Debug\net6.0\CRMApp.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\CRM-Backend\CRMApp\CRMApp\obj\Debug\net6.0\CRMApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\CRM-Backend\CRMApp\CRMApp\obj\Debug\net6.0\CRMApp.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\CRM-Backend\CRMApp\CRMApp\obj\Debug\net6.0\CRMApp.AssemblyInfo.cs
+C:\Users\User\Desktop\CRM-Backend\CRMApp\CRMApp\obj\Debug\net6.0\CRMApp.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\CRM-Backend\CRMApp\CRMApp\obj\Debug\net6.0\CRMApp.MvcApplicationPartsAssemblyInfo.cache
