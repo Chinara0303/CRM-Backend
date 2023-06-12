@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Account;
-using Services.İnterfaces;
+using Services.Services.İnterfaces;
 
 namespace CRMApp.Controllers
 {
@@ -19,6 +19,15 @@ namespace CRMApp.Controllers
         {
             if (request is null) throw new ArgumentNullException("Data not found");
             return Ok(await _service.SignUpAsync(request));
+        }
+
+
+        [HttpPost]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        public async Task<IActionResult> SignIn([FromForm] SignInDto request)
+        {
+            if (request is null) throw new ArgumentNullException("Data not found");
+            return Ok(await _service.SignInAsync(request));
         }
 
         [HttpGet("verify")]

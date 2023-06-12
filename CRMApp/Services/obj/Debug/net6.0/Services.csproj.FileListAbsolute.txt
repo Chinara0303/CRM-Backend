@@ -3,3 +3,15 @@ C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.Gene
 C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.AssemblyInfoInputs.cache
 C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.AssemblyInfo.cs
 C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Services.deps.json
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Services.dll
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Services.pdb
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Domain.dll
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Domain.pdb
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.csproj.CopyComplete
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.dll
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\refint\Services.dll
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\Services.pdb
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\obj\Debug\net6.0\ref\Services.dll
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Repository.dll
+C:\Users\User\Desktop\CRM-Backend\CRMApp\Services\bin\Debug\net6.0\Repository.pdb

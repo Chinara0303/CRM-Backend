@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Services.Helpers;
-using Services.İnterfaces;
-using Services.İnterfaces.Services;
 using Services.Mappings;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Services.Services;
+using Services.Services.İnterfaces;
+using Repository.Repositories.İnterfaces;
+using Repository.Repositories;
+using FluentValidation.AspNetCore;
+using Services.Validations.Room;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,7 +69,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 
@@ -92,6 +95,14 @@ builder.Services
         };
     });
 
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoomCreateDtoValidator>());
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IRoomRepository,RoomRepository>();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+
 
 var app = builder.Build();
 
@@ -102,6 +113,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

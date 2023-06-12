@@ -295,6 +295,9 @@
             "projectReferences": {
               "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\Domain\\Domain.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\Repository\\Repository.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\Repository\\Repository.csproj"
               }
             }
           }
@@ -312,6 +315,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
             },
             "MailKit": {
               "target": "Package",
