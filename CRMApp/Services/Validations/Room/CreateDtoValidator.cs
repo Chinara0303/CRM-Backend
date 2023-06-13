@@ -3,9 +3,9 @@ using Services.DTOs.Room;
 
 namespace Services.Validations.Room
 {
-    public class RoomCreateDtoValidator:AbstractValidator<RoomCreateDto>
+    public class CreateDtoValidator:AbstractValidator<RoomCreateDto>
     {
-        public RoomCreateDtoValidator()
+        public CreateDtoValidator()
         {
             RuleFor(r => r.Name).NotNull().NotEmpty().MaximumLength(50);
         }

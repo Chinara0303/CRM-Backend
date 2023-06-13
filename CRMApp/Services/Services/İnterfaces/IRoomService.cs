@@ -10,6 +10,5 @@ namespace Services.Services.İnterfaces
         Task CreateAsync(RoomCreateDto model);
         Task UpdateAsync(int? id,RoomUpdateDto model);
         Task SoftDeleteAsync(int? id);
-        Task<bool> CheckByNameAsync(RoomDto model);
     }
 }

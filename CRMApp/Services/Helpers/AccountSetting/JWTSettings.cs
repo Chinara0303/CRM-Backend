@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Helpers
+namespace Services.Helpers.AccountSetting
 {
     public class JWTSettings
     {

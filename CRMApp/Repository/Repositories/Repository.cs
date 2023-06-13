@@ -1,6 +1,8 @@
 ﻿using Domain.Common;
+using Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
+using Repository.Helpers;
 using Repository.Repositories.İnterfaces;
 using System.Linq.Expressions;
 
@@ -18,7 +20,7 @@ namespace Repository.Repositories
         }
         public async Task CreateAsync(T entity)
         {
-            if (entity is null) throw new ArgumentException(nameof(entity));
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             await _entities.AddAsync(entity);
             await SaveAsync();
         }
@@ -30,25 +32,24 @@ namespace Repository.Repositories
 
         public async Task<T> GetByIdAsync(int? id)
         {
-            if (id is null) throw new ArgumentNullException(nameof(id));
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             T entity = await _entities.FindAsync(id);
-            if (entity is null) throw new ArgumentNullException(nameof(entity));
-            return entity;
+            return entity is null ? throw new NullReferenceException(ExceptionResponseMessages.NotFoundMessage) : entity;
         }
 
-        public async Task SoftDeleteAsync(int? id)
+        public async Task SoftDeleteAsync(T entity)
         {
-            if (id is null) throw new ArgumentNullException(nameof(id));
-            T entity = await _entities.FindAsync(id);
-            if (entity is null) throw new ArgumentNullException(nameof(entity));
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             entity.SoftDelete = true;
+            entity.DeletedDate = DateTime.UtcNow.AddHours(4);
             await SaveAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
-            if (entity is null) throw new ArgumentNullException(nameof(entity));
+             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             _entities.Update(entity);
+            entity.ModifiedDate = DateTime.UtcNow.AddHours(4);
             await SaveAsync();
         }
 
@@ -57,6 +58,9 @@ namespace Repository.Repositories
             await _context.SaveChangesAsync();
         }
 
-    
+        public async Task<IEnumerable<T>> GetAllWithIncludes(params Expression<Func<T, object>>[] includes)
+        {
+            return await _entities.IncludeMultiple(includes).ToListAsync();
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
-using Services.Helpers;
 using MailKit.Net.Smtp;
 using Services.Services.İnterfaces;
+using Services.Helpers.AccountSetting;
 
 namespace Services.Services
 {

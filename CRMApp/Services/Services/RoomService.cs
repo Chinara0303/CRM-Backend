@@ -1,53 +1,68 @@
 ﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.Room;
 using Services.Services.İnterfaces;
-
+using Domain.Constants;
+using Services.Exceptions;
+using AutoMapper;
+using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Services.Services
 {
     public class RoomService : IRoomService
     {
         private readonly IRoomRepository _repo;
-        public RoomService(IRoomRepository repo,AppDbContext context)
+        private readonly IMapper _mapper;
+        public RoomService(IRoomRepository repo,
+                           IMapper mapper)
         {
             _repo = repo;
-        }
-        public Task<bool> CheckByNameAsync(RoomDto model)
-        {
-            throw new NotImplementedException();
+            _mapper = mapper;
         }
 
         public async Task CreateAsync(RoomCreateDto model)
         {
-            if (model is null) throw new ArgumentNullException("Data not found");
-            var room = new Room()
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+            
+            if (!await _repo.CheckByName(model.Name))
             {
-                Name = model.Name,
-            };
-            await _repo.CreateAsync(room);
+                throw new InvalidException(ExceptionResponseMessages.ExistMessage);
+            }
+
+            model.Name = String.Concat(model.Name[0].ToString().ToUpper()) + model.Name[1..].ToLower();
+            await _repo.CreateAsync(_mapper.Map<Room>(model));
         }
 
-        public Task<IEnumerable<RoomDto>> GetAllAsync()
+        public async Task<IEnumerable<RoomDto>> GetAllAsync() => _mapper.Map<IEnumerable<RoomDto>>(await _repo.GetAllAsync());
+
+        public async Task<RoomDto> GetByIdAsync(int? id)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
+            return _mapper.Map<RoomDto>(await _repo.GetByIdAsync(id));
         }
 
-        public Task<RoomDto> GetByIdAsync(int? id)
+        public async Task SoftDeleteAsync(int? id)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
+            Room existRoom = await _repo.GetByIdAsync(id);
+            await _repo.SoftDeleteAsync(existRoom);
         }
 
-        public Task SoftDeleteAsync(int? id)
+        public async Task UpdateAsync(int? id, RoomUpdateDto model)
         {
-            throw new NotImplementedException();
-        }
+            if (id is null || model is null) throw new ArgumentNullException(ExceptionResponseMessages.ParametrNotFoundMessage);
 
-        public Task UpdateAsync(int? id, RoomUpdateDto model)
-        {
-            throw new NotImplementedException();
+            Room existRoom = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            if (!await _repo.CheckByName(model.Name))
+            {
+                throw new InvalidException(ExceptionResponseMessages.ExistMessage);
+            }
+             model.Name = String.Concat(model.Name[0].ToString().ToUpper()) + model.Name[1..].ToLower();
+            _mapper.Map(model, existRoom);
+            await _repo.UpdateAsync(existRoom);
         }
     }
 }

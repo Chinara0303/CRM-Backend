@@ -8,7 +8,7 @@ namespace Domain.Configurations
     {
         public void Configure(EntityTypeBuilder<Room> builder)
         {
-            builder.Property(r => r.Name).IsRequired();
+            builder.Property(r => r.Name).IsRequired().HasMaxLength(50);
         }
     }
 }

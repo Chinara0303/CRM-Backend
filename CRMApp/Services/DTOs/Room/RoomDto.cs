@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.DTOs.Common;
 
 namespace Services.DTOs.Room
 {
-    public class RoomDto
+    public class RoomDto : ActionDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
+        
     }
 }

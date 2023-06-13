@@ -8,14 +8,10 @@ namespace Repository.Repositories.İnterfaces
         Task<T> GetByIdAsync(int? id);
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);
-        Task SoftDeleteAsync(int? id);
+        Task SoftDeleteAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression = null);
         Task SaveAsync();
-        //Task<bool> CheckByName(string name);
-        //public async Task<bool> CheckByName(string name)
-        //{
-        //    return await _entities.AnyAsync(c => c.Name.Trim().ToLower() == name.Trim().ToLower());
-        //}
+        Task<IEnumerable<T>> GetAllWithIncludes(params Expression<Func<T, object>>[] includes);
 
     }
 }

@@ -3,7 +3,6 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Services.DTOs.Account;
-using Services.Helpers;
 using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +11,7 @@ using Services.Helpers.Responses;
 using System.Data;
 using Microsoft.Extensions.Options;
 using Services.Services.İnterfaces;
+using Services.Helpers.AccountSetting;
 
 namespace Services.Services
 {

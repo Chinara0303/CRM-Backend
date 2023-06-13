@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.Configurations
 {
-    public class AboutConfiguration : IEntityTypeConfiguration<About>
+    public class AboutConfiguration:IEntityTypeConfiguration<About>
     {
         public void Configure(EntityTypeBuilder<About> builder)
         {
