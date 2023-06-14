@@ -1,7 +1,6 @@
-﻿using FluentValidation;
+﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Room;
-using Services.Exceptions;
 using Services.Services.İnterfaces;
 using Services.Validations.Room;
 using ValidationResult = FluentValidation.Results.ValidationResult;

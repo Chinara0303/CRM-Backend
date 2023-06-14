@@ -10,7 +10,7 @@ namespace Services.Validations.About
             RuleFor(a => a.Title).NotNull().NotEmpty().MaximumLength(200);
             RuleFor(a => a.SubTitle).NotNull().NotEmpty().MaximumLength(200);
             RuleFor(a => a.Description).NotNull().NotEmpty();
-            RuleFor(a => a.Image).NotNull().NotEmpty();
+            RuleFor(a => a.Photo).NotNull().NotEmpty();
         }
     }
 }

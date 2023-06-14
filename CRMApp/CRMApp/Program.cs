@@ -101,10 +101,13 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IAboutRepository, AboutRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IPositionService, PositionService>();
+builder.Services.AddScoped<IAboutService, AboutService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 
 var app = builder.Build();

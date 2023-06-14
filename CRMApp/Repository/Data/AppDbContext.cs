@@ -13,7 +13,7 @@ namespace Repository.Data
         public DbSet<Position> Positions { get; set; }
         public DbSet<About> Abouts { get; set; }
         //public DbSet<Banner> Banners { get; set; }
-        //public DbSet<Course> Courses { get; set; }
+        public DbSet<Course> Courses { get; set; }
         //public DbSet<Group> Groups { get; set; }
         //public DbSet<Setting> Settings { get; set; }
         //public DbSet<Slider> Sliders { get; set; }
@@ -26,7 +26,6 @@ namespace Repository.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            builder.Entity<About>().HasQueryFilter(p => !p.SoftDelete);
             base.OnModelCreating(builder);
         }
     }

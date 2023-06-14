@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Position;
-using Services.Exceptions;
 using Services.Services.İnterfaces;
 using Services.Validations.Position;
 
@@ -39,6 +39,7 @@ namespace CRMApp.Controllers
                 return BadRequest(ex.Message);
             }
         }
+       
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<PositionDto>))]

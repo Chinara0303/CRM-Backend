@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Domain.Constants;
+using Domain.Common.Constants;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.Position;
-using Services.Exceptions;
+using Domain.Common.Exceptions;
 using Services.Services.İnterfaces;
 
 namespace Services.Services
@@ -13,7 +13,7 @@ namespace Services.Services
         private readonly IPositionRepository _repo;
         private readonly IMapper _mapper;
         public PositionService(IPositionRepository repo,
-                           IMapper mapper)
+                               IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;

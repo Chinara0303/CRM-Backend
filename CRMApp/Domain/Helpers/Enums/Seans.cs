@@ -1,4 +1,4 @@
-﻿namespace Domain.Enums
+﻿namespace Domain.Helpers.Enums
 {
     public enum Seans
     {

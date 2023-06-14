@@ -3,11 +3,11 @@ using Repository.Data;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.Room;
 using Services.Services.İnterfaces;
-using Domain.Constants;
-using Services.Exceptions;
+using Domain.Common.Exceptions;
 using AutoMapper;
 using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Domain.Common.Constants;
 
 namespace Services.Services
 {

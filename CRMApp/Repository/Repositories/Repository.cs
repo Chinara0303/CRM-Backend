@@ -1,5 +1,5 @@
 ﻿using Domain.Common;
-using Domain.Constants;
+using Domain.Common.Constants;
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Helpers;
