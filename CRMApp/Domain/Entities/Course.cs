@@ -10,5 +10,6 @@ namespace Domain.Entities
         public string Description { get; set; }         
         public string Promise { get; set; }
         public string Duration { get; set; }
+        public ICollection<Group> Groups { get; set; }
     }
 }

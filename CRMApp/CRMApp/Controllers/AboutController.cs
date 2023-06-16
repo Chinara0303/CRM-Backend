@@ -91,7 +91,6 @@ namespace CRMApp.Controllers
         }
 
 
-
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(AboutDto))]

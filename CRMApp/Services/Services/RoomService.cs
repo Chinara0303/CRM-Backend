@@ -35,7 +35,11 @@ namespace Services.Services
             await _repo.CreateAsync(_mapper.Map<Room>(model));
         }
 
-        public async Task<IEnumerable<RoomDto>> GetAllAsync() => _mapper.Map<IEnumerable<RoomDto>>(await _repo.GetAllAsync());
+        public async Task<IEnumerable<RoomDto>> GetAllAsync()
+        {
+            var rooms = await _repo.GetAllWithIncludes(m => m.Groups);
+            return _mapper.Map<IEnumerable<RoomDto>>(rooms);
+        }
 
         public async Task<RoomDto> GetByIdAsync(int? id)
         {
@@ -44,6 +48,7 @@ namespace Services.Services
         }
 
         public async Task SoftDeleteAsync(int? id)
+
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             Room existRoom = await _repo.GetByIdAsync(id);

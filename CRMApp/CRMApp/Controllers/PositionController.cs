@@ -61,7 +61,6 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(PositionDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-
         public async Task<IActionResult> GetById([FromRoute] int? id)
         {
             try

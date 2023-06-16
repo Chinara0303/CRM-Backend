@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.Configurations
 {
-    public class BannerConfiguration
+    public class BannerConfiguration : IEntityTypeConfiguration<Banner>
     {
-        //: IEntityTypeConfiguration<Banner>
-        //public void Configure(EntityTypeBuilder<Banner> builder)
-        //{
-        //    builder.Property(b => b.Title).HasMaxLength(100).IsRequired();
-        //    builder.Property(b => b.Description).IsRequired();
-        //    builder.Property(b => b.Offer).IsRequired(false);
-        //}
+        public void Configure(EntityTypeBuilder<Banner> builder)
+        {
+            builder.Property(b => b.Title).HasMaxLength(100).IsRequired();
+            builder.Property(b => b.Description).IsRequired();
+            builder.Property(b => b.Offer).IsRequired(false);
+            builder.Property(b => b.Image).IsRequired();
+        }
     }
 }

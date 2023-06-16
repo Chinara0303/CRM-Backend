@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Services.DTOs.Common;
+﻿using Services.DTOs.Common;
+using Services.DTOs.Group;
 
 namespace Services.DTOs.Course
 {
@@ -11,5 +11,6 @@ namespace Services.DTOs.Course
         public string Description { get; set; }
         public string Promise { get; set; }
         public string Duration { get; set; }
+        public ICollection<GroupDto> Groups { get; set; }
     }
 }

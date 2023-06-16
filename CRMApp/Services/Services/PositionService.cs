@@ -51,7 +51,8 @@ namespace Services.Services
 
         public async Task UpdateAsync(int? id, PositionUpdateDto model)
         {
-            if (id is null || model is null) throw new ArgumentNullException(ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(id,ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(model,ExceptionResponseMessages.ParametrNotFoundMessage);
 
             Position existPosition = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 

@@ -12,11 +12,11 @@ namespace Repository.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<About> Abouts { get; set; }
-        //public DbSet<Banner> Banners { get; set; }
+        public DbSet<Banner> Banners { get; set; }
         public DbSet<Course> Courses { get; set; }
-        //public DbSet<Group> Groups { get; set; }
+        public DbSet<Group> Groups { get; set; }
         //public DbSet<Setting> Settings { get; set; }
-        //public DbSet<Slider> Sliders { get; set; }
+        public DbSet<Slider> Sliders { get; set; }
         //public DbSet<Social> Socials { get; set; }
         //public DbSet<Staff> Staff { get; set; }
         //public DbSet<Student> Students { get; set; }

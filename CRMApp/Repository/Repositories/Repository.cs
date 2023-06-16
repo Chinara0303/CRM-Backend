@@ -18,6 +18,7 @@ namespace Repository.Repositories
             _context = context;
             _entities = _context.Set<T>();
         }
+
         public async Task CreateAsync(T entity)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -53,14 +54,20 @@ namespace Repository.Repositories
             await SaveAsync();
         }
 
+        public async Task<IEnumerable<T>> GetAllWithIncludes(params Expression<Func<T, object>>[] includes)
+        {
+            return await _entities.IncludeMultiple(includes).ToListAsync();
+        }
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllWithIncludes(params Expression<Func<T, object>>[] includes)
+        public T GetEntityAsync(T entity)
         {
-            return await _entities.IncludeMultiple(includes).ToListAsync();
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+            return entity;
         }
     }
 }

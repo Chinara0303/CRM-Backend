@@ -2,9 +2,12 @@
 using Domain.Entities;
 using Services.DTOs.About;
 using Services.DTOs.Account;
+using Services.DTOs.Banner;
 using Services.DTOs.Course;
+using Services.DTOs.Group;
 using Services.DTOs.Position;
 using Services.DTOs.Room;
+using Services.DTOs.Slider;
 
 namespace Services.Mappings
 {
@@ -31,6 +34,24 @@ namespace Services.Mappings
             CreateMap<Course, CourseListDto>();
             CreateMap<CourseCreateDto, Course>();
             CreateMap<CourseUpdateDto, Course>();
+
+
+            CreateMap<Slider, SliderDto>();
+            CreateMap<Slider, SliderListDto>();
+            CreateMap<SliderCreateDto, Slider>();
+            CreateMap<SliderUpdateDto, Slider>();
+
+
+            CreateMap<Banner, BannerDto>();
+            CreateMap<Banner, BannerListDto>();
+            CreateMap<BannerCreateDto, Banner>();
+            CreateMap<BannerUpdateDto, Banner>();
+
+            CreateMap<Group, GroupDto>();
+            CreateMap<Group, GroupListDto>();
+            CreateMap<GroupDto, GroupListDto>();
+            CreateMap<GroupUpdateDto, Group>();
+
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Domain.Entities
     public class Room:BaseEntity
     {
         public string Name { get; set; }
+        public ICollection<Group> Groups { get; set; }
     }
 }

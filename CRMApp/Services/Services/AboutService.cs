@@ -14,7 +14,6 @@ namespace Services.Services
     {
         private readonly IAboutRepository _repo;
         private readonly IMapper _mapper;
-
         public AboutService(IAboutRepository repo,
                             IMapper mapper)
         {

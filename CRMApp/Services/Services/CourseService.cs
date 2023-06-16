@@ -38,7 +38,7 @@ namespace Services.Services
 
         public async Task<IEnumerable<CourseListDto>> GetAllAsync()
         {
-            IEnumerable<Course> existCourses = await _repo.GetAllAsync();
+            IEnumerable<Course> existCourses = await _repo.GetAllWithIncludes(c=>c.Groups);
 
             IEnumerable<CourseListDto> mappedDatas = _mapper.Map<IEnumerable<CourseListDto>>(existCourses);
 
