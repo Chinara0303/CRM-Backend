@@ -13,8 +13,9 @@ namespace Repository.Data
         public DbSet<Position> Positions { get; set; }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Banner> Banners { get; set; }
-        public DbSet<Course> Courses { get; set; }
+        public DbSet<Education> Educations { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Time> Times { get; set; }
         //public DbSet<Setting> Settings { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         //public DbSet<Social> Socials { get; set; }
@@ -23,6 +24,7 @@ namespace Repository.Data
         //public DbSet<Teacher> Teachers { get; set; }
         //public DbSet<TeacherGroup> TeacherGroups { get; set; }
         //public DbSet<StaffPosition> StaffPositions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

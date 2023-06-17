@@ -10,7 +10,7 @@ namespace Services.Validations.Group
         {
             RuleFor(p => p.Seans).NotNull().NotEmpty();
             RuleFor(p => p.Weekday).NotNull().NotEmpty();
-            RuleFor(p => p.CourseId).NotNull().NotEmpty();
+            RuleFor(p => p.EducationId).NotNull().NotEmpty();
             RuleFor(p => p.RoomId).NotNull().NotEmpty();
         }
     }

@@ -15,7 +15,7 @@ namespace Services.Services
     public class GroupService : IGroupService
     {
         private readonly IGroupRepository _repo;
-        private readonly ICourseRepository _courseRepo;
+        private readonly IEducationRepository _eduRepo;
         private readonly IMapper _mapper;
 
         static int MorningCount = 100;
@@ -23,22 +23,22 @@ namespace Services.Services
         static int EveningCount = 500;
         public GroupService(IGroupRepository repo,
                             IMapper mapper,
-                            ICourseRepository courseRepo)
+                            IEducationRepository eduRepo)
         {
             _repo = repo;
             _mapper = mapper;
-            _courseRepo = courseRepo;
+            _eduRepo = eduRepo;
         }
 
         public async Task CreateAsync(GroupCreateDto model)
         {
             ArgumentNullException.ThrowIfNull(model.RoomId,ExceptionResponseMessages.ParametrNotFoundMessage);
-            ArgumentNullException.ThrowIfNull(model.CourseId,ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(model.EducationId,ExceptionResponseMessages.ParametrNotFoundMessage);
             
             Group newGroup = new();
             var groups = await _repo.GetAllAsync();
            
-            Course selectedCourse = await _courseRepo.GetByIdAsync(model.CourseId) 
+            Education selectedEducation = await _eduRepo.GetByIdAsync(model.EducationId) 
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
         
             foreach (var group in groups)
@@ -49,23 +49,23 @@ namespace Services.Services
                 }
             }
 
-            if (model.Seans == Seans.Morning)
+            switch (model.Seans)
             {
-                MorningCount++;
-                newGroup.Name += selectedCourse.Name.ToUpper()[..1] + MorningCount;
-            }
-            else if (model.Seans == Seans.Afternoon)
-            {
-                AfterNoonCount++;
-                newGroup.Name += selectedCourse.Name.ToUpper()[..1] + AfterNoonCount;
-            }
-            else if (model.Seans == Seans.Evening)
-            {
-                EveningCount++;
-                newGroup.Name += selectedCourse.Name.ToUpper()[..1] + EveningCount;
+                case Seans.Morning:
+                    MorningCount++;
+                    newGroup.Name += selectedEducation.Name.ToUpper()[..1] + MorningCount;
+                    break;
+                case Seans.Afternoon:
+                    AfterNoonCount++;
+                    newGroup.Name += selectedEducation.Name.ToUpper()[..1] + AfterNoonCount;
+                    break;
+                case Seans.Evening:
+                    EveningCount++;
+                    newGroup.Name += selectedEducation.Name.ToUpper()[..1] + EveningCount;
+                    break;
             }
 
-            newGroup.CourseId = model.CourseId;
+            newGroup.EducationId = model.EducationId;
             newGroup.RoomId = model.RoomId;
             newGroup.Weekday = model.Weekday;
             newGroup.Seans = model.Seans;
@@ -75,7 +75,7 @@ namespace Services.Services
 
         public async Task<IEnumerable<GroupListDto>> GetAllAsync()
         {
-            IEnumerable<Group> existGroups = await _repo.GetAllWithIncludes(g => g.Course, g => g.Students, g => g.Room);
+            IEnumerable<Group> existGroups = await _repo.GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room);
 
             IEnumerable<GroupListDto> mappedDatas = _mapper.Map<IEnumerable<GroupListDto>>(existGroups);
 
@@ -85,7 +85,7 @@ namespace Services.Services
         public async Task<GroupDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            var groups = await _repo.GetAllWithIncludes(g => g.Students, g => g.Course, g => g.Room);
+            var groups = await _repo.GetAllWithIncludes(g => g.Students, g => g.Education, g => g.Room);
             var group = groups.FirstOrDefault(g => g.Id == id);
 
             return group == null

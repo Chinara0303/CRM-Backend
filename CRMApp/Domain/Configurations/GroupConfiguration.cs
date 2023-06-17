@@ -17,7 +17,7 @@ namespace Domain.Configurations
             builder.Property(g => g.RoomId).IsRequired();
             builder.Property(g => g.Weekday).IsRequired();
             builder.Property(g => g.Seans).IsRequired();
-            builder.Property(g => g.CourseId).IsRequired();
+            builder.Property(g => g.EducationId).IsRequired();
 
         }
     }

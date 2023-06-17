@@ -8,7 +8,7 @@ using AutoMapper;
 using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Domain.Common.Constants;
-using Services.DTOs.Course;
+using Services.DTOs.Education;
 using Org.BouncyCastle.Crypto;
 
 namespace Services.Services
