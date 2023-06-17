@@ -28,7 +28,6 @@ namespace Services.Services
             _repo = repo;
             _mapper = mapper;
             _courseRepo = courseRepo;
-
         }
 
         public async Task CreateAsync(GroupCreateDto model)
@@ -38,8 +37,10 @@ namespace Services.Services
             
             Group newGroup = new();
             var groups = await _repo.GetAllAsync();
-            Course selectedCourse = await _courseRepo.GetByIdAsync(model.CourseId);
-
+           
+            Course selectedCourse = await _courseRepo.GetByIdAsync(model.CourseId) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+        
             foreach (var group in groups)
             {
                 if (model.RoomId == group.RoomId && model.Weekday == group.Weekday && model.Seans == group.Seans )
@@ -86,13 +87,17 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             var groups = await _repo.GetAllWithIncludes(g => g.Students, g => g.Course, g => g.Room);
             var group = groups.FirstOrDefault(g => g.Id == id);
-            return _mapper.Map<GroupDto>( _repo.GetEntityAsync(group));
+
+            return group == null
+                ? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage)
+                : _mapper.Map<GroupDto>( _repo.GetEntityAsync(group));
         }
 
         public async Task SoftDeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Group existGroup = await _repo.GetByIdAsync(id);
+            Group existGroup = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
             await _repo.SoftDeleteAsync(existGroup);
         }
 
@@ -106,7 +111,5 @@ namespace Services.Services
             _mapper.Map(model, existGroup);
             await _repo.UpdateAsync(existGroup);
         }
-
-
     }
 }

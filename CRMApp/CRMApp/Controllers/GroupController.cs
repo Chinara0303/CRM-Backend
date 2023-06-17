@@ -56,6 +56,10 @@ namespace CRMApp.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -77,6 +81,10 @@ namespace CRMApp.Controllers
             catch (NullReferenceException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

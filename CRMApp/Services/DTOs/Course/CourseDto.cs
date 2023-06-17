@@ -11,6 +11,7 @@ namespace Services.DTOs.Course
         public string Description { get; set; }
         public string Promise { get; set; }
         public string Duration { get; set; }
-        public ICollection<GroupDto> Groups { get; set; }
+        public int GroupCount{ get; set; }
+        public List<int> GroupIds { get; set; } = new List<int>();
     }
 }

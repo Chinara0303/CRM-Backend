@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Repositories.İnterfaces;
 
@@ -9,5 +10,7 @@ namespace Repository.Repositories
         public CourseRepository(AppDbContext context) : base(context)
         {
         }
+
+        
     }
 }

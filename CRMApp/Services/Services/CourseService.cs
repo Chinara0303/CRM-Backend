@@ -2,28 +2,27 @@
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
+using Org.BouncyCastle.Crypto;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.About;
 using Services.DTOs.Course;
 using Services.Helpers.Extentions;
 using Services.Services.İnterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Services
 {
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _repo;
+        private readonly IGroupRepository _groupRepo;
         private readonly IMapper _mapper;
         public CourseService(ICourseRepository repo,
-                             IMapper mapper)
+                             IMapper mapper,
+                             IGroupRepository groupRepo)
         {
             _repo = repo;
             _mapper = mapper;
+            _groupRepo = groupRepo;
         }
         public async Task CreateAsync(CourseCreateDto model)
         {
@@ -38,10 +37,10 @@ namespace Services.Services
 
         public async Task<IEnumerable<CourseListDto>> GetAllAsync()
         {
-            IEnumerable<Course> existCourses = await _repo.GetAllWithIncludes(c=>c.Groups);
-
+            IEnumerable<Course> existCourses = await _repo.GetAllWithIncludes(c => c.Groups);
+            
             IEnumerable<CourseListDto> mappedDatas = _mapper.Map<IEnumerable<CourseListDto>>(existCourses);
-
+         
             foreach (var data in mappedDatas)
             {
                 Course course = existCourses.FirstOrDefault(m => m.Id == data.Id);
@@ -51,6 +50,11 @@ namespace Services.Services
                     List<string> images = new();
                     images.Add(Convert.ToBase64String(course.Image));
                     data.Images = images;
+                    foreach (var item in course.Groups)
+                    {
+                       data.GroupIds.Add(item.Id);
+                    }
+                    data.GroupCount = course.Groups.Count;
                 }
             }
             return mappedDatas;
@@ -60,8 +64,17 @@ namespace Services.Services
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             Course existCourse = await _repo.GetByIdAsync(id);
-            var mappedData = _mapper.Map<CourseDto>(existCourse);
+            IEnumerable<Group> existGroups = await _groupRepo.GetAllAsync();
+            IEnumerable<Group> groupsByCourseId = existGroups.Where(m => m.CourseId == existCourse.Id).ToList();
 
+            CourseDto mappedData = _mapper.Map<CourseDto>(existCourse);
+          
+            foreach (var item in groupsByCourseId)
+            {
+                mappedData.GroupIds.Add(item.Id);
+            }
+
+            mappedData.GroupCount = groupsByCourseId.Count();
             mappedData.Image = Convert.ToBase64String(existCourse.Image);
             return mappedData;
         }

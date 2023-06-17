@@ -8,18 +8,23 @@ using AutoMapper;
 using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Domain.Common.Constants;
+using Services.DTOs.Course;
+using Org.BouncyCastle.Crypto;
 
 namespace Services.Services
 {
     public class RoomService : IRoomService
     {
         private readonly IRoomRepository _repo;
+        private readonly IGroupRepository _groupRepo;
         private readonly IMapper _mapper;
         public RoomService(IRoomRepository repo,
-                           IMapper mapper)
+                           IMapper mapper,
+                           IGroupRepository groupRepo)
         {
             _repo = repo;
             _mapper = mapper;
+            _groupRepo = groupRepo;
         }
 
         public async Task CreateAsync(RoomCreateDto model)
@@ -37,14 +42,44 @@ namespace Services.Services
 
         public async Task<IEnumerable<RoomDto>> GetAllAsync()
         {
-            var rooms = await _repo.GetAllWithIncludes(m => m.Groups);
-            return _mapper.Map<IEnumerable<RoomDto>>(rooms);
+            IEnumerable<Room> rooms = await _repo.GetAllWithIncludes(m => m.Groups);
+            IEnumerable<RoomDto> mappedDatas = _mapper.Map<IEnumerable<RoomDto>>(rooms);
+
+            foreach (var item in mappedDatas)
+            {
+                Room room = rooms.FirstOrDefault(m => m.Id == item.Id);
+
+                if (room is not null)
+                {
+                    foreach (var group in room.Groups)
+                    {
+                        item.GroupIds.Add(item.Id);
+                    }
+                }
+                item.GroupCount = room.Groups.Count;
+            }
+            return mappedDatas;
         }
 
         public async Task<RoomDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            return _mapper.Map<RoomDto>(await _repo.GetByIdAsync(id));
+            var existRoom = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            
+            IEnumerable<Group> existGroups = await _groupRepo.GetAllAsync();
+            IEnumerable<Group> groupsByRoomId = existGroups
+                                            .Where(m => m.RoomId == existRoom.Id)
+                                            .ToList();
+         
+            RoomDto mappedData = _mapper.Map<RoomDto>(existRoom);
+
+            foreach (var item in groupsByRoomId)
+            {
+                mappedData.GroupIds.Add(item.Id);
+            }
+          
+            mappedData.GroupCount = groupsByRoomId.Count();
+            return mappedData;
         }
 
         public async Task SoftDeleteAsync(int? id)

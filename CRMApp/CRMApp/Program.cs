@@ -11,9 +11,6 @@ using Services.Services;
 using Services.Services.İnterfaces;
 using Repository.Repositories.İnterfaces;
 using Repository.Repositories;
-using FluentValidation.AspNetCore;
-using Services.Validations.Room;
-using System.Reflection;
 using Services.Helpers.AccountSetting;
 
 var builder = WebApplication.CreateBuilder(args);
