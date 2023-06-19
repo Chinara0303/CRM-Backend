@@ -11,7 +11,8 @@ namespace Domain.Entities
         public int EducationId { get; set; }
         public Education Education { get; set; }
         public Weekday Weekday { get; set; }
-        public Seans Seans { get; set; }
+        public int TimeId { get; set; }
+        public Time Time { get; set; }
         public ICollection<Student> Students { get; set; }
     }
 }

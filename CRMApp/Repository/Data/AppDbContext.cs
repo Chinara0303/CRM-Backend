@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Helpers.Enums;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -16,12 +17,13 @@ namespace Repository.Data
         public DbSet<Education> Educations { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Time> Times { get; set; }
+        public DbSet<Seans> Seanses { get; set; }
         //public DbSet<Setting> Settings { get; set; }
         public DbSet<Slider> Sliders { get; set; }
-        //public DbSet<Social> Socials { get; set; }
-        //public DbSet<Staff> Staff { get; set; }
-        //public DbSet<Student> Students { get; set; }
-        //public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Social> Socials { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
         //public DbSet<TeacherGroup> TeacherGroups { get; set; }
         //public DbSet<StaffPosition> StaffPositions { get; set; }
 

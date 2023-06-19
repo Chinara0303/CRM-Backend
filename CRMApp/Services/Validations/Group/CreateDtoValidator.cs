@@ -8,7 +8,7 @@ namespace Services.Validations.Group
     {
         public CreateDtoValidator()
         {
-            RuleFor(p => p.Seans).NotNull().NotEmpty();
+            RuleFor(p => p.TimeId).NotNull().NotEmpty();
             RuleFor(p => p.Weekday).NotNull().NotEmpty();
             RuleFor(p => p.EducationId).NotNull().NotEmpty();
             RuleFor(p => p.RoomId).NotNull().NotEmpty();

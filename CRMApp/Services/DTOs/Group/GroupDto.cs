@@ -11,6 +11,6 @@ namespace Services.DTOs.Group
         public int EducationId { get; set; }
         public string EducationName { get; set; }
         public Weekday Weekday { get; set; }
-        public Seans Seans { get; set; }
+        public int SeansId { get; set; }
     }
 }

@@ -7,7 +7,12 @@ using Services.DTOs.Education;
 using Services.DTOs.Group;
 using Services.DTOs.Position;
 using Services.DTOs.Room;
+using Services.DTOs.Seans;
 using Services.DTOs.Slider;
+using Services.DTOs.Social;
+using Services.DTOs.Staff;
+using Services.DTOs.Student;
+using Services.DTOs.Teacher;
 using Services.DTOs.Time;
 
 namespace Services.Mappings
@@ -56,6 +61,30 @@ namespace Services.Mappings
             CreateMap<Time, TimeDto>();
             CreateMap<TimeCreateDto, Time>();
             CreateMap<TimeUpdateDto, Time>();
+
+            CreateMap<Seans, SeansDto>();
+            CreateMap<SeansCreateDto, Seans>();
+            CreateMap<SeansUpdateDto, Seans>();
+
+
+            CreateMap<Student, StudentDto>();
+            CreateMap<Student, StudentListDto>();
+            CreateMap<StudentCreateDto, Student>();
+            CreateMap<StudentUpdateDto, Student>();
+
+            CreateMap<Teacher, TeacherDto>();
+            CreateMap<Teacher, TeacherListDto>();
+            CreateMap<TeacherCreateDto, Teacher>();
+            CreateMap<TeacherUpdateDto, Teacher>();
+
+            CreateMap<Staff, StaffDto>();
+            CreateMap<Staff, StaffListDto>();
+            CreateMap<StaffCreateDto, Staff>();
+            CreateMap<StaffUpdateDto, Staff>();
+
+            CreateMap<Social, SocialDto>();
+            CreateMap<SocialCreateDto, Social>();
+            CreateMap<SocialUpdateDto, Social>();
         }
     }
 }

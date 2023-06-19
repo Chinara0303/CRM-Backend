@@ -1,4 +1,5 @@
-﻿using Domain.Helpers.Enums;
+﻿using Domain.Entities;
+using Domain.Helpers.Enums;
 
 namespace Services.DTOs.Group
 {
@@ -7,7 +8,6 @@ namespace Services.DTOs.Group
         public int RoomId { get; set; }
         public int EducationId { get; set; }
         public Weekday Weekday { get; set; }
-        public Seans Seans { get; set; }
-        //public string Name { get; set; }
+        public int TimeId { get; set; }
     }
 }

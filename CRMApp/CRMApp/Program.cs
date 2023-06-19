@@ -108,6 +108,11 @@ builder.Services.AddScoped<ISliderRepository, SliderRepository>();
 builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<ITimeRepository, TimeRepository>();
+builder.Services.AddScoped<ISeansRepository, SeansRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<ISocialRepository, SocialRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
@@ -118,6 +123,11 @@ builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<ITimeService, TimeService>();
+builder.Services.AddScoped<ISeansService, SeansService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
+builder.Services.AddScoped<ISocialService, SocialService>();
 
 
 var app = builder.Build();

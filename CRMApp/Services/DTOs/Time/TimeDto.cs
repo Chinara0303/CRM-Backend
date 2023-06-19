@@ -6,5 +6,6 @@ namespace Services.DTOs.Time
     {
         public int Id { get; set; }
         public string Interval { get; set; }
+        public int SeansId { get; set; }
     }
 }
