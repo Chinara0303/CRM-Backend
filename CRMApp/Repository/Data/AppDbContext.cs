@@ -3,7 +3,6 @@ using Domain.Helpers.Enums;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace Repository.Data
 {
@@ -20,12 +19,14 @@ namespace Repository.Data
         public DbSet<Seans> Seanses { get; set; }
         //public DbSet<Setting> Settings { get; set; }
         public DbSet<Slider> Sliders { get; set; }
-        public DbSet<Social> Socials { get; set; }
+        public DbSet<TeacherSocial> TeacherSocials { get; set; }
+        public DbSet<SiteSocial> SiteSocials { get; set; }
+        public DbSet<StaffSocial> StaffSocials { get; set; }
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         //public DbSet<TeacherGroup> TeacherGroups { get; set; }
-        //public DbSet<StaffPosition> StaffPositions { get; set; }
+        public DbSet<StaffPosition> StaffPositions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

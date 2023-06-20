@@ -13,5 +13,6 @@ namespace Services.DTOs.Staff
         public string Phone { get; set; }
         public string Biography { get; set; }
         public IFormFile Photo { get; set; }
+        public List<int> PositionIds { get; set; }
     }
 }

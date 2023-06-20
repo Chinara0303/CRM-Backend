@@ -23,21 +23,34 @@ namespace Services.Services
         public async Task CreateAsync(StaffCreateDto model)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
-
+            List<StaffPosition> staffPositions = new();
+            Staff newStaff = new();
             if (!await _repo.CheckByEmail(model.Email))
             {
                 throw new InvalidException(ExceptionResponseMessages.ExistMessage);
             }
+            foreach (var positionId in model.PositionIds)
+            {
+                StaffPosition staffPosition = new()
+                {
+                    PositionId = positionId
+                };
+                staffPositions.Add(staffPosition);
+            }
+            newStaff.StaffPositions = staffPositions;
+            newStaff.Image = await model.Photo.GetBytes();
+            newStaff.FullName = model.FullName;
+            newStaff.Address = model.Address;
+            newStaff.Phone = model.Phone;
+            newStaff.Email = model.Email;
+            newStaff.Biography = model.Biography;
 
-            Staff mappedData = _mapper.Map<Staff>(model);
-            mappedData.Image = await model.Photo.GetBytes();
-
-            await _repo.CreateAsync(mappedData);
+            await _repo.CreateAsync(newStaff);
         }
 
         public async Task<IEnumerable<StaffListDto>> GetAllAsync()
         {
-            IEnumerable<Staff> existStaff = await _repo.GetAllAsync();
+            IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
 
             IEnumerable<StaffListDto> mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(existStaff);
 
@@ -47,9 +60,11 @@ namespace Services.Services
 
                 if (staff is not null)
                 {
-                    List<string> images = new();
-                    images.Add(Convert.ToBase64String(staff.Image));
-                    data.Images = images;
+                    data.Images.Add(Convert.ToBase64String(staff.Image));
+                    foreach (var item in staff.StaffPositions)
+                    {
+                        data.PositionIds.Add(item.PositionId);
+                    }
                 }
             }
             return mappedDatas;

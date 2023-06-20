@@ -1,24 +1,24 @@
 ﻿using Domain.Common.Exceptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.Position;
 using Services.DTOs.Social;
+using Services.DTOs.TecherSocial;
 using Services.Services.İnterfaces;
-using Services.Validations.Social;
+using Services.Validations.TeacherSocial;
 
 namespace CRMApp.Controllers
 {
-    public class SocialController : Controller
+    public class TeacherSocialController : Controller
     {
-        private readonly ISocialService _service;
-        public SocialController(ISocialService service)
+        private readonly ITeacherSocialService _service;
+        public TeacherSocialController(ITeacherSocialService service)
         {
             _service = service;
         }
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromForm] SocialCreateDto request)
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Create([FromForm] TeacherSocialCreateDto request)
         {
             try
             {
@@ -31,19 +31,23 @@ namespace CRMApp.Controllers
                 await _service.CreateAsync(request);
                 return Ok();
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch (InvalidException ex)
+            catch (NullReferenceException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<SocialDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<TeacherSocialDto>))]
 
         public async Task<IActionResult> GetAll()
         {
@@ -59,7 +63,7 @@ namespace CRMApp.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(SocialDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TeacherSocialDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetById([FromRoute] int? id)
@@ -80,11 +84,11 @@ namespace CRMApp.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(SocialUpdateDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TeacherSocialUpdateDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> Update([FromRoute] int? id, [FromForm] SocialUpdateDto request)
+        public async Task<IActionResult> Update([FromRoute] int? id, [FromForm] TeacherSocialUpdateDto request)
         {
             try
             {

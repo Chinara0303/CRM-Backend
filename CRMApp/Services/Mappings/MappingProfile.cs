@@ -8,11 +8,13 @@ using Services.DTOs.Group;
 using Services.DTOs.Position;
 using Services.DTOs.Room;
 using Services.DTOs.Seans;
+using Services.DTOs.SiteSocial;
 using Services.DTOs.Slider;
 using Services.DTOs.Social;
 using Services.DTOs.Staff;
 using Services.DTOs.Student;
 using Services.DTOs.Teacher;
+using Services.DTOs.TecherSocial;
 using Services.DTOs.Time;
 
 namespace Services.Mappings
@@ -77,14 +79,23 @@ namespace Services.Mappings
             CreateMap<TeacherCreateDto, Teacher>();
             CreateMap<TeacherUpdateDto, Teacher>();
 
+            CreateMap<TeacherSocial, TeacherSocialDto>();
+            CreateMap<TeacherSocialCreateDto, TeacherSocial>();
+            CreateMap<TeacherSocialUpdateDto, TeacherSocial>();
+
             CreateMap<Staff, StaffDto>();
             CreateMap<Staff, StaffListDto>();
             CreateMap<StaffCreateDto, Staff>();
             CreateMap<StaffUpdateDto, Staff>();
 
-            CreateMap<Social, SocialDto>();
-            CreateMap<SocialCreateDto, Social>();
-            CreateMap<SocialUpdateDto, Social>();
+            CreateMap<StaffSocial, StaffSocialDto>();
+            CreateMap<StaffSocialCreateDto, StaffSocial>();
+            CreateMap<StaffSocialUpdateDto, StaffSocial>();
+
+
+            CreateMap<SiteSocial, SiteSocialDto>();
+            CreateMap<SiteSocialCreateDto, SiteSocial>();
+            CreateMap<SiteSocialUpdateDto, SiteSocial>();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Services.Services
         public async Task SoftDeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Position existPosition = await _repo.GetByIdAsync(id);
+            Position existPosition = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
             await _repo.SoftDeleteAsync(existPosition);
         }
 

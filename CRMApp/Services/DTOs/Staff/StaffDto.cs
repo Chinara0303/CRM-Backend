@@ -11,6 +11,6 @@ namespace Services.DTOs.Staff
         public string Phone { get; set; }
         public string Biography { get; set; }
         public string Image { get; set; }
-        public int GroupId { get; set; }
+        //public List<int>   { get; set; }
     }
 }

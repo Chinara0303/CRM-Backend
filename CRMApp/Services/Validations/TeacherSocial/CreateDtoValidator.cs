@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using Services.DTOs.Social;
-
-namespace Services.Validations.Social
+using Services.DTOs.TecherSocial;
+namespace Services.Validations.TeacherSocial
 {
-    public class UpdateDtoValidator:AbstractValidator<SocialUpdateDto>
+    public class CreateDtoValidator:AbstractValidator<TeacherSocialCreateDto>
     {
-        public UpdateDtoValidator()
+        public CreateDtoValidator() 
         {
             RuleFor(s => s.Link).NotNull().NotEmpty();
             RuleFor(s => s.Name).NotNull().NotEmpty();

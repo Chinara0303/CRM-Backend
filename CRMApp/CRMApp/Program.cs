@@ -112,7 +112,10 @@ builder.Services.AddScoped<ISeansRepository, SeansRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
-builder.Services.AddScoped<ISocialRepository, SocialRepository>();
+builder.Services.AddScoped<ITeacherSocialRepository, TeacherSocialRepository>();
+builder.Services.AddScoped<IStaffSocialRepository, StaffSocialRepository>();
+builder.Services.AddScoped<ITeacherSocialRepository, TeacherSocialRepository>();
+builder.Services.AddScoped<ISiteSocialRepository, SiteSocialRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
@@ -127,7 +130,10 @@ builder.Services.AddScoped<ISeansService, SeansService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IStaffService, StaffService>();
-builder.Services.AddScoped<ISocialService, SocialService>();
+builder.Services.AddScoped<ITeacherSocialService, TeacherSocialService>();
+builder.Services.AddScoped<IStaffSocialService, StaffSocialService>();
+builder.Services.AddScoped<ITeacherSocialService, TeacherSocialService>();
+builder.Services.AddScoped<ISiteSocialService, SiteSociaService>();
 
 
 var app = builder.Build();

@@ -1,10 +1,9 @@
-﻿namespace Services.DTOs.Social
+﻿namespace Services.DTOs.TecherSocial
 {
-    public class SocialCreateDto
+    public class TeacherSocialUpdateDto
     {
         public string Link { get; set; }
         public string Name { get; set; }
         public int TeacherId { get; set; }
-       
     }
 }
