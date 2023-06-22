@@ -1,5 +1,4 @@
-﻿
-namespace Services.DTOs.Teacher
+﻿namespace Services.DTOs.Teacher
 {
     public class TeacherListDto
     {
@@ -10,6 +9,7 @@ namespace Services.DTOs.Teacher
         public string Age { get; set; }
         public string Phone { get; set; }
         public string Biography { get; set; }
-        public List<string> Images { get; set; }
+        public List<int> GroupIds { get; set; } = new List<int>();
+        public List<string> Images { get; set; } = new List<string>();
     }
 }

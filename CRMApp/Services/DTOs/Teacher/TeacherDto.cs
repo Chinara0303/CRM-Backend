@@ -15,6 +15,7 @@ namespace Services.DTOs.Teacher
         public string Age { get; set; }
         public string Phone { get; set; }
         public string Biography { get; set; }
+        public List<int> GroupIds { get; set; } = new List<int>();
         public string Image { get; set; }
     }
 }

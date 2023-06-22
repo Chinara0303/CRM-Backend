@@ -6,5 +6,6 @@ namespace Services.DTOs.Position
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        //public List<int> StaffIds { get; set; } = new List<int>();
     }
 }

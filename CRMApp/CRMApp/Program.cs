@@ -116,6 +116,10 @@ builder.Services.AddScoped<ITeacherSocialRepository, TeacherSocialRepository>();
 builder.Services.AddScoped<IStaffSocialRepository, StaffSocialRepository>();
 builder.Services.AddScoped<ITeacherSocialRepository, TeacherSocialRepository>();
 builder.Services.AddScoped<ISiteSocialRepository, SiteSocialRepository>();
+builder.Services.AddScoped<IStaffPositionRepository, StaffPositionRepository>();
+builder.Services.AddScoped<ITeacherGroupRepository, TeacherGroupRepository>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<ISubscribeRepository, SubscribeRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
@@ -134,6 +138,9 @@ builder.Services.AddScoped<ITeacherSocialService, TeacherSocialService>();
 builder.Services.AddScoped<IStaffSocialService, StaffSocialService>();
 builder.Services.AddScoped<ITeacherSocialService, TeacherSocialService>();
 builder.Services.AddScoped<ISiteSocialService, SiteSociaService>();
+builder.Services.AddScoped<ITeacherGroupService, TeacherGroupService>();
+builder.Services.AddScoped<ISubscribeService, SubscribeService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 
 var app = builder.Build();

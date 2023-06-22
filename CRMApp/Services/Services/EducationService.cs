@@ -65,7 +65,9 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             Education existEducation = await _repo.GetByIdAsync(id);
             IEnumerable<Group> existGroups = await _groupRepo.GetAllAsync();
-            IEnumerable<Group> groupsByEducationId = existGroups.Where(m => m.EducationId == existEducation.Id).ToList();
+            IEnumerable<Group> groupsByEducationId = existGroups
+                .Where(m => m.EducationId == existEducation.Id)
+                .ToList();
 
             EducationDto mappedData = _mapper.Map<EducationDto>(existEducation);
           
@@ -91,9 +93,11 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            Education existEducation = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            Education existEducation = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             Education mappedData = _mapper.Map(model, existEducation);
+        
             if (model.Photo is not null)
                 mappedData.Image = await model.Photo.GetBytes();
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.About;
-using Services.DTOs.Position;
 using Services.Services.İnterfaces;
 using Services.Validations.About;
 

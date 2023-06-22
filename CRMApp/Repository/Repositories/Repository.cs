@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Common.Constants;
+using Domain.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Helpers;
@@ -35,7 +36,7 @@ namespace Repository.Repositories
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             T entity = await _entities.FindAsync(id);
-            return entity is null ? throw new NullReferenceException(ExceptionResponseMessages.NotFoundMessage) : entity;
+            return entity is null ? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage) : entity;
         }
 
         public async Task SoftDeleteAsync(T entity)
@@ -68,6 +69,13 @@ namespace Repository.Repositories
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             return entity;
+        }
+
+        public async void DeleteAsync(T entity)
+        {
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+            _entities.Remove(entity);
+            await SaveAsync();
         }
     }
 }

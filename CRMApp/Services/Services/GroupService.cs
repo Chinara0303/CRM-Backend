@@ -5,7 +5,6 @@ using Repository.Repositories.İnterfaces;
 using Services.DTOs.Group;
 using Services.Services.İnterfaces;
 using Domain.Common.Exceptions;
-using Services.DTOs.Time;
 
 namespace Services.Services
 {
@@ -17,8 +16,9 @@ namespace Services.Services
         private readonly IMapper _mapper;
 
         static int MorningCount = 100;
-        static int AfterNoonCount = 300;
+        static int AfternoonCount = 300;
         static int EveningCount = 500;
+
         public GroupService(IGroupRepository repo,
                             IMapper mapper,
                             IEducationRepository eduRepo,
@@ -32,11 +32,12 @@ namespace Services.Services
 
         public async Task CreateAsync(GroupCreateDto model)
         {
-            ArgumentNullException.ThrowIfNull(model.RoomId,ExceptionResponseMessages.ParametrNotFoundMessage);
-            ArgumentNullException.ThrowIfNull(model.EducationId,ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(model.RoomId, ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(model.EducationId, ExceptionResponseMessages.ParametrNotFoundMessage);
 
             Group newGroup = new();
-            var groups = await _repo.GetAllAsync();
+
+            IEnumerable<Group> groups = await _repo.GetAllAsync();
 
             Education selectedEducation = await _eduRepo.GetByIdAsync(model.EducationId)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
@@ -48,24 +49,26 @@ namespace Services.Services
                     throw new InvalidException(ExceptionResponseMessages.ExistMessage);
                 }
             }
-            var time = await _timeRepo.GetByIdAsync(model.TimeId);
-            
+           
+            Time time = await _timeRepo.GetByIdAsync(model.TimeId);
+            string groupName = newGroup.Name += selectedEducation.Name.ToUpper()[..1];
 
-            if(time.SeansId == 1)
+            switch (time.SeansId)
             {
-                MorningCount++;
-                newGroup.Name += selectedEducation.Name.ToUpper()[..1] + MorningCount;
+                case 1:
+                    MorningCount++;
+                    _ = groupName + MorningCount;
+                    break;
+                case 2:
+                    AfternoonCount++;
+                    _ = groupName + AfternoonCount;
+                    break;
+                case 3:
+                    EveningCount++;
+                    _ = groupName + EveningCount;
+                    break;
             }
-            if(time.SeansId == 2)
-            {
-                AfterNoonCount++;
-                newGroup.Name += selectedEducation.Name.ToUpper()[..1] + AfterNoonCount;
-            }
-            if(time.SeansId == 3)
-            {
-                EveningCount++;
-                newGroup.Name += selectedEducation.Name.ToUpper()[..1] + EveningCount;
-            }
+           
             newGroup.EducationId = model.EducationId;
             newGroup.RoomId = model.RoomId;
             newGroup.Weekday = model.Weekday;
@@ -76,40 +79,65 @@ namespace Services.Services
 
         public async Task<IEnumerable<GroupListDto>> GetAllAsync()
         {
-            IEnumerable<Group> existGroups = await _repo.GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room);
+            IEnumerable<Group> existGroups = await _repo
+                .GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room, g => g.TeacherGroups);
 
             IEnumerable<GroupListDto> mappedDatas = _mapper.Map<IEnumerable<GroupListDto>>(existGroups);
 
+
+            foreach (var data in mappedDatas)
+            {
+                Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
+
+                foreach (var teacherGroup in group.TeacherGroups)
+                {
+                    data.TeacherIds.Add(teacherGroup.TeacherId);
+                }
+                data.StudentsCount = group.Students.Count;
+            }
             return mappedDatas;
         }
 
         public async Task<GroupDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            var groups = await _repo.GetAllWithIncludes(g => g.Students, g => g.Education, g => g.Room);
-            var group = groups.FirstOrDefault(g => g.Id == id);
+            IEnumerable<Group> groups = await _repo.GetAllWithIncludes(g => g.Students, g => g.Education, g => g.Room, g => g.TeacherGroups);
 
-            return group == null
-                ? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage)
-                : _mapper.Map<GroupDto>( _repo.GetEntityAsync(group));
+            Group group = groups.FirstOrDefault(g => g.Id == id)
+               ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            var mappedData = _mapper.Map<GroupDto>(_repo.GetEntityAsync(group));
+
+            foreach (var teacherGroup in group.TeacherGroups)
+            {
+                mappedData.TeacherIds.Add(teacherGroup.TeacherId);
+            }
+
+            mappedData.StudentsCount = group.Students.Count;
+            return mappedData;
         }
 
         public async Task SoftDeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Group existGroup = await _repo.GetByIdAsync(id) 
+           
+            Group existGroup = await _repo.GetByIdAsync(id)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+          
             await _repo.SoftDeleteAsync(existGroup);
         }
 
         public async Task UpdateAsync(int? id, GroupUpdateDto model)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
+         
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            Group existGroup = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            Group existGroup = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             _mapper.Map(model, existGroup);
+          
             await _repo.UpdateAsync(existGroup);
         }
     }

@@ -14,6 +14,7 @@ namespace Domain.Entities
         public int TimeId { get; set; }
         public Time Time { get; set; }
         public ICollection<Student> Students { get; set; }
+        public ICollection<TeacherGroup> TeacherGroups { get; set; }
     }
 }
 

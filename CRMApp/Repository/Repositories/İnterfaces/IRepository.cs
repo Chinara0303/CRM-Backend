@@ -12,6 +12,7 @@ namespace Repository.Repositories.İnterfaces
         Task SoftDeleteAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression = null);
         Task SaveAsync();
+        void DeleteAsync(T entity);
         Task<IEnumerable<T>> GetAllWithIncludes(params Expression<Func<T, object>>[] includes);
     }
 }

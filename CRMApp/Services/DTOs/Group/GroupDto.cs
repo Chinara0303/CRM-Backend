@@ -7,10 +7,9 @@ namespace Services.DTOs.Group
     {
         public string Name { get; set; }
         public int RoomId { get; set; }
-        public string RoomName { get; set; }
         public int EducationId { get; set; }
-        public string EducationName { get; set; }
         public Weekday Weekday { get; set; }
-        public int SeansId { get; set; }
+        public int StudentsCount { get; set; }
+        public List<int> TeacherIds { get; set; } = new List<int>();
     }
 }

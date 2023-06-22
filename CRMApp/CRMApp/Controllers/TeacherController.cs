@@ -142,6 +142,10 @@ namespace CRMApp.Controllers
             {
                 return Ok(await _service.GetAllAsync());
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentNullException ex)
             {
                 return NotFound(ex.Message);

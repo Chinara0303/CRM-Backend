@@ -3,6 +3,7 @@ using Domain.Entities;
 using Services.DTOs.About;
 using Services.DTOs.Account;
 using Services.DTOs.Banner;
+using Services.DTOs.Contact;
 using Services.DTOs.Education;
 using Services.DTOs.Group;
 using Services.DTOs.Position;
@@ -13,7 +14,9 @@ using Services.DTOs.Slider;
 using Services.DTOs.Social;
 using Services.DTOs.Staff;
 using Services.DTOs.Student;
+using Services.DTOs.Subscribe;
 using Services.DTOs.Teacher;
+using Services.DTOs.TeacherGroup;
 using Services.DTOs.TecherSocial;
 using Services.DTOs.Time;
 
@@ -93,9 +96,21 @@ namespace Services.Mappings
             CreateMap<StaffSocialUpdateDto, StaffSocial>();
 
 
-            CreateMap<SiteSocial, SiteSocialDto>();
-            CreateMap<SiteSocialCreateDto, SiteSocial>();
-            CreateMap<SiteSocialUpdateDto, SiteSocial>();
+            CreateMap<StaffSocial, StaffSocialDto>();
+            CreateMap<StaffSocialCreateDto, StaffSocial>();
+            CreateMap<StaffSocialUpdateDto, StaffSocial>();
+
+
+            CreateMap<TeacherGroup, TeacherGroupDto>();
+            CreateMap<TeacherGroupCreateDto, TeacherGroup>();
+            CreateMap<TeacherGroupUpdateDto, TeacherGroup>();
+
+
+            CreateMap<Contact, ContactDto>();
+            CreateMap<ContactCreateDto, Contact>();
+
+            CreateMap<Subscribe, SubscribeDto>();
+            CreateMap<SubscribeCreateDto, Subscribe>();
         }
     }
 }

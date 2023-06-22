@@ -25,7 +25,9 @@ namespace Repository.Data
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        //public DbSet<TeacherGroup> TeacherGroups { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Subscribe> Subscribes { get; set; }
+        public DbSet<TeacherGroup> TeacherGroups { get; set; }
         public DbSet<StaffPosition> StaffPositions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
