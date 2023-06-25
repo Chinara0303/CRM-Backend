@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Org.BouncyCastle.Asn1.Ocsp;
 using Services.DTOs.Account;
 using System.Security.Claims;
 using System.Text;
@@ -12,6 +11,8 @@ using System.Data;
 using Microsoft.Extensions.Options;
 using Services.Services.İnterfaces;
 using Services.Helpers.AccountSetting;
+using Domain.Common.Exceptions;
+using Domain.Common.Constants;
 
 namespace Services.Services
 {
@@ -21,6 +22,7 @@ namespace Services.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly JWTSettings _jwtSetting;
+
         public AccountService(UserManager<AppUser> userManager,
                               RoleManager<IdentityRole> roleManager,
                               IMapper mapper,
@@ -32,49 +34,62 @@ namespace Services.Services
             _jwtSetting = jwtSetting.Value;
         }
 
-        public Task ConfirmEmail(string userId, string token)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
         public async Task<SignUpResponse> SignUpAsync(SignUpDto model)
         {
-            if (model is null) throw new ArgumentNullException("Data not found");
-            AppUser user = _mapper.Map<AppUser>(model);
+            ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
+
+            AppUser user = _mapper.Map<AppUser>(model)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
                 return new SignUpResponse
                 {
-                    StatusMessage = "User could not be created",
+                    StatusMessage = ExceptionResponseMessages.UserFailedMessage,
                     Errors = result.Errors.Select(e => e.Description).ToList()
                 };
             }
-            return new SignUpResponse { Errors = null, StatusMessage = "User created" };
-            //string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        }
 
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            return new SignUpResponse
+            {
+                Errors = null,
+                StatusMessage = ExceptionResponseMessages.UserSuccesMessage,
+                Token = token,
+                User = user
+            };
+        }
         public async Task<SignInResponse> SignInAsync(SignInDto model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            AppUser user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
-                return new SignInResponse { Token = null, StatusMessage = "Failed", Errors = new List<string>() { "Email or password wrong" } };
+                return new SignInResponse
+                {
+                    Token = null,
+                    StatusMessage = ExceptionResponseMessages.FailedMessage,
+                    Errors = new List<string>() { ExceptionResponseMessages.WrongMessage }
+                };
 
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 return new SignInResponse
                 {
                     Token = null,
-                    StatusMessage = "Failed",
-                    Errors = new List<string>() { "Email or password is wrong" }
+                    StatusMessage = ExceptionResponseMessages.FailedMessage,
+                    Errors = new List<string>() { ExceptionResponseMessages.WrongMessage }
                 };
 
             string token = GenerateJwtToken(user.UserName);
 
-            return new SignInResponse { Errors = null, StatusMessage = "Success", Token = token };
+            return new SignInResponse
+            {
+                Errors = null,
+                StatusMessage = ExceptionResponseMessages.SuccesMessage,
+                Token = token
+            };
         }
 
         private string GenerateJwtToken(string username)

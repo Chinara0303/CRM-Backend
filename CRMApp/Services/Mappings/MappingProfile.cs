@@ -9,6 +9,7 @@ using Services.DTOs.Group;
 using Services.DTOs.Position;
 using Services.DTOs.Room;
 using Services.DTOs.Seans;
+using Services.DTOs.Setting;
 using Services.DTOs.SiteSocial;
 using Services.DTOs.Slider;
 using Services.DTOs.Social;
@@ -111,6 +112,9 @@ namespace Services.Mappings
 
             CreateMap<Subscribe, SubscribeDto>();
             CreateMap<SubscribeCreateDto, Subscribe>();
+
+            CreateMap<Setting, SettingDto>();
+            CreateMap<SettingUpdateDto, Setting>();
         }
     }
 }

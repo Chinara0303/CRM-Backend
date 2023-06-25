@@ -84,7 +84,6 @@ namespace Services.Services
 
             IEnumerable<GroupListDto> mappedDatas = _mapper.Map<IEnumerable<GroupListDto>>(existGroups);
 
-
             foreach (var data in mappedDatas)
             {
                 Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
@@ -93,6 +92,7 @@ namespace Services.Services
                 {
                     data.TeacherIds.Add(teacherGroup.TeacherId);
                 }
+
                 data.StudentsCount = group.Students.Count;
             }
             return mappedDatas;
@@ -106,7 +106,7 @@ namespace Services.Services
             Group group = groups.FirstOrDefault(g => g.Id == id)
                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-            var mappedData = _mapper.Map<GroupDto>(_repo.GetEntityAsync(group));
+            var mappedData = _mapper.Map<GroupDto>(group);
 
             foreach (var teacherGroup in group.TeacherGroups)
             {

@@ -40,14 +40,12 @@ namespace Services.Services
 
             foreach (var data in mappedDatas)
             {
-                Slider slider = existSlider.FirstOrDefault(m => m.Id == data.Id);
+                Slider slider = existSlider.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                if (slider is not null)
-                {
                     List<string> images = new();
                     images.Add(Convert.ToBase64String(slider.Image));
-                    data.Images = images;
-                }
+                    data.Image = images;
             }
             return mappedDatas;
         }
@@ -62,11 +60,11 @@ namespace Services.Services
             return mappedData;
         }
 
-        public async Task SoftDeleteAsync(int? id)
+        public async Task DeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             Slider existSlider = await _repo.GetByIdAsync(id);
-            await _repo.SoftDeleteAsync(existSlider);
+            await _repo.DeleteAsync(existSlider);
         }
 
         public async Task UpdateAsync(int? id, SliderUpdateDto model)
@@ -74,12 +72,14 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            Slider existSlider = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            Slider existSlider = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             Slider mappedData = _mapper.Map(model, existSlider);
+
             if (model.Photo is not null)
                 mappedData.Image = await model.Photo.GetBytes();
-
+           
             await _repo.UpdateAsync(mappedData);
         }
     }

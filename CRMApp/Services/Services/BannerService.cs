@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
@@ -40,14 +39,12 @@ namespace Services.Services
 
             foreach (var data in mappedDatas)
             {
-                Banner banner = existBanners.FirstOrDefault(m => m.Id == data.Id);
+                Banner banner = existBanners.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                if (banner is not null)
-                {
                     List<string> images = new();
                     images.Add(Convert.ToBase64String(banner.Image));
-                    data.Images = images;
-                }
+                    data.Image = images;
             }
             return mappedDatas;
         }
@@ -55,18 +52,21 @@ namespace Services.Services
         public async Task<BannerDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Banner existBanner = await _repo.GetByIdAsync(id);
+
+            Banner existBanner = await _repo.GetByIdAsync(id)
+                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
             var mappedData = _mapper.Map<BannerDto>(existBanner);
 
             mappedData.Image = Convert.ToBase64String(existBanner.Image);
             return mappedData;
         }
 
-        public async Task SoftDeleteAsync(int? id)
+        public async Task DeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             Banner existBanner = await _repo.GetByIdAsync(id);
-            await _repo.SoftDeleteAsync(existBanner);
+            await _repo.DeleteAsync(existBanner);
         }
 
         public async Task UpdateAsync(int? id, BannerUpdateDto model)

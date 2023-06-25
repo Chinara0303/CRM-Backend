@@ -72,11 +72,11 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> SoftDelete([FromRoute] int? id)
+        public async Task<IActionResult> Delete([FromRoute] int? id)
         {
             try
             {
-                await _service.SoftDeleteAsync(id);
+                await _service.DeleteAsync(id);
                 return Ok();
             }
             catch (ArgumentNullException ex)

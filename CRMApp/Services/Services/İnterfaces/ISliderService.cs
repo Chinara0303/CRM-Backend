@@ -8,6 +8,6 @@ namespace Services.Services.İnterfaces
         Task<SliderDto> GetByIdAsync(int? id);
         Task CreateAsync(SliderCreateDto model);
         Task UpdateAsync(int? id, SliderUpdateDto model);
-        Task SoftDeleteAsync(int? id);
+        Task DeleteAsync(int? id);
     }
 }

@@ -4,15 +4,16 @@ using MimeKit.Text;
 using MailKit.Net.Smtp;
 using Services.Services.İnterfaces;
 using Services.Helpers.AccountSetting;
+using Microsoft.Extensions.Options;
 
 namespace Services.Services
 {
     public class EmailService : IEmailService
     {
         private readonly EmailSetting _emailSetting;
-        public EmailService(EmailSetting emailSetting)
+        public EmailService(IOptions<EmailSetting> emailSetting)
         {
-            _emailSetting = emailSetting;
+            _emailSetting = emailSetting.Value;
         }
         public void Send(string to, string subject, string html, string from = null)
         {

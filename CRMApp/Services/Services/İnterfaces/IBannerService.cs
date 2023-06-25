@@ -9,6 +9,6 @@ namespace Services.Services.İnterfaces
         Task<BannerDto> GetByIdAsync(int? id);
         Task CreateAsync(BannerCreateDto model);
         Task UpdateAsync(int? id, BannerUpdateDto model);
-        Task SoftDeleteAsync(int? id);
+        Task DeleteAsync(int? id);
     }
 }

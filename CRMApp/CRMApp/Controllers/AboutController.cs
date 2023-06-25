@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.About;
 using Services.Services.İnterfaces;
 using Services.Validations.About;
@@ -12,7 +13,7 @@ namespace CRMApp.Controllers
         {
             _service = service; 
         }
-
+        
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -72,11 +73,11 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> SoftDelete([FromRoute] int? id)
+        public async Task<IActionResult> Delete([FromRoute] int? id)
         {
             try
             {
-                await _service.SoftDeleteAsync(id);
+                await _service.DeleteAsync(id);
                 return Ok();
             }
             catch (ArgumentNullException ex)

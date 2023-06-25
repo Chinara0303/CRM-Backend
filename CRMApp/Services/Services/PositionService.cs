@@ -5,22 +5,18 @@ using Repository.Repositories.İnterfaces;
 using Services.DTOs.Position;
 using Domain.Common.Exceptions;
 using Services.Services.İnterfaces;
-using Services.DTOs.Group;
 
 namespace Services.Services
 {
     public class PositionService : IPositionService
     {
         private readonly IPositionRepository _repo;
-        private readonly IStaffPositionRepository _staffRepository;
         private readonly IMapper _mapper;
         public PositionService(IPositionRepository repo,
-                               IMapper mapper,
-                               IStaffPositionRepository staffRepository)
+                               IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
-            _staffRepository = staffRepository;
         }
         public async Task CreateAsync(PositionCreateDto model)
         {
@@ -38,23 +34,18 @@ namespace Services.Services
 
         public async Task<IEnumerable<PositionDto>> GetAllAsync()
         {
-            IEnumerable<PositionDto> mappedDatas = _mapper.Map<IEnumerable<PositionDto>>(await _repo.GetAllAsync());
+            IEnumerable<Position> existPositions = await _repo.GetAllWithIncludes(p => p.StaffPositions);
+            IEnumerable<PositionDto> mappedDatas = _mapper.Map<IEnumerable<PositionDto>>(existPositions);
 
-            //IEnumerable<StaffPosition> existStaffPosition = await _staffRepository.GetAllAsync();
+            foreach (var data in mappedDatas)
+            {
+                Position position = existPositions.Where(g => g.Id == data.Id).FirstOrDefault();
 
-            //foreach (var data in mappedDatas)
-            //{
-            //    foreach (var staffPosition in existStaff.FirstOrDefault().StaffPositions)
-            //    {
-            //        staff staff = existStaff.Where(m => m.Id == staffPosition.StaffId).FirstOrDefault()
-            //            ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-
-            //        foreach (var item in staff.StaffPositions)
-            //        {
-            //            data.StaffIds.Add(item.StaffId);
-            //        }
-            //    }
-            //}
+                foreach (var teacherGroup in position.StaffPositions)
+                {
+                    data.StaffIds.Add(teacherGroup.StaffId);
+                }
+            }
 
 
             return mappedDatas;
@@ -63,13 +54,28 @@ namespace Services.Services
         public async Task<PositionDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            return _mapper.Map<PositionDto>(await _repo.GetByIdAsync(id));
+            IEnumerable<Position> existPositions = await _repo.GetAllWithIncludes(p => p.StaffPositions);
+
+            Position existPosition = await _repo.GetByIdAsync(id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            PositionDto mappedData = _mapper.Map<PositionDto>(existPosition);
+
+            foreach (var staffPosition in existPosition.StaffPositions)
+            {
+                mappedData.StaffIds.Add(staffPosition.StaffId);
+            }
+
+            return mappedData;
         }
 
         public async Task SoftDeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Position existPosition = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+          
+            Position existPosition = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+           
             await _repo.SoftDeleteAsync(existPosition);
         }
 
@@ -78,7 +84,8 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            Position existPosition = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            Position existPosition = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             if (!await _repo.CheckByName(model.Name))
             {

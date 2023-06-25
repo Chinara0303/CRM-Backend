@@ -8,6 +8,6 @@ namespace Services.Services.İnterfaces
         Task<AboutDto> GetByIdAsync(int? id);
         Task CreateAsync(AboutCreateDto model);
         Task UpdateAsync(int? id, AboutUpdateDto model);
-        Task SoftDeleteAsync(int? id);
+        Task DeleteAsync(int? id);
     }
 }

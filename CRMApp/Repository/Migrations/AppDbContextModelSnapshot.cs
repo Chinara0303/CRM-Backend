@@ -81,6 +81,9 @@ namespace Repository.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsRememberMe")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -375,6 +378,99 @@ namespace Repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Seanses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Setting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("SoftDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8533),
+                            DeletedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8546),
+                            Key = "Phone",
+                            ModifiedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8545),
+                            SoftDelete = false,
+                            Value = "123-123-1234"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8549),
+                            DeletedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8550),
+                            Key = "EmailAdress",
+                            ModifiedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8550),
+                            SoftDelete = false,
+                            Value = "webfull@edu.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8552),
+                            DeletedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8553),
+                            Key = "Logo",
+                            ModifiedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8552),
+                            SoftDelete = false,
+                            Value = "download.jpg"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8554),
+                            DeletedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8555),
+                            Key = "Address",
+                            ModifiedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8555),
+                            SoftDelete = false,
+                            Value = "132 Jefferson Avenue, Suite 22, Redwood City, CA 94872"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8556),
+                            DeletedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8557),
+                            Key = "Fax",
+                            ModifiedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8557),
+                            SoftDelete = false,
+                            Value = "123-323-3343"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8558),
+                            DeletedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8559),
+                            Key = "TollFree",
+                            ModifiedDate = new DateTime(2023, 6, 23, 16, 39, 27, 431, DateTimeKind.Utc).AddTicks(8559),
+                            SoftDelete = false,
+                            Value = "123-425-6234"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.SiteSocial", b =>

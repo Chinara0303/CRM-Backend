@@ -7,8 +7,6 @@ namespace Services.Services.İnterfaces
     {
         Task<SignUpResponse> SignUpAsync(SignUpDto signUp);
         Task<SignInResponse> SignInAsync(SignInDto signIn);
-        Task ConfirmEmail(string userId, string token);
-
 
     }
 }

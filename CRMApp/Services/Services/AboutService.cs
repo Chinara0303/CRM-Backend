@@ -24,7 +24,7 @@ namespace Services.Services
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            var mappedData = _mapper.Map<About>(model);
+            About mappedData = _mapper.Map<About>(model);
 
             mappedData.Image = await model.Photo.GetBytes();
 
@@ -34,19 +34,17 @@ namespace Services.Services
         public async Task<IEnumerable<AboutListDto>> GetAllAsync()
         {
             IEnumerable<About> existAbouts = await _repo.GetAllAsync();
-            
+
             IEnumerable<AboutListDto> mappedDatas = _mapper.Map<IEnumerable<AboutListDto>>(existAbouts);
 
             foreach (var data in mappedDatas)
             {
-                About about = existAbouts.FirstOrDefault(m => m.Id == data.Id);
+                About about = existAbouts.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                if(about is not null)
-                {
-                    List<string> images = new();
-                    images.Add(Convert.ToBase64String(about.Image));
-                    data.Images = images;
-                }
+                List<string> images = new();
+                images.Add(Convert.ToBase64String(about.Image));
+                data.Image = images;
             }
             return mappedDatas;
         }
@@ -54,18 +52,22 @@ namespace Services.Services
         public async Task<AboutDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            About existAbout = await _repo.GetByIdAsync(id);
+            About existAbout = await _repo.GetByIdAsync(id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
             var mappedData = _mapper.Map<AboutDto>(existAbout);
 
             mappedData.Image = Convert.ToBase64String(existAbout.Image);
             return mappedData;
         }
 
-        public async Task SoftDeleteAsync(int? id)
+        public async Task DeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            About existAbout = await _repo.GetByIdAsync(id);
-            await _repo.SoftDeleteAsync(existAbout);
+            About existAbout = await _repo.GetByIdAsync(id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            await _repo.DeleteAsync(existAbout);
         }
 
         public async Task UpdateAsync(int? id, AboutUpdateDto model)
@@ -73,9 +75,11 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            About existAbout = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            About existAbout = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             About mappedData = _mapper.Map(model, existAbout);
+
             if (model.Photo is not null)
                 mappedData.Image = await model.Photo.GetBytes();
 

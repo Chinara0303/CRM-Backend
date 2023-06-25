@@ -6,5 +6,10 @@ namespace Domain.Common.Constants
         public const string ExistMessage = "Data already exist";
         public const string NotFoundMessage = "Data not found";
         public const string ParametrNotFoundMessage = "Parametr not found";
+        public const string FailedMessage = "Failed";
+        public const string WrongMessage = "Email or password is wrong";
+        public const string UserFailedMessage = "User could not be created";
+        public const string UserSuccesMessage = "User created";
+        public const string SuccesMessage = "Success";
     }
 }

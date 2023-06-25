@@ -29,14 +29,18 @@ namespace Repository.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression = null)
         {
-            return expression != null ? await _entities.Where(expression).ToListAsync() : await _entities.ToListAsync();
+            return expression != null
+                ? await _entities.Where(expression).ToListAsync() 
+                : await _entities.ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             T entity = await _entities.FindAsync(id);
-            return entity is null ? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage) : entity;
+            return entity is null 
+                ? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage) 
+                : entity;
         }
 
         public async Task SoftDeleteAsync(T entity)
@@ -65,17 +69,18 @@ namespace Repository.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public T GetEntityAsync(T entity)
-        {
-            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
-            return entity;
-        }
 
-        public async void DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             _entities.Remove(entity);
             await SaveAsync();
         }
+
+        //public  List<T> SearchAsync(Func<T, bool> predicate)
+        //{
+        //    ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+        //   return  _entities.Where(predicate).ToList();
+        //}
     }
 }

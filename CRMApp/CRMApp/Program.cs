@@ -12,6 +12,7 @@ using Services.Services.İnterfaces;
 using Repository.Repositories.İnterfaces;
 using Repository.Repositories;
 using Services.Helpers.AccountSetting;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,36 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    //options.OperationFilter<GenericControllerOperationFilter>();
+    options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
+    });
+
+});
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
@@ -73,6 +103,7 @@ builder.Services.AddCors(options =>
 });
 
 
+
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 
 builder.Services.AddScoped<JWTSettings>();
@@ -120,6 +151,8 @@ builder.Services.AddScoped<IStaffPositionRepository, StaffPositionRepository>();
 builder.Services.AddScoped<ITeacherGroupRepository, TeacherGroupRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<ISubscribeRepository, SubscribeRepository>();
+builder.Services.AddScoped<ISettingRepository, SettingRepository>();
+builder.Services.AddScoped(typeof(ISearchRepository<>), typeof(SearchRepository<>));
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
@@ -141,9 +174,11 @@ builder.Services.AddScoped<ISiteSocialService, SiteSociaService>();
 builder.Services.AddScoped<ITeacherGroupService, TeacherGroupService>();
 builder.Services.AddScoped<ISubscribeService, SubscribeService>();
 builder.Services.AddScoped<IContactService, ContactService>();
-
+builder.Services.AddScoped<ISettingService, SettingService>();
+builder.Services.AddScoped(typeof(ISearchService<>), typeof(SearchService<>));
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
