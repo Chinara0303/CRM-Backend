@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.DTOs.Common;
 
 namespace Services.DTOs.Student
 {
-    public class StudentListDto
+    public class StudentListDto:ActionDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }
@@ -15,7 +11,8 @@ namespace Services.DTOs.Student
         public string Age { get; set; }
         public string Phone { get; set; }
         public string Biography { get; set; }
-        public List<string> Images { get; set; }
-        public int GroupId { get; set; }
+        public string GroupName { get; set; }
+        public List<string> Image { get; set; }
+
     }
 }

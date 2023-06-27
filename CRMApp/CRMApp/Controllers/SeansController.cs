@@ -1,7 +1,6 @@
 ﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Seans;
-using Services.DTOs.Time;
 using Services.Services.İnterfaces;
 using Services.Validations.Seans;
 

@@ -10,6 +10,6 @@
         public string Phone { get; set; }
         public string Biography { get; set; }
         public List<int> GroupIds { get; set; } = new List<int>();
-        public List<string> Images { get; set; } = new List<string>();
+        public List<string> Image { get; set; } 
     }
 }

@@ -46,7 +46,9 @@ namespace Services.Services
                 Teacher teacher = existTeachers.FirstOrDefault(m => m.Id == data.Id)
                     ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                data.Images.Add(Convert.ToBase64String(teacher.Image));
+                List<string> images = new();
+                images.Add(Convert.ToBase64String(teacher.Image));
+                data.Image = images;
 
                 foreach (var item in teacher.TeacherGroups)
                 {
@@ -98,11 +100,6 @@ namespace Services.Services
 
             Teacher existTeacher = await _repo.GetByIdAsync(id)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-
-            if (!await _repo.CheckByEmail(model.Email))
-            {
-                throw new InvalidException(ExceptionResponseMessages.ExistMessage);
-            }
 
             Teacher mappedData = _mapper.Map(model, existTeacher);
 

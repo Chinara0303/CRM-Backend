@@ -9,7 +9,6 @@ namespace Services.Validations.Slider
         {
             RuleFor(s => s.Title).NotNull().NotEmpty().MaximumLength(200);
             RuleFor(s => s.Description).NotNull().NotEmpty().MaximumLength(500);
-            RuleFor(s => s.Photo).NotNull().NotEmpty();
         }
     }
 }

@@ -7,7 +7,8 @@ namespace Services.Validations.Room
     {
         public CreateDtoValidator()
         {
-            RuleFor(r => r.Name).NotNull().NotEmpty().MaximumLength(50);
+            RuleFor(r => r.Name).NotNull().NotEmpty();
+            RuleFor(r => r.Capacity).NotNull().NotEmpty();
         }
     }
 }

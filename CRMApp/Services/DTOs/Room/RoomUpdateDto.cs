@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Services.DTOs.Room
 {
     public class RoomUpdateDto
     {
+        [Required]
         public string Name { get; set; }
+        [Range(8,15)]
+        public int Capacity { get; set; }
+
     }
 }

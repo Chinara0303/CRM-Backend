@@ -18,7 +18,7 @@ namespace CRMApp.Controllers
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] RoomCreateDto request)
+        public async Task<IActionResult> Create([FromForm] RoomCreateDto request)
         {
             try
             {

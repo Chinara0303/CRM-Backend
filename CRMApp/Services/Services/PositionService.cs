@@ -45,6 +45,7 @@ namespace Services.Services
                 {
                     data.StaffIds.Add(teacherGroup.StaffId);
                 }
+                data.StaffCount = position.StaffPositions.Count;
             }
 
 

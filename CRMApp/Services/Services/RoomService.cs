@@ -92,15 +92,18 @@ namespace Services.Services
 
         public async Task UpdateAsync(int? id, RoomUpdateDto model)
         {
-            if (id is null || model is null) throw new ArgumentNullException(ExceptionResponseMessages.ParametrNotFoundMessage);
+           ArgumentNullException.ThrowIfNull(id,ExceptionResponseMessages.ParametrNotFoundMessage);
+           ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            Room existRoom = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            Room existRoom = await _repo.GetByIdAsync(id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             if (!await _repo.CheckByName(model.Name))
             {
                 throw new InvalidException(ExceptionResponseMessages.ExistMessage);
             }
-             model.Name = String.Concat(model.Name[0].ToString().ToUpper()) + model.Name[1..].ToLower();
+
+            model.Name = String.Concat(model.Name[0].ToString().ToUpper()) + model.Name[1..].ToLower();
             _mapper.Map(model, existRoom);
             await _repo.UpdateAsync(existRoom);
         }

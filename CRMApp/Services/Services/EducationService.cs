@@ -43,19 +43,17 @@ namespace Services.Services
          
             foreach (var data in mappedDatas)
             {
-                Education education = existEducations.FirstOrDefault(m => m.Id == data.Id);
-
-                if (education is not null)
-                {
+                Education education = existEducations.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage); 
+                  
                     List<string> images = new();
                     images.Add(Convert.ToBase64String(education.Image));
-                    data.Images = images;
+                    data.Image = images;
                     foreach (var item in education.Groups)
                     {
                        data.GroupIds.Add(item.Id);
                     }
                     data.GroupCount = education.Groups.Count;
-                }
             }
             return mappedDatas;
         }

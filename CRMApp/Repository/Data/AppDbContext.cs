@@ -33,6 +33,12 @@ namespace Repository.Data
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
+            builder.Entity<Position>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Room>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Seans>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Teacher>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Education>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Student>().HasQueryFilter(p => !p.SoftDelete);
 
             builder.Entity<Setting>().HasData(new Setting
             {

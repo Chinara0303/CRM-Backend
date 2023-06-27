@@ -15,7 +15,6 @@ namespace Services.Validations.Student
             RuleFor(s => s.Email).NotNull().NotEmpty().Must(s => s.Contains('@'));
             RuleFor(s => s.Phone).NotNull().NotEmpty();
             RuleFor(s => s.Photo).NotNull().NotEmpty();
-            RuleFor(s => s.GroupId).NotNull().NotEmpty();
         }
     }
 }

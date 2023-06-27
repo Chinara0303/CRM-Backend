@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Education;
 using Services.Services.İnterfaces;
 using Services.Validations.Education;
@@ -29,6 +30,10 @@ namespace CRMApp.Controllers
 
                 await _service.CreateAsync(request);
                 return Ok();
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (ArgumentNullException ex)
             {

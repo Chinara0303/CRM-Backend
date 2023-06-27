@@ -13,7 +13,6 @@ namespace Services.Validations.Staff
             RuleFor(s => s.Biography).NotNull().NotEmpty();
             RuleFor(s => s.Email).NotNull().NotEmpty().Must(s => s.Contains('@'));
             RuleFor(s => s.Phone).NotNull().NotEmpty();
-            RuleFor(s => s.Photo).NotNull().NotEmpty();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Services.DTOs.Room
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Capacity { get; set; }
         public int GroupCount { get; set; }
         public List<int> GroupIds { get; set; } = new List<int>();
     }

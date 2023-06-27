@@ -27,7 +27,7 @@ namespace Services.Services
         public async Task CreateAsync(StudentCreateDto model)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
-          
+
             if (!await _repo.CheckByEmail(model.Email))
             {
                 throw new InvalidException(ExceptionResponseMessages.ExistMessage);
@@ -48,14 +48,13 @@ namespace Services.Services
 
             foreach (var data in mappedDatas)
             {
-                Student student = existStudents.FirstOrDefault(m => m.Id == data.Id);
+                Student student = existStudents.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                if (student is not null)
-                {
-                    List<string> images = new();
-                    images.Add(Convert.ToBase64String(student.Image));
-                    data.Images = images;
-                }
+                List<string> images = new();
+                images.Add(Convert.ToBase64String(student.Image));
+                data.Image = images;
+                data.GroupName = student.Group.Name;
             }
             return mappedDatas;
         }
@@ -63,8 +62,11 @@ namespace Services.Services
         public async Task<StudentDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Student existStudent = await _repo.GetByIdAsync(id);
-            var mappedData = _mapper.Map<StudentDto>(existStudent);
+
+            Student existStudent = await _repo.GetByIdAsync(id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            StudentDto mappedData = _mapper.Map<StudentDto>(existStudent);
 
             mappedData.Image = Convert.ToBase64String(existStudent.Image);
             return mappedData;
@@ -73,7 +75,10 @@ namespace Services.Services
         public async Task SoftDeleteAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
-            Student existStudent = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+           
+            Student existStudent = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+           
             await _repo.SoftDeleteAsync(existStudent);
         }
 
@@ -82,14 +87,11 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-            if (!await _repo.CheckByEmail(model.Email))
-            {
-                throw new InvalidException(ExceptionResponseMessages.ExistMessage);
-            }
-
-            Student existStudent = await _repo.GetByIdAsync(id) ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            Student existStudent = await _repo.GetByIdAsync(id) 
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             Student mappedData = _mapper.Map(model, existStudent);
+
             if (model.Photo is not null)
                 mappedData.Image = await model.Photo.GetBytes();
 

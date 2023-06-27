@@ -98,6 +98,10 @@ namespace CRMApp.Controllers
                 await _service.SoftDeleteAsync(id);
                 return Ok();
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
@@ -133,7 +137,7 @@ namespace CRMApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<StudentDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<StudentListDto>))]
 
         public async Task<IActionResult> GetAll()
         {

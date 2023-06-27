@@ -45,6 +45,10 @@ namespace CRMApp.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 

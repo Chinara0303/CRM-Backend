@@ -41,10 +41,12 @@ namespace Services.Services
                 {
                     PositionId = positionId
                 };
+
                 staffPositions.Add(staffPosition);
             }
 
             mappedData.StaffPositions = staffPositions;
+
             mappedData.Image = await model.Photo.GetBytes();
 
             await _repo.CreateAsync(mappedData);

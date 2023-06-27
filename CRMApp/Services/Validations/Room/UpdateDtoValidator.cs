@@ -9,6 +9,7 @@ namespace Services.Validations.Room
         public UpdateDtoValidator()
         {
             RuleFor(r => r.Name).NotNull().NotEmpty().MaximumLength(50);
+            RuleFor(r => r.Capacity).NotNull().NotEmpty();
         }
     }
 }
