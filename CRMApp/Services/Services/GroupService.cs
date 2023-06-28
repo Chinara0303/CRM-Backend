@@ -57,18 +57,19 @@ namespace Services.Services
             {
                 case 1:
                     MorningCount++;
-                    _ = groupName + MorningCount;
+                    groupName = groupName + MorningCount;
                     break;
                 case 2:
                     AfternoonCount++;
-                    _ = groupName + AfternoonCount;
+                    groupName = groupName + AfternoonCount;
                     break;
                 case 3:
                     EveningCount++;
-                    _ = groupName + EveningCount;
+                    groupName = groupName + EveningCount;
                     break;
             }
-           
+
+            newGroup.Name = groupName;
             newGroup.EducationId = model.EducationId;
             newGroup.RoomId = model.RoomId;
             newGroup.Weekday = model.Weekday;
@@ -106,14 +107,18 @@ namespace Services.Services
             Group group = groups.FirstOrDefault(g => g.Id == id)
                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-            var mappedData = _mapper.Map<GroupDto>(group);
+            GroupDto mappedData = _mapper.Map<GroupDto>(group);
+
+            List<int> teacherIds = new();
 
             foreach (var teacherGroup in group.TeacherGroups)
             {
-                mappedData.TeacherIds.Add(teacherGroup.TeacherId);
+                teacherIds.Add(teacherGroup.TeacherId);
+                mappedData.TeacherIds = teacherIds;
             }
 
             mappedData.StudentsCount = group.Students.Count;
+
             return mappedData;
         }
 

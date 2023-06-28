@@ -79,6 +79,10 @@ namespace CRMApp.Controllers
                 await _service.UpdateAsync(id, request);
                 return Ok();
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);

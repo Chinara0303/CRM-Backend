@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Domain.Common.Constants;
+﻿using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.Teacher;
 using Services.DTOs.TeacherGroup;
 using Services.Services.İnterfaces;
 

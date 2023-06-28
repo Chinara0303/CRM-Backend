@@ -10,7 +10,7 @@ namespace Services.DTOs.Staff
         public string Age { get; set; }
         public string Phone { get; set; }
         public string Biography { get; set; }
-        public List<int> PositionIds { get; set; } = new List<int>();
+        public List<int> PositionIds { get; set; } 
         public string Image { get; set; }
 }
 }

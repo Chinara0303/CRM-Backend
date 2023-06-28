@@ -7,7 +7,8 @@ namespace Services.Validations.Time
     {
         public CreateDtoValidator()
         {
-            RuleFor(t => t.Interval).NotNull().NotEmpty().MaximumLength(100);
+            RuleFor(t => t.Start).NotNull().NotEmpty().MaximumLength(100);
+            RuleFor(t => t.End).NotNull().NotEmpty().MaximumLength(100);
         }
     }
 }

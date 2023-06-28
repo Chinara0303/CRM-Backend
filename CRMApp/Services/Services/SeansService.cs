@@ -34,7 +34,9 @@ namespace Services.Services
         public async Task<SeansDto> GetByIdAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
+           
             Seans existSeans = await _repo.GetByIdAsync(id);
+
             return existSeans is null ? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage) : _mapper.Map<SeansDto>(existSeans);
         }
 

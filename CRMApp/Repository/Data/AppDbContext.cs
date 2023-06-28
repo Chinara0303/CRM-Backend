@@ -39,6 +39,8 @@ namespace Repository.Data
             builder.Entity<Teacher>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Education>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Student>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Staff>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Group>().HasQueryFilter(p => !p.SoftDelete);
 
             builder.Entity<Setting>().HasData(new Setting
             {

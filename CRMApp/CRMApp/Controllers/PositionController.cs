@@ -67,6 +67,10 @@ namespace CRMApp.Controllers
             {
                 return Ok(await _service.GetByIdAsync(id));
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
