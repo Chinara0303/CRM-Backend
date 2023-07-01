@@ -96,6 +96,7 @@ namespace Services.Services
 
                 data.StudentsCount = group.Students.Count;
             }
+
             return mappedDatas;
         }
 
@@ -144,6 +145,15 @@ namespace Services.Services
             _mapper.Map(model, existGroup);
           
             await _repo.UpdateAsync(existGroup);
+        }
+
+        public async Task<IEnumerable<GroupSearchDto>> SearchAsync(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return _mapper.Map<IEnumerable<GroupSearchDto>>(await _repo.GetAllAsync());
+            }
+            return _mapper.Map<IEnumerable<GroupSearchDto>>(await _repo.GetAllAsync(e => e.Name.ToLower().Trim().Contains(searchText.ToLower().Trim())));
         }
     }
 }

@@ -417,60 +417,60 @@ namespace Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1036),
-                            DeletedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1047),
+                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1294),
+                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1303),
                             Key = "Phone",
-                            ModifiedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1046),
+                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1302),
                             SoftDelete = false,
                             Value = "123-123-1234"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1051),
-                            DeletedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1051),
+                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1307),
+                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1308),
                             Key = "EmailAdress",
-                            ModifiedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1051),
+                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1307),
                             SoftDelete = false,
                             Value = "webfull@edu.com"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1053),
-                            DeletedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1053),
+                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1309),
+                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1311),
                             Key = "Logo",
-                            ModifiedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1053),
+                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1310),
                             SoftDelete = false,
                             Value = "download.jpg"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1054),
-                            DeletedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1055),
+                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1312),
+                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1313),
                             Key = "Address",
-                            ModifiedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1055),
+                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1312),
                             SoftDelete = false,
                             Value = "132 Jefferson Avenue, Suite 22, Redwood City, CA 94872"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1056),
-                            DeletedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1057),
+                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1314),
+                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1315),
                             Key = "Fax",
-                            ModifiedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1057),
+                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1314),
                             SoftDelete = false,
                             Value = "123-323-3343"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1058),
-                            DeletedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1059),
+                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1316),
+                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1317),
                             Key = "TollFree",
-                            ModifiedDate = new DateTime(2023, 6, 26, 14, 55, 36, 478, DateTimeKind.Utc).AddTicks(1059),
+                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1316),
                             SoftDelete = false,
                             Value = "123-425-6234"
                         });
@@ -888,6 +888,37 @@ namespace Repository.Migrations
                     b.HasIndex("SeansId");
 
                     b.ToTable("Times");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Week", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SoftDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Weekday")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Weeks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

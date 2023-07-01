@@ -144,5 +144,22 @@ namespace CRMApp.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+
+        [HttpPost]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        public async Task<IActionResult> Search(string searchText)
+        {
+            try
+            {
+                return Ok(await _service.SearchAsync(searchText));
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

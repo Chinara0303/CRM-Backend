@@ -742,7 +742,6 @@
       "Services/1.0.0": {
         "dependencies": {
           "AutoMapper": "12.0.1",
-          "Domain": "1.0.0",
           "FluentValidation.AspNetCore": "11.3.0",
           "MailKit": "4.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.15",

@@ -10,5 +10,7 @@ namespace Repository.Repositories
         public GroupRepository(AppDbContext context) : base(context)
         {
         }
+
+        
     }
 }

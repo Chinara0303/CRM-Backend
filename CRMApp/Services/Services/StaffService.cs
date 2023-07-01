@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using CRMApp.Helpers;
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.Staff;
+using Services.DTOs.Student;
+using Services.DTOs.Teacher;
 using Services.Helpers.Extentions;
 using Services.Services.İnterfaces;
 
@@ -32,7 +35,6 @@ namespace Services.Services
 
             List<StaffPosition> staffPositions = new();
 
-
             if (!await _repo.CheckByEmail(model.Email))
             {
                 throw new InvalidException(ExceptionResponseMessages.ExistMessage);
@@ -59,7 +61,7 @@ namespace Services.Services
             await _repo.CreateAsync(mappedData);
         }
 
-        public async Task<IEnumerable<StaffListDto>> GetAllAsync()
+        public async Task<Paginate<StaffListDto>> GetAllAsync(int skip=1, int take = 5)
         {
             IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
 
@@ -82,7 +84,8 @@ namespace Services.Services
                     data.PositionIds = positionIds;
                 }
             }
-            return mappedDatas;
+            Paginate<StaffListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            return paginatedData;
         }
 
         public async Task<StaffDto> GetByIdAsync(int? id)
@@ -111,6 +114,60 @@ namespace Services.Services
             mappedData.Image = Convert.ToBase64String(existStaff.Image);
 
             return mappedData;
+        }
+
+        public async Task<IEnumerable<StaffListDto>> SearchAsync(string searchText)
+        {
+            IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
+
+            IEnumerable<StaffListDto> mappedDatas = new List<StaffListDto>();
+           
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(existStaff);
+                foreach (var data in mappedDatas)
+                {
+                    Staff staff = existStaff.FirstOrDefault(m => m.Id == data.Id)
+                        ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                    List<string> images = new();
+                    List<int> positionIds = new();
+
+                    images.Add(Convert.ToBase64String(staff.Image));
+                    data.Image = images;
+
+                    foreach (var item in staff.StaffPositions)
+                    {
+                        positionIds.Add(item.PositionId);
+                        data.PositionIds = positionIds;
+                    }
+                }
+                return mappedDatas;
+            }
+
+     
+            IEnumerable<Staff> filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim())
+                                                                                   || e.Email.ToLower().Trim().Contains(searchText.ToLower().Trim()));
+            mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(filteredDatas);
+
+            foreach (var data in mappedDatas)
+            {
+                Staff staff = existStaff.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                List<string> images = new();
+                List<int> positionIds = new();
+
+                images.Add(Convert.ToBase64String(staff.Image));
+                data.Image = images;
+
+                foreach (var item in staff.StaffPositions)
+                {
+                    positionIds.Add(item.PositionId);
+                    data.PositionIds = positionIds;
+                }
+            }
+            return mappedDatas;
         }
 
         public async Task SoftDeleteAsync(int? id)
@@ -161,6 +218,44 @@ namespace Services.Services
                 mappedData.Image = await model.Photo.GetBytes();
 
             await _repo.UpdateAsync(mappedData);
+        }
+
+        public async Task<IEnumerable<StaffListDto>> FilterAsync(string filterValue)
+        {
+            IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
+
+            switch (filterValue)
+            {
+                case "ascending":
+                    existStaff = existStaff.OrderBy(e => e.Age);
+                    break;
+                case "descending":   
+                    existStaff = existStaff.OrderByDescending(e => e.Age);
+                    break;
+                default:
+                    break;
+            }
+
+            IEnumerable<StaffListDto> mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(existStaff);
+            foreach (var data in mappedDatas)
+            {
+                Staff staff = existStaff.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                List<string> images = new();
+                List<int> positionIds = new();
+
+                images.Add(Convert.ToBase64String(staff.Image));
+                data.Image = images;
+
+                foreach (var item in staff.StaffPositions)
+                {
+                    positionIds.Add(item.PositionId);
+                    data.PositionIds = positionIds;
+                }
+            }
+            return mappedDatas;
+
         }
     }
 }

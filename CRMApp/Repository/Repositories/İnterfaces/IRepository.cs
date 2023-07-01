@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿using CRMApp.Helpers;
+using Domain.Common;
 using System.Linq.Expressions;
 
 namespace Repository.Repositories.İnterfaces
@@ -13,5 +14,6 @@ namespace Repository.Repositories.İnterfaces
         Task SaveAsync();
         Task DeleteAsync(T entity);
         Task<IEnumerable<T>> GetAllWithIncludes(params Expression<Func<T, object>>[] includes);
+        Paginate<T> PaginatedData<T>(IEnumerable<T> data, int skip, int take);
     }
 }

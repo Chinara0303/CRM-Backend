@@ -61,10 +61,12 @@ namespace Services.Mappings
 
             CreateMap<Group, GroupDto>();
             CreateMap<Group, GroupListDto>();
+            CreateMap<Group, GroupSearchDto>();
             CreateMap<GroupCreateDto, Group>();
             CreateMap<GroupUpdateDto, Group>();
 
             CreateMap<Time, TimeDto>();
+            CreateMap<Time, TimeListDto>();
             CreateMap<TimeCreateDto, Time>();
             CreateMap<TimeUpdateDto, Time>();
 

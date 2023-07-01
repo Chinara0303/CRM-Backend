@@ -5,6 +5,6 @@ namespace Domain.Entities
     public class Student : CommonPerson
     {
         public int GroupId { get; set; }
-        public Group Group { get; set; } = new Group();
+        public Group Group { get; set; } 
     }
 }

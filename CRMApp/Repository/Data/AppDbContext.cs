@@ -28,6 +28,7 @@ namespace Repository.Data
         public DbSet<Subscribe> Subscribes { get; set; }
         public DbSet<TeacherGroup> TeacherGroups { get; set; }
         public DbSet<StaffPosition> StaffPositions { get; set; }
+        public DbSet<Week> Weeks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,6 +42,8 @@ namespace Repository.Data
             builder.Entity<Student>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Staff>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Group>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Time>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<Week>().HasQueryFilter(p => !p.SoftDelete);
 
             builder.Entity<Setting>().HasData(new Setting
             {

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Repositories.İnterfaces;
-using System.Xml.Linq;
 
 namespace Repository.Repositories
 {
@@ -31,5 +30,7 @@ namespace Repository.Repositories
 
             return check;
         }
+
+
     }
 }

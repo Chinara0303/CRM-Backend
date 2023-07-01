@@ -13,6 +13,9 @@ using Repository.Repositories.İnterfaces;
 using Repository.Repositories;
 using Services.Helpers.AccountSetting;
 using Microsoft.OpenApi.Models;
+using Microsoft.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Domain.Helpers.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +59,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 
 
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSettings"));
@@ -152,7 +156,7 @@ builder.Services.AddScoped<ITeacherGroupRepository, TeacherGroupRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<ISubscribeRepository, SubscribeRepository>();
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();
-builder.Services.AddScoped(typeof(ISearchRepository<>), typeof(SearchRepository<>));
+builder.Services.AddScoped<IWeekRepository, WeekRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
@@ -175,7 +179,6 @@ builder.Services.AddScoped<ITeacherGroupService, TeacherGroupService>();
 builder.Services.AddScoped<ISubscribeService, SubscribeService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<ISettingService, SettingService>();
-builder.Services.AddScoped(typeof(ISearchService<>), typeof(SearchService<>));
 
 var app = builder.Build();
 

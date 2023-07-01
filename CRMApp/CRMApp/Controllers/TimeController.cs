@@ -14,6 +14,7 @@ namespace CRMApp.Controllers
         {
             _service = service;
         }
+
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -42,7 +43,7 @@ namespace CRMApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<TimeDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<TimeListDto>))]
 
         public async Task<IActionResult> GetAll()
         {

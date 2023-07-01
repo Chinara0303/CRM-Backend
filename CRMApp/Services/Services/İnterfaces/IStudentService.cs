@@ -1,13 +1,17 @@
-﻿using Services.DTOs.Student;
+﻿using CRMApp.Helpers;
+using Services.DTOs.Student;
 
 namespace Services.Services.İnterfaces
 {
     public interface IStudentService
     {
-        Task<IEnumerable<StudentListDto>> GetAllAsync();
+        Task<Paginate<StudentListDto>> GetAllAsync(int skip, int take);
         Task<StudentDto> GetByIdAsync(int? id);
         Task CreateAsync(StudentCreateDto model);
         Task UpdateAsync(int? id, StudentUpdateDto model);
         Task SoftDeleteAsync(int? id);
+        Task<IEnumerable<StudentListDto>> SearchAsync(string searchText);
+        Task<IEnumerable<StudentListDto>> FilterAsync(string filterValue);
+
     }
 }

@@ -97,5 +97,39 @@ namespace Services.Services
             _mapper.Map(model, existPosition);
             await _repo.UpdateAsync(existPosition);
         }
+
+        public async Task<IEnumerable<PositionDto>> FilterAsync(string filterValue)
+        {
+            IEnumerable<Position> existPositions = await _repo.GetAllWithIncludes(p => p.StaffPositions);
+
+            IEnumerable<PositionDto> mappedDatas = _mapper.Map<IEnumerable<PositionDto>>(existPositions);
+
+            foreach (var data in mappedDatas)
+            {
+                Position position = existPositions.Where(g => g.Id == data.Id).FirstOrDefault();
+
+                foreach (var teacherGroup in position.StaffPositions)
+                {
+                    data.StaffIds.Add(teacherGroup.StaffId);
+                }
+
+                data.StaffCount = position.StaffPositions.Count;
+
+                switch (filterValue)
+                {
+                    case "ascending":
+                        mappedDatas = mappedDatas.OrderBy(e => e.StaffCount);
+                        break;
+                    case "descending":
+                        mappedDatas = mappedDatas.OrderByDescending(e => e.StaffCount);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return mappedDatas;
+
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Services.Services.İnterfaces
         Task CreateAsync(GroupCreateDto model);
         Task UpdateAsync(int? id, GroupUpdateDto model);
         Task SoftDeleteAsync(int? id);
+        Task<IEnumerable<GroupSearchDto>> SearchAsync(string searchText);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CRMApp.Helpers;
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
@@ -35,7 +36,7 @@ namespace Services.Services
             await _repo.CreateAsync(mappedData);
         }
 
-        public async Task<IEnumerable<TeacherListDto>> GetAllAsync()
+        public async Task<Paginate<TeacherListDto>> GetAllAsync(int skip = 1,int take = 5 )
         {
             IEnumerable<Teacher> existTeachers = await _repo.GetAllWithIncludes(t => t.TeacherGroups);
 
@@ -55,8 +56,12 @@ namespace Services.Services
                     data.GroupIds.Add(item.GroupId);
                 }
             }
-            return mappedDatas;
+
+            Paginate<TeacherListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+
+            return paginatedData;
         }
+     
 
         public async Task<TeacherDto> GetByIdAsync(int? id)
         {
@@ -80,6 +85,54 @@ namespace Services.Services
                 mappedData.GroupIds.Add(item.GroupId);
             }
             return mappedData;
+        }
+
+        public async Task<IEnumerable<TeacherListDto>> SearchAsync(string searchText)
+        {
+            IEnumerable<Teacher> existTeachers = await _repo.GetAllWithIncludes(t => t.TeacherGroups);
+            IEnumerable<TeacherListDto> mappedDatas = new List<TeacherListDto>();
+          
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                mappedDatas = _mapper.Map<IEnumerable<TeacherListDto>>(existTeachers);
+             
+                foreach (var data in mappedDatas)
+                {
+                    Teacher teacher = existTeachers.FirstOrDefault(m => m.Id == data.Id)
+                        ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                    List<string> images = new();
+                    images.Add(Convert.ToBase64String(teacher.Image));
+                    data.Image = images;
+
+                    foreach (var item in teacher.TeacherGroups)
+                    {
+                        data.GroupIds.Add(item.GroupId);
+                    }
+                }
+                return mappedDatas;
+            }
+
+
+            IEnumerable<Teacher> filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim()) 
+                                                        || e.Email.ToLower().Trim().Contains(searchText.ToLower().Trim()));
+            mappedDatas = _mapper.Map<IEnumerable<TeacherListDto>>(filteredDatas);
+          
+            foreach (var data in mappedDatas)
+            {
+                Teacher teacher = existTeachers.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                List<string> images = new();
+                images.Add(Convert.ToBase64String(teacher.Image));
+                data.Image = images;
+
+                foreach (var item in teacher.TeacherGroups)
+                {
+                    data.GroupIds.Add(item.GroupId);
+                }
+            }
+            return mappedDatas;
         }
 
         public async Task SoftDeleteAsync(int? id)
@@ -107,6 +160,42 @@ namespace Services.Services
                 mappedData.Image = await model.Photo.GetBytes();
 
             await _repo.UpdateAsync(mappedData);
+        }
+
+        public async Task<IEnumerable<TeacherListDto>> FilterAsync(string filterValue)
+        {
+            IEnumerable<Teacher> existTeachers = await _repo.GetAllWithIncludes(t => t.TeacherGroups);
+
+            switch (filterValue)
+            {
+                case "ascending":
+                    existTeachers = existTeachers.OrderBy(e => e.Age);
+                    break;
+                case "descending":
+                    existTeachers = existTeachers.OrderByDescending(e => e.Age);
+                    break;
+                default:
+                    break;
+            }
+
+            IEnumerable<TeacherListDto>  mappedDatas = _mapper.Map<IEnumerable<TeacherListDto>>(existTeachers);
+
+            foreach (var data in mappedDatas)
+            {
+                Teacher teacher = existTeachers.FirstOrDefault(m => m.Id == data.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                List<string> images = new();
+                images.Add(Convert.ToBase64String(teacher.Image));
+                data.Image = images;
+
+                foreach (var item in teacher.TeacherGroups)
+                {
+                    data.GroupIds.Add(item.GroupId);
+                }
+            }
+            return mappedDatas;
+          
         }
     }
 }

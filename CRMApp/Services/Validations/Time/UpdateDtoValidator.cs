@@ -7,7 +7,8 @@ namespace Services.Validations.Time
     {
         public UpdateDtoValidator()
         {
-            RuleFor(t => t.Interval).NotNull().NotEmpty().MaximumLength(100);
+            RuleFor(t => t.Start).NotNull().NotEmpty();
+            RuleFor(t => t.End).NotNull().NotEmpty();
         }
     }
 }

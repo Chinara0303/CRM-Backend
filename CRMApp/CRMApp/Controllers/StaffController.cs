@@ -144,16 +144,54 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<StudentDto>))]
 
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int skip,int take)
         {
             try
             {
-                return Ok(await _service.GetAllAsync());
+                return Ok(await _service.GetAllAsync(skip,take));
             }
             catch (ArgumentNullException ex)
             {
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpPost]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        public async Task<IActionResult> Search(string searchText)
+        {
+            try
+            {
+                return Ok(await _service.SearchAsync(searchText));
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        public async Task<IActionResult> Filter(string filterValue)
+        {
+            try
+            {
+                return Ok(await _service.FilterAsync(filterValue));
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
 }

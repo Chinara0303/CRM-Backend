@@ -9,5 +9,6 @@ namespace Services.Services.İnterfaces
         Task CreateAsync(PositionCreateDto model);
         Task UpdateAsync(int? id, PositionUpdateDto model);
         Task SoftDeleteAsync(int? id);
+        Task<IEnumerable<PositionDto>> FilterAsync(string filterValue);
     }
 }

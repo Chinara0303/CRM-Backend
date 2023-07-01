@@ -1,13 +1,18 @@
-﻿using Services.DTOs.Staff;
+﻿using CRMApp.Helpers;
+using Services.DTOs.Staff;
 
 namespace Services.Services.İnterfaces
 {
     public interface IStaffService
     {
-        Task<IEnumerable<StaffListDto>> GetAllAsync();
+        Task<Paginate<StaffListDto>> GetAllAsync(int skip, int take);
         Task<StaffDto> GetByIdAsync(int? id);
         Task CreateAsync(StaffCreateDto model);
         Task UpdateAsync(int? id, StaffUpdateDto model);
         Task SoftDeleteAsync(int? id);
+        Task<IEnumerable<StaffListDto>> SearchAsync(string searchText);
+        Task<IEnumerable<StaffListDto>> FilterAsync(string filterValue);
+
+
     }
 }
