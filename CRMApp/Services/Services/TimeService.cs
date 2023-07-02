@@ -29,7 +29,22 @@ namespace Services.Services
 
         public async Task<IEnumerable<TimeListDto>> GetAllAsync()
         {
-            return _mapper.Map<IEnumerable<TimeListDto>>(await _repo.GetAllAsync());
+            var existTimes = await _repo.GetAllWithIncludes(t => t.Seans);
+
+            var mappedDatas = _mapper.Map<IEnumerable<TimeListDto>>(existTimes);
+          
+            foreach (var data in mappedDatas)
+            {
+                Time time = existTimes.Where(g => g.Id == data.Id).FirstOrDefault();
+
+                IEnumerable<Seans> seanses = await _repo.GetFullDataForSeansAsync(time.SeansId);
+
+                foreach (var seans in seanses)
+                {
+                    data.SeansName = seans.Name;
+                }
+            }
+            return mappedDatas;
         }
 
         public async Task<TimeDto> GetByIdAsync(int? id)

@@ -5,7 +5,6 @@ using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.Staff;
-using Services.DTOs.Student;
 using Services.DTOs.Teacher;
 using Services.Helpers.Extentions;
 using Services.Services.İnterfaces;
@@ -61,7 +60,7 @@ namespace Services.Services
             await _repo.CreateAsync(mappedData);
         }
 
-        public async Task<Paginate<StaffListDto>> GetAllAsync(int skip=1, int take = 5)
+        public async Task<Paginate<StaffListDto>> GetAllAsync(int skip, int take )
         {
             IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
 
@@ -116,15 +115,17 @@ namespace Services.Services
             return mappedData;
         }
 
-        public async Task<IEnumerable<StaffListDto>> SearchAsync(string searchText)
+        public async Task<Paginate<StaffListDto>> SearchAsync(string searchText, int skip, int take)
         {
             IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
 
-            IEnumerable<StaffListDto> mappedDatas = new List<StaffListDto>();
-           
+            List<StaffListDto> mappedDatas = new List<StaffListDto>();
+
+            Paginate<StaffListDto> paginatedData = new(mappedDatas, skip, take);
+
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(existStaff);
+                mappedDatas = _mapper.Map<List<StaffListDto>>(existStaff);
                 foreach (var data in mappedDatas)
                 {
                     Staff staff = existStaff.FirstOrDefault(m => m.Id == data.Id)
@@ -142,13 +143,15 @@ namespace Services.Services
                         data.PositionIds = positionIds;
                     }
                 }
-                return mappedDatas;
+
+                paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+                return paginatedData;
             }
 
      
-            IEnumerable<Staff> filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim())
-                                                                                   || e.Email.ToLower().Trim().Contains(searchText.ToLower().Trim()));
-            mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(filteredDatas);
+            IEnumerable<Staff> filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim()));
+
+            mappedDatas = _mapper.Map<List<StaffListDto>>(filteredDatas);
 
             foreach (var data in mappedDatas)
             {
@@ -167,7 +170,9 @@ namespace Services.Services
                     data.PositionIds = positionIds;
                 }
             }
-            return mappedDatas;
+
+            paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            return paginatedData;
         }
 
         public async Task SoftDeleteAsync(int? id)
@@ -210,6 +215,7 @@ namespace Services.Services
 
                 staffPositions.Add(staffPosition);
             }
+
             existStaff.StaffPositions = staffPositions;
 
             Staff mappedData = _mapper.Map(model, existStaff);
@@ -220,7 +226,7 @@ namespace Services.Services
             await _repo.UpdateAsync(mappedData);
         }
 
-        public async Task<IEnumerable<StaffListDto>> FilterAsync(string filterValue)
+        public async Task<Paginate<StaffListDto>> FilterAsync(string filterValue,int skip,int take)
         {
             IEnumerable<Staff> existStaff = await _repo.GetAllWithIncludes(e => e.StaffPositions);
 
@@ -236,7 +242,7 @@ namespace Services.Services
                     break;
             }
 
-            IEnumerable<StaffListDto> mappedDatas = _mapper.Map<IEnumerable<StaffListDto>>(existStaff);
+            List<StaffListDto> mappedDatas = _mapper.Map<List<StaffListDto>>(existStaff);
             foreach (var data in mappedDatas)
             {
                 Staff staff = existStaff.FirstOrDefault(m => m.Id == data.Id)
@@ -254,7 +260,10 @@ namespace Services.Services
                     data.PositionIds = positionIds;
                 }
             }
-            return mappedDatas;
+            Paginate<StaffListDto> paginatedData = new(mappedDatas, skip, take);
+
+            return paginatedData;
+
 
         }
     }

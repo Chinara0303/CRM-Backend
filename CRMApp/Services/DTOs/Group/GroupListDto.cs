@@ -12,6 +12,6 @@ namespace Services.DTOs.Group
         public int TimeId { get; set; }
         public Weekday Weekday { get; set; }
         public int StudentsCount { get; set; }
-        public List<int> TeacherIds { get; set; } = new List<int>();
+        public List<Domain.Entities.Teacher> Teachers { get; set; } = new List<Domain.Entities.Teacher>();
     }
 }

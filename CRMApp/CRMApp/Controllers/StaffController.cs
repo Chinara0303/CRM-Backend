@@ -160,11 +160,11 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        public async Task<IActionResult> Search(string searchText)
+        public async Task<IActionResult> Search(string searchText,int skip,int take)
         {
             try
             {
-                return Ok(await _service.SearchAsync(searchText));
+                return Ok(await _service.SearchAsync(searchText,skip,take));
             }
             catch (ArgumentNullException ex)
             {
@@ -177,11 +177,11 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        public async Task<IActionResult> Filter(string filterValue)
+        public async Task<IActionResult> Filter(string filterValue, int skip, int take)
         {
             try
             {
-                return Ok(await _service.FilterAsync(filterValue));
+                return Ok(await _service.FilterAsync(filterValue, skip, take));
             }
             catch (NullReferenceException ex)
             {

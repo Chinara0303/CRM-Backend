@@ -104,16 +104,18 @@ namespace Services.Services
             await _repo.UpdateAsync(mappedData);
         }
 
-        public async Task<IEnumerable<StudentListDto>> SearchAsync(string searchText)
+        public async Task<Paginate<StudentListDto>> SearchAsync(string searchText,int skip,int take)
         {
             IEnumerable<Student> existStudents = await _repo.GetAllWithIncludes(s => s.Group);
 
-            IEnumerable<StudentListDto> mappedDatas = new List<StudentListDto>();
+            List<StudentListDto> mappedDatas = new();
+
+            Paginate<StudentListDto> paginatedData = new(mappedDatas, skip, take);
 
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                mappedDatas = _mapper.Map<IEnumerable<StudentListDto>>(existStudents);
-
+                mappedDatas = _mapper.Map<List<StudentListDto>>(existStudents);
+               
                 foreach (var data in mappedDatas)
                 {
                     Student student = existStudents.FirstOrDefault(m => m.Id == data.Id)
@@ -124,13 +126,15 @@ namespace Services.Services
                     data.Image = images;
                     data.GroupName = student.Group.Name;
                 }
-                return mappedDatas;
+
+                paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+               
+                return paginatedData;
             }
 
-            var filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim())
-                                                       || e.Email.ToLower().Trim().Contains(searchText.ToLower().Trim()));
+            var filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim()));
 
-            mappedDatas = _mapper.Map<IEnumerable<StudentListDto>>(filteredDatas);
+            mappedDatas = _mapper.Map<List<StudentListDto>>(filteredDatas);
 
             foreach (var data in mappedDatas)
             {
@@ -142,13 +146,16 @@ namespace Services.Services
                 data.Image = images;
                 data.GroupName = student.Group.Name;
             }
-            return mappedDatas;
+
+            paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+
+            return paginatedData;
         }
 
-        public async Task<IEnumerable<StudentListDto>> FilterAsync(string filterValue)
+        public async Task<Paginate<StudentListDto>> FilterAsync(string filterValue, int skip, int take)
         {
             IEnumerable<Student> existStudents = await _repo.GetAllWithIncludes(s => s.Group);
-
+           
             switch (filterValue)
             {
                 case "ascending":
@@ -161,7 +168,7 @@ namespace Services.Services
                     break;
             }
 
-            IEnumerable<StudentListDto> mappedDatas = _mapper.Map<IEnumerable<StudentListDto>>(existStudents);
+            List<StudentListDto> mappedDatas = _mapper.Map<List<StudentListDto>>(existStudents);
           
             foreach (var data in mappedDatas)
             {
@@ -174,7 +181,9 @@ namespace Services.Services
                 data.GroupName = student.Group.Name;
             }
 
-            return mappedDatas;
+            Paginate<StudentListDto> paginatedData = new(mappedDatas, skip, take);
+
+            return paginatedData;
         }
     }
 }

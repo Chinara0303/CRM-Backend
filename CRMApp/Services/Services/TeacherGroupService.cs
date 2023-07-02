@@ -42,6 +42,27 @@ namespace Services.Services
             }
         }
 
+        public async Task UpdateAsync(int id,TeacherGroupUpdateDto model)
+        {
+            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+           
+            Group group = await _groupRepo.GetByIdAsync(id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            foreach (var teacherId in model.TeacherIds)
+            {
+                Teacher teacher = await _teacherRepo.GetByIdAsync(teacherId)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                TeacherGroup teacherGroup = new()
+                {
+                    Group = group,
+                    Teacher = teacher,
+                }; 
+
+                await _repo.UpdateAsync(teacherGroup);
+            }
+        }
 
     }
 }

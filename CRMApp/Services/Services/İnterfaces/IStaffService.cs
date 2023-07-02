@@ -10,8 +10,8 @@ namespace Services.Services.İnterfaces
         Task CreateAsync(StaffCreateDto model);
         Task UpdateAsync(int? id, StaffUpdateDto model);
         Task SoftDeleteAsync(int? id);
-        Task<IEnumerable<StaffListDto>> SearchAsync(string searchText);
-        Task<IEnumerable<StaffListDto>> FilterAsync(string filterValue);
+        Task<Paginate<StaffListDto>> SearchAsync(string searchText,int skip,int take);
+        Task<Paginate<StaffListDto>> FilterAsync(string filterValue, int skip, int take);
 
 
     }

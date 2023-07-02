@@ -5,12 +5,14 @@ using Repository.Repositories.İnterfaces;
 using Services.DTOs.Group;
 using Services.Services.İnterfaces;
 using Domain.Common.Exceptions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Services.Services
 {
     public class GroupService : IGroupService
     {
         private readonly IGroupRepository _repo;
+        private readonly ITeacherGroupRepository _teacherGroupRepo;
         private readonly IEducationRepository _eduRepo;
         private readonly ITimeRepository _timeRepo;
         private readonly IMapper _mapper;
@@ -22,12 +24,14 @@ namespace Services.Services
         public GroupService(IGroupRepository repo,
                             IMapper mapper,
                             IEducationRepository eduRepo,
-                            ITimeRepository timeRepo)
+                            ITimeRepository timeRepo,
+                            ITeacherGroupRepository teacherGroupRepo)
         {
             _repo = repo;
             _mapper = mapper;
             _eduRepo = eduRepo;
             _timeRepo = timeRepo;
+            _teacherGroupRepo = teacherGroupRepo;
         }
 
         public async Task CreateAsync(GroupCreateDto model)
@@ -88,10 +92,13 @@ namespace Services.Services
             foreach (var data in mappedDatas)
             {
                 Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
-
-                foreach (var teacherGroup in group.TeacherGroups)
+              
+                IEnumerable<Teacher> teachers =  await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
+            
+               
+                foreach (var teacher in teachers)
                 {
-                    data.TeacherIds.Add(teacherGroup.TeacherId);
+                    data.Teachers.Add(teacher);
                 }
 
                 data.StudentsCount = group.Students.Count;
@@ -107,15 +114,18 @@ namespace Services.Services
 
             Group group = groups.FirstOrDefault(g => g.Id == id)
                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
 
             GroupDto mappedData = _mapper.Map<GroupDto>(group);
 
-            List<int> teacherIds = new();
 
-            foreach (var teacherGroup in group.TeacherGroups)
+            foreach (var teacher in teachers)
             {
-                teacherIds.Add(teacherGroup.TeacherId);
-                mappedData.TeacherIds = teacherIds;
+                List<string> images = new();
+
+                images.Add(Convert.ToBase64String(teacher.Image));
+
+                mappedData.TeacherImages = images;
             }
 
             mappedData.StudentsCount = group.Students.Count;

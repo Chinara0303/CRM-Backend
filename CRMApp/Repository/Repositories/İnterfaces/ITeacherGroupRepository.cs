@@ -4,6 +4,7 @@ namespace Repository.Repositories.İnterfaces
 {
     public interface ITeacherGroupRepository:IRepository<TeacherGroup>
     {
-        Task<IEnumerable<Group>> GetFullDataAsync();
+        Task<IEnumerable<Teacher>> GetFullDataForTeacherAsync(int groupId);
+        Task<IEnumerable<Group>> GetFullDataForGroupAsync(int teacherId);
     }
 }
