@@ -3,6 +3,7 @@ using CRMApp.Helpers;
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.Staff;
 using Services.DTOs.Teacher;
@@ -17,15 +18,21 @@ namespace Services.Services
         private readonly IStaffPositionRepository _staffPositionRepo;
         private readonly IPositionRepository _positionRepo;
         private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         public StaffService(IStaffRepository repo,
                             IMapper mapper,
                             IStaffPositionRepository staffPositionRepo,
-                            IPositionRepository positionRepo)
+                            IPositionRepository positionRepo,
+                            UserManager<AppUser> userManager,
+                            RoleManager<IdentityRole> roleManager)
         {
             _repo = repo;
             _mapper = mapper;
             _staffPositionRepo = staffPositionRepo;
             _positionRepo = positionRepo;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         public async Task CreateAsync(StaffCreateDto model)
         {
@@ -260,11 +267,10 @@ namespace Services.Services
                     data.PositionIds = positionIds;
                 }
             }
-            Paginate<StaffListDto> paginatedData = new(mappedDatas, skip, take);
+            
+            Paginate<StaffListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
-
-
         }
     }
 }

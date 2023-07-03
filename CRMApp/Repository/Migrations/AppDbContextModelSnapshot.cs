@@ -175,14 +175,14 @@ namespace Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DeletedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EducationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -417,60 +417,60 @@ namespace Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1294),
-                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1303),
+                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2252),
+                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2260),
                             Key = "Phone",
-                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1302),
+                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2259),
                             SoftDelete = false,
                             Value = "123-123-1234"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1307),
-                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1308),
+                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2265),
+                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2266),
                             Key = "EmailAdress",
-                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1307),
+                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2266),
                             SoftDelete = false,
                             Value = "webfull@edu.com"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1309),
-                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1311),
+                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2267),
+                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2270),
                             Key = "Logo",
-                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1310),
+                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2269),
                             SoftDelete = false,
                             Value = "download.jpg"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1312),
-                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1313),
+                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2272),
+                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2274),
                             Key = "Address",
-                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1312),
+                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2273),
                             SoftDelete = false,
                             Value = "132 Jefferson Avenue, Suite 22, Redwood City, CA 94872"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1314),
-                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1315),
+                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2278),
+                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2279),
                             Key = "Fax",
-                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1314),
+                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2278),
                             SoftDelete = false,
                             Value = "123-323-3343"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1316),
-                            DeletedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1317),
+                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2280),
+                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2281),
                             Key = "TollFree",
-                            ModifiedDate = new DateTime(2023, 6, 29, 9, 49, 48, 52, DateTimeKind.Utc).AddTicks(1316),
+                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2280),
                             SoftDelete = false,
                             Value = "123-425-6234"
                         });

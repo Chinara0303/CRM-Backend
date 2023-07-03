@@ -13,6 +13,7 @@ using Services.Services.İnterfaces;
 using Services.Helpers.AccountSetting;
 using Domain.Common.Exceptions;
 using Domain.Common.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services.Services
 {
@@ -35,7 +36,8 @@ namespace Services.Services
         }
 
         public async Task<SignUpResponse> SignUpAsync(SignUpDto model)
-        {
+        { 
+
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
             AppUser user = _mapper.Map<AppUser>(model)
@@ -52,14 +54,13 @@ namespace Services.Services
                 };
             }
 
-            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //await _userManager.AddToRoleAsync(user, typeof( Roles.Member.ToString());
 
             return new SignUpResponse
             {
                 Errors = null,
                 StatusMessage = ExceptionResponseMessages.UserSuccesMessage,
-                Token = token,
-                User = user
+                
             };
         }
         public async Task<SignInResponse> SignInAsync(SignInDto model)
@@ -90,6 +91,14 @@ namespace Services.Services
                 StatusMessage = ExceptionResponseMessages.SuccesMessage,
                 Token = token
             };
+        }
+        public async Task<IEnumerable<IdentityRole>> GetRolesAsync()
+        {
+            return await _roleManager.Roles.ToListAsync();
+        }
+        public async Task<IEnumerable<UserDto>> GetUsersAsync()
+        {
+            return _mapper.Map<List<UserDto>>(await _userManager.Users.ToListAsync());
         }
 
         private string GenerateJwtToken(string username)

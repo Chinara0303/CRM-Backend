@@ -1,7 +1,12 @@
-﻿using Domain.Common.Constants;
+﻿using AutoMapper;
+using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Repository.Repositories.İnterfaces;
+using Services.DTOs.Social;
+using Services.DTOs.Staff;
 using Services.DTOs.TeacherGroup;
 using Services.Services.İnterfaces;
 
@@ -12,13 +17,17 @@ namespace Services.Services
         private readonly ITeacherGroupRepository _repo;
         private readonly ITeacherRepository _teacherRepo;
         private readonly IGroupRepository _groupRepo;
+        private readonly IMapper _mapper;
+
         public TeacherGroupService(ITeacherGroupRepository repo,
                                     ITeacherRepository teacherRepo,
-                                    IGroupRepository groupRepo)
+                                    IGroupRepository groupRepo,
+                                    IMapper mapper)
         {
             _repo = repo;
             _teacherRepo = teacherRepo;
             _groupRepo = groupRepo;
+            _mapper = mapper;
         }
         public async Task CreateAsync(TeacherGroupCreateDto model)
         {
@@ -42,27 +51,28 @@ namespace Services.Services
             }
         }
 
-        public async Task UpdateAsync(int id,TeacherGroupUpdateDto model)
-        {
-            ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+        //public async Task UpdateAsync(int id,TeacherGroupUpdateDto model)
+        //{
+        //    ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
            
-            Group group = await _groupRepo.GetByIdAsync(id)
-                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+        //    Group group = await _groupRepo.GetByIdAsync(model.GroupId)
+        //        ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-            foreach (var teacherId in model.TeacherIds)
-            {
-                Teacher teacher = await _teacherRepo.GetByIdAsync(teacherId)
-                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+        //    foreach (var teacherId in model.TeacherIds)
+        //    {
+        //        Teacher teacher = await _teacherRepo.GetByIdAsync(teacherId)
+        //            ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                TeacherGroup teacherGroup = new()
-                {
-                    Group = group,
-                    Teacher = teacher,
-                }; 
+        //        TeacherGroup teacherGroup = new()
+        //        {
+        //            Group = group,
+        //            Teacher = teacher,
+        //        }; 
 
-                await _repo.UpdateAsync(teacherGroup);
-            }
-        }
+        //        await _repo.UpdateAsync(teacherGroup);
+        //    }
+        //}
 
+       
     }
 }

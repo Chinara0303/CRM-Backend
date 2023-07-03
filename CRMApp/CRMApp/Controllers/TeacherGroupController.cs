@@ -43,30 +43,33 @@ namespace CRMApp.Controllers
         }
 
 
-        [HttpPut]
-        [Route("{id}")]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TeacherGroupUpdateDto))]
-        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] int? id, [FromForm] TeacherGroupUpdateDto request)
-        {
-            try
-            {
-                await _service.UpdateAsync((int)id,request);
-                return Ok();
-            }
-            catch (InvalidException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (NullReferenceException ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
+        //[HttpPut]
+        //[Route("{id}")]
+        //[ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TeacherGroupUpdateDto))]
+        //[ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> Update([FromRoute] int? id, [FromForm] TeacherGroupUpdateDto request)
+        //{
+        //    try
+        //    {
+        //        await _service.UpdateAsync((int)id,request);
+        //        return Ok();
+        //    }
+        //    catch (InvalidException ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //    catch (ArgumentNullException ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //    catch (NullReferenceException ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //}
+
+
+
     }
 }

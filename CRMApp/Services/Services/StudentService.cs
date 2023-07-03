@@ -4,6 +4,7 @@ using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
+using Services.DTOs.Staff;
 using Services.DTOs.Student;
 using Services.DTOs.Teacher;
 using Services.Helpers.Extentions;
@@ -44,7 +45,7 @@ namespace Services.Services
             await _repo.CreateAsync(mappedData);
         }
 
-        public async Task<Paginate<StudentListDto>> GetAllAsync(int skip = 1,int take = 2)
+        public async Task<Paginate<StudentListDto>> GetAllAsync(int skip = 1,int take = 3)
         {
             IEnumerable<Student> existStudents = await _repo.GetAllWithIncludes(s => s.Group);
 
@@ -181,7 +182,7 @@ namespace Services.Services
                 data.GroupName = student.Group.Name;
             }
 
-            Paginate<StudentListDto> paginatedData = new(mappedDatas, skip, take);
+            Paginate<StudentListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
         }

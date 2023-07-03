@@ -50,7 +50,6 @@ namespace Services.Services
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
             return _mapper.Map<ContactDto>(await _repo.GetByIdAsync(id));
         }
-    
 
         public async Task SoftDeleteAsync(int? id)
         {

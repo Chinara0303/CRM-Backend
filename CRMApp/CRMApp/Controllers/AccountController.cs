@@ -1,4 +1,5 @@
-﻿using Domain.Common.Constants;
+﻿using CRMApp.Helpers;
+using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -14,17 +15,20 @@ namespace CRMApp.Controllers
         private readonly IAccountService _service;
         private readonly IEmailService _emailService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signinManager;
 
         public AccountController(IAccountService service,
                                  IEmailService emailService,
                                  UserManager<AppUser> userManager,
-                                 SignInManager<AppUser> signinManager)
+                                 SignInManager<AppUser> signinManager,
+                                 RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _emailService = emailService;
             _userManager = userManager;
             _signinManager = signinManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost]
@@ -32,15 +36,15 @@ namespace CRMApp.Controllers
         public async Task<IActionResult> SignUp([FromForm] SignUpDto request)
         {
             ArgumentNullException.ThrowIfNull(request, ExceptionResponseMessages.ParametrNotFoundMessage);
-            
+
             SignUpResponse response = await _service.SignUpAsync(request)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             //string token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
 
-            string link = Url.Action(nameof(ConfirmEmail), "Account",
-                new { userId = response.User.Id, response.Token },
-                Request.Scheme, Request.Host.ToString());
+            //string link = Url.Action(nameof(ConfirmEmail), "Account",
+            //    new { userId = response.User.Id, response.Token },
+            //    Request.Scheme, Request.Host.ToString());
 
             string subject = "Register Confirmation";
             string html = string.Empty;
@@ -50,7 +54,7 @@ namespace CRMApp.Controllers
                 html = reader.ReadToEnd();
             }
 
-            html = html.Replace("{{link}}", link);
+            //html = html.Replace("{{link}}", link);
 
             _emailService.Send(response.User.Email, subject, html);
 
@@ -91,6 +95,18 @@ namespace CRMApp.Controllers
             await _service.SignInAsync(signInDto);
 
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task CreateRole()
+        {
+            foreach (var role in Enum.GetValues(typeof(Roles)))
+            {
+                if (!await _roleManager.RoleExistsAsync(role.ToString()))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole { Name = role.ToString() });
+                }
+            }
         }
     }
 }

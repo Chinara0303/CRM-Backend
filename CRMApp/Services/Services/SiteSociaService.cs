@@ -29,7 +29,6 @@ namespace Services.Services
         public async Task<IEnumerable<SiteSocialDto>> GetAllAsync()
         {
             return _mapper.Map<IEnumerable<SiteSocialDto>>(await _repo.GetAllAsync());
-
         }
 
         public async Task<SiteSocialDto> GetByIdAsync(int? id)

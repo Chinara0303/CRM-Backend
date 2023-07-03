@@ -161,6 +161,10 @@ namespace CRMApp.Controllers
             {
                 return Ok(await _service.SearchAsync(searchText,skip, take));
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (NullReferenceException ex)
             {
                 return NotFound(ex.Message);
@@ -180,6 +184,10 @@ namespace CRMApp.Controllers
             try
             {
                 return Ok(await _service.FilterAsync(filterValue,skip,take));
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (NullReferenceException ex)
             {

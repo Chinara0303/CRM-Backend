@@ -9,5 +9,10 @@ namespace Repository.Repositories
         public SettingRepository(AppDbContext context) : base(context)
         {
         }
+
+        public Dictionary<string, string> GetAll()
+        {
+            return _entities.AsEnumerable().ToDictionary(s => s.Key, s => s.Value);
+        }
     }
 }
