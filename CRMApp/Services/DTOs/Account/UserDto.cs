@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Services.DTOs.Account
+﻿namespace Services.DTOs.Account
 {
     public class UserDto
     {
@@ -13,9 +7,10 @@ namespace Services.DTOs.Account
         public string Email { get; set; }
         public string Address { get; set; }
         public string Age { get; set; }
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
         public string Biography { get; set; }
+        public List<string> RoleNames { get; set; } = new();
+        public bool SoftDelete { get; set; }
         public string Image { get; set; }
-
     }
 }

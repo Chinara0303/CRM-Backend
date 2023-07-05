@@ -3,7 +3,6 @@ using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.Social;
 using Services.DTOs.TecherSocial;
 using Services.Services.İnterfaces;
 

@@ -2,11 +2,7 @@
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.Social;
-using Services.DTOs.Staff;
 using Services.DTOs.TeacherGroup;
 using Services.Services.İnterfaces;
 

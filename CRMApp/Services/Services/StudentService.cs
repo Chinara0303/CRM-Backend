@@ -4,9 +4,7 @@ using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.Staff;
 using Services.DTOs.Student;
-using Services.DTOs.Teacher;
 using Services.Helpers.Extentions;
 using Services.Services.İnterfaces;
 
@@ -16,14 +14,17 @@ namespace Services.Services
     {
         private readonly IStudentRepository _repo;
         private readonly IGroupRepository _groupRepo;
+        private readonly IPaginateRepository<Student> _paginateRepo;
         private readonly IMapper _mapper;
         public StudentService(IStudentRepository repo,
                               IMapper mapper,
-                              IGroupRepository groupRepo)
+                              IGroupRepository groupRepo,
+                              IPaginateRepository<Student> paginateRepo)
         {
             _repo = repo;
             _mapper = mapper;
             _groupRepo = groupRepo;
+            _paginateRepo = paginateRepo;
         }
 
         public async Task CreateAsync(StudentCreateDto model)
@@ -61,7 +62,7 @@ namespace Services.Services
                 data.Image = images;
                 data.GroupName = student.Group.Name;
             }
-            Paginate<StudentListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            Paginate<StudentListDto> paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
         }
@@ -128,7 +129,7 @@ namespace Services.Services
                     data.GroupName = student.Group.Name;
                 }
 
-                paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
                
                 return paginatedData;
             }
@@ -148,7 +149,7 @@ namespace Services.Services
                 data.GroupName = student.Group.Name;
             }
 
-            paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
         }
@@ -182,7 +183,7 @@ namespace Services.Services
                 data.GroupName = student.Group.Name;
             }
 
-            Paginate<StudentListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            Paginate<StudentListDto> paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
         }

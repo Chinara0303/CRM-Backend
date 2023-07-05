@@ -4,7 +4,6 @@ using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.SiteSocial;
-using Services.DTOs.Social;
 using Services.Services.İnterfaces;
 
 namespace Services.Services

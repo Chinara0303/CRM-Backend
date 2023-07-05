@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Services.DTOs.About;
 using Services.DTOs.Account;
 using Services.DTOs.Banner;
 using Services.DTOs.Contact;
 using Services.DTOs.Education;
 using Services.DTOs.Group;
-using Services.DTOs.Position;
 using Services.DTOs.Room;
 using Services.DTOs.Seans;
 using Services.DTOs.Setting;
 using Services.DTOs.SiteSocial;
 using Services.DTOs.Slider;
-using Services.DTOs.Social;
-using Services.DTOs.Staff;
 using Services.DTOs.Student;
 using Services.DTOs.Subscribe;
 using Services.DTOs.Teacher;
@@ -28,14 +26,16 @@ namespace Services.Mappings
         public MappingProfile()
         {
             CreateMap<SignUpDto, AppUser>();
+            CreateMap<AppUser, UserListDto>();
+            CreateMap<AppUser, UserDto>();
+            CreateMap<AppUser, StatusDto>();
+            CreateMap<UserUpdateDto, AppUser>();
+            CreateMap<IdentityRole, RoleListDto>();
+            CreateMap<IdentityRole, RoleDto>();
 
             CreateMap<Room, RoomDto>();
             CreateMap<RoomCreateDto,Room>();
             CreateMap<RoomUpdateDto,Room>();
-
-            CreateMap<Position, PositionDto>();
-            CreateMap<PositionCreateDto, Position>();
-            CreateMap<PositionUpdateDto, Position>();
 
             CreateMap<About, AboutDto>();
             CreateMap<About, AboutListDto>();
@@ -88,20 +88,6 @@ namespace Services.Mappings
             CreateMap<TeacherSocial, TeacherSocialDto>();
             CreateMap<TeacherSocialCreateDto, TeacherSocial>();
             CreateMap<TeacherSocialUpdateDto, TeacherSocial>();
-
-            CreateMap<Staff, StaffDto>();
-            CreateMap<Staff, StaffListDto>();
-            CreateMap<StaffCreateDto, Staff>();
-            CreateMap<StaffUpdateDto, Staff>();
-
-            CreateMap<StaffSocial, StaffSocialDto>();
-            CreateMap<StaffSocialCreateDto, StaffSocial>();
-            CreateMap<StaffSocialUpdateDto, StaffSocial>();
-
-
-            CreateMap<StaffSocial, StaffSocialDto>();
-            CreateMap<StaffSocialCreateDto, StaffSocial>();
-            CreateMap<StaffSocialUpdateDto, StaffSocial>();
 
 
             CreateMap<TeacherGroup, TeacherGroupDto>();

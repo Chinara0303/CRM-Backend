@@ -1,8 +1,6 @@
 ﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.Position;
 using Services.DTOs.SiteSocial;
-using Services.DTOs.Social;
 using Services.Services.İnterfaces;
 using Services.Validations.SiteSocial;
 

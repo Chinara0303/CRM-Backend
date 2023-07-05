@@ -4,7 +4,6 @@ using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.About;
-using Services.DTOs.Position;
 using Services.Helpers.Extentions;
 using Services.Services.İnterfaces;
 

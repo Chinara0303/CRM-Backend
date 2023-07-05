@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Vh979eJf5thtwopSVdKGdNf5GaGwE/4qbVrwINECIKQ=",
+  "Hash": "6gX0sJ3XkSnW95wIEiUsqbc/jkpCJj6JdOKCNt4EBMg=",
   "Source": "CRMApp",
   "BasePath": "_content/CRMApp",
   "Mode": "Default",
@@ -15,5 +15,23 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\CRMApp\\wwwroot\\confirm.html",
+      "SourceId": "CRMApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\CRMApp\\wwwroot\\",
+      "BasePath": "_content/CRMApp",
+      "RelativePath": "confirm.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\confirm.html"
+    }
+  ]
 }

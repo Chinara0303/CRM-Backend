@@ -6,7 +6,6 @@ namespace Services.Helpers.Responses
     {
         public List<string> Errors { get; set; } = new List<string>();
         public string StatusMessage { get; set; }
-        public string Token { get; set; }
         public AppUser User { get; set; } = new AppUser();
     }
 }

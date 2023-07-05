@@ -1,6 +1,5 @@
 ﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.Social;
 using Services.DTOs.TecherSocial;
 using Services.Services.İnterfaces;
 using Services.Validations.TeacherSocial;

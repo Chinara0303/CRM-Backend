@@ -135,8 +135,9 @@ builder.Services
 
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IPaginateRepository<>), typeof(PaginateRepository<>));
+builder.Services.AddScoped(typeof(IAccountRepository<>), typeof(AccountRepository<>));
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IAboutRepository, AboutRepository>();
 builder.Services.AddScoped<IEducationRepository, EducationRepository>();
 builder.Services.AddScoped<ISliderRepository, SliderRepository>();
@@ -146,12 +147,9 @@ builder.Services.AddScoped<ITimeRepository, TimeRepository>();
 builder.Services.AddScoped<ISeansRepository, SeansRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
-builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<ITeacherSocialRepository, TeacherSocialRepository>();
-builder.Services.AddScoped<IStaffSocialRepository, StaffSocialRepository>();
 builder.Services.AddScoped<ITeacherSocialRepository, TeacherSocialRepository>();
 builder.Services.AddScoped<ISiteSocialRepository, SiteSocialRepository>();
-builder.Services.AddScoped<IStaffPositionRepository, StaffPositionRepository>();
 builder.Services.AddScoped<ITeacherGroupRepository, TeacherGroupRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<ISubscribeRepository, SubscribeRepository>();
@@ -160,7 +158,6 @@ builder.Services.AddScoped<IWeekRepository, WeekRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
-builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
 builder.Services.AddScoped<IEducationService, EducationService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
@@ -170,9 +167,7 @@ builder.Services.AddScoped<ITimeService, TimeService>();
 builder.Services.AddScoped<ISeansService, SeansService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
-builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<ITeacherSocialService, TeacherSocialService>();
-builder.Services.AddScoped<IStaffSocialService, StaffSocialService>();
 builder.Services.AddScoped<ITeacherSocialService, TeacherSocialService>();
 builder.Services.AddScoped<ISiteSocialService, SiteSociaService>();
 builder.Services.AddScoped<ITeacherGroupService, TeacherGroupService>();

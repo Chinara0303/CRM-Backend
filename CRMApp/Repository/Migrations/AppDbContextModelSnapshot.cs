@@ -67,6 +67,15 @@ namespace Repository.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -80,6 +89,12 @@ namespace Repository.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsRememberMe")
                         .HasColumnType("bit");
@@ -109,6 +124,9 @@ namespace Repository.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SoftDelete")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -296,34 +314,6 @@ namespace Repository.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Position", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SoftDelete")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Positions");
-                });
-
             modelBuilder.Entity("Domain.Entities.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -417,60 +407,60 @@ namespace Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2252),
-                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2260),
+                            CreatedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5203),
+                            DeletedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5210),
                             Key = "Phone",
-                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2259),
+                            ModifiedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5209),
                             SoftDelete = false,
                             Value = "123-123-1234"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2265),
-                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2266),
+                            CreatedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5213),
+                            DeletedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5214),
                             Key = "EmailAdress",
-                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2266),
+                            ModifiedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5214),
                             SoftDelete = false,
                             Value = "webfull@edu.com"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2267),
-                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2270),
+                            CreatedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5216),
+                            DeletedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5217),
                             Key = "Logo",
-                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2269),
+                            ModifiedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5216),
                             SoftDelete = false,
                             Value = "download.jpg"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2272),
-                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2274),
+                            CreatedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5218),
+                            DeletedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5219),
                             Key = "Address",
-                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2273),
+                            ModifiedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5218),
                             SoftDelete = false,
                             Value = "132 Jefferson Avenue, Suite 22, Redwood City, CA 94872"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2278),
-                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2279),
+                            CreatedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5220),
+                            DeletedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5220),
                             Key = "Fax",
-                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2278),
+                            ModifiedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5220),
                             SoftDelete = false,
                             Value = "123-323-3343"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2280),
-                            DeletedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2281),
+                            CreatedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5221),
+                            DeletedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5222),
                             Key = "TollFree",
-                            ModifiedDate = new DateTime(2023, 7, 3, 15, 37, 51, 354, DateTimeKind.Utc).AddTicks(2280),
+                            ModifiedDate = new DateTime(2023, 7, 5, 2, 30, 26, 93, DateTimeKind.Utc).AddTicks(5222),
                             SoftDelete = false,
                             Value = "123-425-6234"
                         });
@@ -542,123 +532,6 @@ namespace Repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sliders");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Staff", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Age")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Biography")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SoftDelete")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Staff");
-                });
-
-            modelBuilder.Entity("Domain.Entities.StaffPosition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PositionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("SoftDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PositionId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("StaffPositions");
-                });
-
-            modelBuilder.Entity("Domain.Entities.StaffSocial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SoftDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("StaffSocials");
                 });
 
             modelBuilder.Entity("Domain.Entities.Student", b =>
@@ -1081,36 +954,6 @@ namespace Repository.Migrations
                     b.Navigation("Time");
                 });
 
-            modelBuilder.Entity("Domain.Entities.StaffPosition", b =>
-                {
-                    b.HasOne("Domain.Entities.Position", "Position")
-                        .WithMany("StaffPositions")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Staff", "Staff")
-                        .WithMany("StaffPositions")
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Position");
-
-                    b.Navigation("Staff");
-                });
-
-            modelBuilder.Entity("Domain.Entities.StaffSocial", b =>
-                {
-                    b.HasOne("Domain.Entities.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Staff");
-                });
-
             modelBuilder.Entity("Domain.Entities.Student", b =>
                 {
                     b.HasOne("Domain.Entities.Group", "Group")
@@ -1226,11 +1069,6 @@ namespace Repository.Migrations
                     b.Navigation("TeacherGroups");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Position", b =>
-                {
-                    b.Navigation("StaffPositions");
-                });
-
             modelBuilder.Entity("Domain.Entities.Room", b =>
                 {
                     b.Navigation("Groups");
@@ -1239,11 +1077,6 @@ namespace Repository.Migrations
             modelBuilder.Entity("Domain.Entities.Seans", b =>
                 {
                     b.Navigation("Times");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Staff", b =>
-                {
-                    b.Navigation("StaffPositions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Teacher", b =>

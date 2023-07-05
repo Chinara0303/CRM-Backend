@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.DTOs.Account
 {
@@ -18,7 +14,14 @@ namespace Services.DTOs.Account
         [Required, DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
         [Required]
-        public string UserName { get; set; }
-        public bool IsRememberMe { get; set; }
+        public string Address { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; }
+        [Required]
+        public string Biography { get; set; }
+        [Required]
+        public IFormFile Photo { get; set; }
+        [Required]
+        public int Age { get; set; }
     }
 }

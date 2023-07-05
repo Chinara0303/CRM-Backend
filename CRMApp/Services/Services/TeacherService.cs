@@ -14,14 +14,17 @@ namespace Services.Services
     {
         private readonly ITeacherRepository _repo;
         private readonly ITeacherGroupRepository _teacherGroupRepo;
+        private readonly IPaginateRepository<Teacher> _paginateRepo;
         private readonly IMapper _mapper;
         public TeacherService(ITeacherRepository repo,
                               IMapper mapper,
-                              ITeacherGroupRepository teacherGroupRepo)
+                              ITeacherGroupRepository teacherGroupRepo,
+                              IPaginateRepository<Teacher> paginateRepo)
         {
             _repo = repo;
             _mapper = mapper;
             _teacherGroupRepo = teacherGroupRepo;
+            _paginateRepo = paginateRepo;
         }
         public async Task CreateAsync(TeacherCreateDto model)
         {
@@ -62,12 +65,12 @@ namespace Services.Services
             
             if (skip==0 && take == 0)
             {
-               paginatedData = _repo.PaginatedData(mappedDatas, skip, mappedDatas.Count);
+               paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, mappedDatas.Count);
                 return paginatedData;
             }
 
 
-            paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
         }
@@ -121,7 +124,7 @@ namespace Services.Services
                         data.Groups.Add(group);
                     }
                 }
-                paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
                 return paginatedData;
             }
 
@@ -144,7 +147,7 @@ namespace Services.Services
                     data.Groups.Add(group);
                 }
             }
-            paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
             return paginatedData;
         }
 
@@ -210,7 +213,7 @@ namespace Services.Services
                 }
             }
 
-            Paginate<TeacherListDto> paginatedData = _repo.PaginatedData(mappedDatas, skip, take);
+            Paginate<TeacherListDto> paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
 

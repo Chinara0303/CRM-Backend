@@ -6,7 +6,7 @@ using Repository.Repositories.İnterfaces;
 
 namespace Repository.Repositories
 {
-    public class StudentRepository : Repository<Student>, IStudentRepository
+    public class StudentRepository : Repository<Student> ,IStudentRepository
     {
         public StudentRepository(AppDbContext context) : base(context)
         {

@@ -9,7 +9,6 @@ namespace Repository.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Position> Positions { get; set; }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Education> Educations { get; set; }
@@ -20,30 +19,26 @@ namespace Repository.Data
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<TeacherSocial> TeacherSocials { get; set; }
         public DbSet<SiteSocial> SiteSocials { get; set; }
-        public DbSet<StaffSocial> StaffSocials { get; set; }
-        public DbSet<Staff> Staff { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Subscribe> Subscribes { get; set; }
         public DbSet<TeacherGroup> TeacherGroups { get; set; }
-        public DbSet<StaffPosition> StaffPositions { get; set; }
         public DbSet<Week> Weeks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
-            builder.Entity<Position>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Room>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Seans>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Teacher>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Education>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Student>().HasQueryFilter(p => !p.SoftDelete);
-            builder.Entity<Staff>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Group>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Time>().HasQueryFilter(p => !p.SoftDelete);
             builder.Entity<Week>().HasQueryFilter(p => !p.SoftDelete);
+            builder.Entity<AppUser>().HasQueryFilter(p => !p.SoftDelete);
 
             builder.Entity<Setting>().HasData(new Setting
             {
