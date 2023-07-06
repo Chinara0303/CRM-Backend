@@ -31,13 +31,6 @@ namespace Services.Services
             {
                 Setting setting = existSettings.FirstOrDefault(m => m.Id == data.Id)
                     ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-
-                //if (data.Key == "Logo")
-                //{
-                //    data.Key.
-                //}
-                //Add(Convert.ToBase64String(about.Image));
-                //data.Images = images;
             }
             return mappedDatas;
         }

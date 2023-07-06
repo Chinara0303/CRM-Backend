@@ -108,6 +108,10 @@ namespace CRMApp.Controllers
                 await _service.UpdateAsync(id, request);
                 return Ok();
             }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
@@ -116,10 +120,7 @@ namespace CRMApp.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (InvalidException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+           
         }
 
         [HttpDelete]
@@ -138,6 +139,34 @@ namespace CRMApp.Controllers
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("{teacherId}")]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> DeleteTeacher([FromRoute] int? teacherId)
+        {
+            try
+            {
+                await _service.DeleteTeacherAsync((int)teacherId);
+                return Ok();
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (NullReferenceException ex)
             {

@@ -58,10 +58,10 @@ namespace Services.Services
 
             AppUser user = _mapper.Map<AppUser>(model)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-
+            Random random = new();
 
             user.Image = await model.Photo.GetBytes();
-            user.UserName = model.FullName.Split(" ").ToString();
+            user.UserName = model.FullName.Replace(" ","_").ToString()+ "_" + random.Next(10,99);
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
@@ -368,10 +368,10 @@ namespace Services.Services
             await _userManager.ChangePasswordAsync(existUser, model.OldPassword, model.NewPassword);
         }
     
-        [Authorize]
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+
         }
         private string GenerateJwtToken(string username)
         {

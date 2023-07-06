@@ -63,12 +63,11 @@ namespace Services.Services
             }
             Paginate<TeacherListDto> paginatedData = new(mappedDatas,skip,take);
             
-            if (skip==0 && take == 0)
+            if (skip == 0 && take == 0)
             {
                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, mappedDatas.Count);
                 return paginatedData;
             }
-
 
             paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 

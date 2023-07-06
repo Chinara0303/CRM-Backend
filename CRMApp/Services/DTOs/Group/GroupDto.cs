@@ -1,5 +1,6 @@
 ﻿using Domain.Helpers.Enums;
 using Services.DTOs.Common;
+using Services.DTOs.Teacher;
 
 namespace Services.DTOs.Group
 {
@@ -11,6 +12,6 @@ namespace Services.DTOs.Group
         public int TimeId { get; set; }
         public Weekday Weekday { get; set; }
         public int StudentsCount { get; set; }
-        public List<string> TeacherImages { get; set; }
+        public List<TeacherInfoDto> TeachersInfo { get; set; }
     }
 }

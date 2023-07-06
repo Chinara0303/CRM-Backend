@@ -178,14 +178,14 @@ namespace CRMApp.Controllers
             return Ok(await _service.Profile());
         }
 
-        [HttpPost]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        public async Task<IActionResult> LogOut()
-        {
-            await _service.LogoutAsync();
+        //[HttpPost]
+        //[ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        //public Task<IActionResult> LogOut()
+        //{
+        //     _service.LogoutAsync();
           
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
 
         [HttpGet]
@@ -231,6 +231,22 @@ namespace CRMApp.Controllers
             try
             {
                 return Ok(await _service.SearchAsync(searchText, skip, take));
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                await _service.LogoutAsync();
+                return Ok();
             }
             catch (ArgumentNullException ex)
             {
@@ -338,6 +354,7 @@ namespace CRMApp.Controllers
                 return NotFound(ex.Message);
             }
         }
+
 
 
     }

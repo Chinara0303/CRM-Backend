@@ -10,5 +10,6 @@ namespace Services.Services.İnterfaces
         Task UpdateAsync(int? id, GroupUpdateDto model);
         Task SoftDeleteAsync(int? id);
         Task<IEnumerable<GroupSearchDto>> SearchAsync(string searchText);
+        Task DeleteTeacherAsync(int teacherId);
     }
 }
