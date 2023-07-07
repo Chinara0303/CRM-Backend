@@ -2,6 +2,7 @@
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Account;
@@ -172,6 +173,7 @@ namespace CRMApp.Controllers
 
 
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         public async Task<IActionResult> Profile()
         {
@@ -277,6 +279,7 @@ namespace CRMApp.Controllers
         
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -299,6 +302,7 @@ namespace CRMApp.Controllers
      
         
         [HttpPut]
+        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(UserUpdateDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

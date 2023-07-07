@@ -15,6 +15,7 @@ namespace CRMApp.Controllers
         }
         
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromForm] AboutCreateDto request)
@@ -40,6 +41,7 @@ namespace CRMApp.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize("HR")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(AboutUpdateDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

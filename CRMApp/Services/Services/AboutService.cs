@@ -2,6 +2,7 @@
 using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Repository.Repositories.İnterfaces;
 using Services.DTOs.About;
 using Services.Helpers.Extentions;
@@ -59,6 +60,7 @@ namespace Services.Services
             mappedData.Image = Convert.ToBase64String(existAbout.Image);
             return mappedData;
         }
+        [Authorize]
 
         public async Task DeleteAsync(int? id)
         {

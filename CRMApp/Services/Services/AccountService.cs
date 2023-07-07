@@ -61,7 +61,7 @@ namespace Services.Services
             Random random = new();
 
             user.Image = await model.Photo.GetBytes();
-            user.UserName = model.FullName.Replace(" ","_").ToString()+ "_" + random.Next(10,99);
+            user.UserName = model.FullName.Replace(" ", "_").ToString() + "_" + random.Next(10, 99);
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
@@ -180,21 +180,22 @@ namespace Services.Services
             return mappedData;
         }
 
-        [Authorize]
+
         public async Task<UserDto> Profile()
         {
-            var userName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string userName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var user = await _userManager.FindByNameAsync(userName)
+            AppUser user = await _userManager.FindByNameAsync(userName)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-            var mappedData = _mapper.Map<UserDto>(user);
+            UserDto mappedData = _mapper.Map<UserDto>(user);
 
             mappedData.Image = Convert.ToBase64String(user.Image);
 
-            return mappedData;
+
+                return mappedData;
         }
-       
+
         public async Task<Paginate<RoleListDto>> GetRolesAsync(int skip, int take)
         {
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync()
@@ -328,7 +329,6 @@ namespace Services.Services
             return paginatedData;
         }
 
-        [Authorize]
         public async Task UserUpdateAsync(UserUpdateDto model)
         {
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -355,8 +355,7 @@ namespace Services.Services
 
             await _accountRepo.SoftDeleteAsync(existUser);
         }
-       
-        [Authorize]
+
         public async Task ChangePasswordAsync(ChangePasswordDto model)
         {
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -367,7 +366,7 @@ namespace Services.Services
 
             await _userManager.ChangePasswordAsync(existUser, model.OldPassword, model.NewPassword);
         }
-    
+
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();

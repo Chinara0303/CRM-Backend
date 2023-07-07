@@ -57,9 +57,6 @@ namespace Services.Services
 
             Setting mappedData = _mapper.Map(model, existSetting);
 
-            //if (model.Photo is not null)
-            //    mappedData.Image = await model.Photo.GetBytes();
-
             await _repo.UpdateAsync(mappedData);
         }
         public Task DeleteAsync(int? id)
