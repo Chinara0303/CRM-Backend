@@ -8,5 +8,6 @@ namespace Repository.Repositories.İnterfaces
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression = null);
         Task UpdateAsync(T entity);
         Task SoftDeleteAsync(T entity);
+        Task SaveAsync();
     }
 }

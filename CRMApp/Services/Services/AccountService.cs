@@ -19,6 +19,7 @@ using CRMApp.Helpers;
 using Repository.Repositories.İnterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace Services.Services
 {
@@ -58,6 +59,7 @@ namespace Services.Services
 
             AppUser user = _mapper.Map<AppUser>(model)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
             Random random = new();
 
             user.Image = await model.Photo.GetBytes();
@@ -72,6 +74,15 @@ namespace Services.Services
                     StatusMessage = ExceptionResponseMessages.UserFailedMessage,
                     Errors = result.Errors.Select(e => e.Description).ToList()
                 };
+            }
+
+            var existUser = await _userManager.FindByIdAsync(user.Id);
+
+            foreach (var item in model.RoleIds)
+            {
+                var newRole = await _roleManager.FindByIdAsync(item);
+
+                var userRole =  await _userManager.AddToRoleAsync(user, newRole.ToString());
             }
 
             return new SignUpResponse
@@ -124,6 +135,7 @@ namespace Services.Services
 
             return mappedData;
         }
+       
         public async Task<RoleDto> GetRoleById(string id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -151,14 +163,7 @@ namespace Services.Services
 
             return mappedData;
         }
-
-        public async Task AddRoleToUserAsync(UsersRoleDto model)
-        {
-            var user = await _userManager.FindByIdAsync(model.UserId);
-            var role = await _roleManager.FindByIdAsync(model.RoleId);
-            var usersRole = await _userManager.AddToRoleAsync(user, role.ToString());
-        }
-
+     
         public async Task<UserDto> GetUserByIdAsync(string id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -180,7 +185,6 @@ namespace Services.Services
             return mappedData;
         }
 
-
         public async Task<UserDto> Profile()
         {
             string userName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -189,11 +193,15 @@ namespace Services.Services
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             UserDto mappedData = _mapper.Map<UserDto>(user);
+            IList<string> usersRole = await _userManager.GetRolesAsync(user);
 
+            foreach (var userRole in usersRole)
+            {
+                mappedData.RoleNames.Add(userRole);
+            }
             mappedData.Image = Convert.ToBase64String(user.Image);
 
-
-                return mappedData;
+            return mappedData;
         }
 
         public async Task<Paginate<RoleListDto>> GetRolesAsync(int skip, int take)
@@ -346,6 +354,38 @@ namespace Services.Services
             await _accountRepo.UpdateAsync(mappedData);
         }
 
+        public async Task UserUpdateRoleAsync(string userId, UserRoleUpdateDto model)
+        {
+            ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
+
+
+            AppUser existUser = await _userManager.FindByIdAsync(userId)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            var existingRoles = await _userManager.GetRolesAsync(existUser);
+            List<string> rolNames = new();
+            foreach (var roleId in model.RoleIds)
+            {
+                var existRole = await _roleManager.FindByIdAsync(roleId);
+                rolNames.Add(existRole.Name);
+            }
+
+            var result = await _userManager.AddToRolesAsync(existUser, rolNames.Except(existingRoles));
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidException(ExceptionResponseMessages.FailedMessage);
+            }
+
+            result = await _userManager.RemoveFromRolesAsync(existUser, existingRoles.Except(rolNames));
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidException(ExceptionResponseMessages.FailedMessage);
+            }
+
+        }
+
         public async Task UserSoftDeleteAsync(string id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -385,6 +425,7 @@ namespace Services.Services
             //{
             //    claims.Add(new Claim(ClaimTypes.Role, role));
             //});
+
             var keyy = _jwtSetting.Key;
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

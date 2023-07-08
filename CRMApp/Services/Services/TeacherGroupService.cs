@@ -33,7 +33,6 @@ namespace Services.Services
 
             foreach (var teacherId in model.TeacherIds)
             {
-                
                 Teacher teacher = await _teacherRepo.GetByIdAsync(teacherId)
                     ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 

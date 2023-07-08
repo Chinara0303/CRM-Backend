@@ -39,19 +39,14 @@ namespace CRMApp.Controllers
                 SignUpResponse response = await _service.SignUpAsync(request)
                     ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-                //string token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-
-                //string link = Url.Action(nameof(ConfirmEmail), "Account",
-                //    new { userId = response.User.Id, response.Token },
-                //    Request.Scheme, Request.Host.ToString());
-               if(response.Errors != null)
+                if (response.Errors != null)
                 {
                     if (response.Errors.Count > 0)
                     {
                         return BadRequest(response.Errors);
                     }
                 }
-               
+
 
                 string subject = "Register Confirmation";
                 string html = string.Empty;
@@ -94,7 +89,7 @@ namespace CRMApp.Controllers
                 ArgumentNullException.ThrowIfNull(userId, ExceptionResponseMessages.ParametrNotFoundMessage);
 
                 StatusDto response = await _service.SetStatus(userId);
-              
+
                 if (response.IsActive)
                 {
                     string subject = "Confirmation message";
@@ -150,7 +145,7 @@ namespace CRMApp.Controllers
             }
 
         }
-       
+
         [HttpPost]
         public async Task CreateRole()
         {
@@ -162,8 +157,8 @@ namespace CRMApp.Controllers
                 }
             }
         }
-        
-      
+
+
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRoles(int skip, int take)
@@ -180,20 +175,10 @@ namespace CRMApp.Controllers
             return Ok(await _service.Profile());
         }
 
-        //[HttpPost]
-        //[ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        //public Task<IActionResult> LogOut()
-        //{
-        //     _service.LogoutAsync();
-          
-        //    return Ok();
-        //}
-
-
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetRoleById([FromRoute]string id)
+        public async Task<IActionResult> GetRoleById([FromRoute] string id)
         {
             return Ok(await _service.GetRoleById(id));
         }
@@ -210,18 +195,9 @@ namespace CRMApp.Controllers
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetUsers(int skip,int take)
+        public async Task<IActionResult> GetUsers(int skip, int take)
         {
-            return Ok(await _service.GetUsersAsync(skip,take));
-        }
-
-
-        [HttpPost]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddRoleToUser([FromForm] UsersRoleDto request)
-        {
-            await _service.AddRoleToUserAsync(request);
-            return Ok();
+            return Ok(await _service.GetUsersAsync(skip, take));
         }
 
         [HttpPost]
@@ -275,8 +251,7 @@ namespace CRMApp.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
-        
+
         [HttpDelete]
         [Route("{id}")]
         [Authorize]
@@ -332,9 +307,37 @@ namespace CRMApp.Controllers
                 return NotFound(ex.Message);
             }
         }
-      
-        
+
+
         [HttpPut]
+        [Route("{userId}")]
+        //[Authorize]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(UserUpdateDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UserRoleUpdate([FromRoute] string userId, [FromForm] UserRoleUpdateDto request)
+        {
+            try
+            {
+                await _service.UserUpdateRoleAsync(userId,request);
+                return Ok();
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(ChangePasswordDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

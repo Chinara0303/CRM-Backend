@@ -14,12 +14,12 @@ namespace Services.Services.İnterfaces
         Task<UserDto> GetUserByIdAsync(string id);
         Task<Paginate<UserListDto>> SearchAsync(string searchText, int skip, int take);
         Task<Paginate<UserListDto>> FilterAsync(string filterValue, int skip, int take);
-        Task AddRoleToUserAsync(UsersRoleDto model);
         Task UserUpdateAsync(UserUpdateDto model);
         Task UserSoftDeleteAsync(string id);
         Task ChangePasswordAsync(ChangePasswordDto model);
         Task<StatusDto> SetStatus(string userId);
         Task<UserDto> Profile();
         Task LogoutAsync();
+        Task UserUpdateRoleAsync(string userId,UserRoleUpdateDto model);
     }
 }

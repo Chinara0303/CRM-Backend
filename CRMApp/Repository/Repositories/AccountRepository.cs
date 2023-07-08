@@ -1,9 +1,11 @@
 ﻿using Domain.Common.Constants;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Repositories.İnterfaces;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Repository.Repositories
 {
@@ -27,7 +29,7 @@ namespace Repository.Repositories
         public async Task UpdateAsync(T entity)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
-          
+
             _entities.Update(entity);
 
             await _context.SaveChangesAsync();
@@ -37,6 +39,10 @@ namespace Repository.Repositories
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
             entity.SoftDelete = true;
+            await _context.SaveChangesAsync();
+        }
+        public async Task SaveAsync()
+        {
             await _context.SaveChangesAsync();
         }
 

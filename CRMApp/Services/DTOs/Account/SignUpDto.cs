@@ -23,5 +23,6 @@ namespace Services.DTOs.Account
         public IFormFile Photo { get; set; }
         [Required]
         public int Age { get; set; }
+        public List<string> RoleIds { get; set; }
     }
 }
