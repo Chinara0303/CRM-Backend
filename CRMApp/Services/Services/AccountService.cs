@@ -19,7 +19,6 @@ using CRMApp.Helpers;
 using Repository.Repositories.İnterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
 
 namespace Services.Services
 {
@@ -82,7 +81,7 @@ namespace Services.Services
             {
                 var newRole = await _roleManager.FindByIdAsync(item);
 
-                var userRole =  await _userManager.AddToRoleAsync(user, newRole.ToString());
+                var userRole = await _userManager.AddToRoleAsync(user, newRole.ToString());
             }
 
             return new SignUpResponse
@@ -135,7 +134,7 @@ namespace Services.Services
 
             return mappedData;
         }
-       
+
         public async Task<RoleDto> GetRoleById(string id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -163,7 +162,7 @@ namespace Services.Services
 
             return mappedData;
         }
-     
+
         public async Task<UserDto> GetUserByIdAsync(string id)
         {
             ArgumentNullException.ThrowIfNull(id, ExceptionResponseMessages.ParametrNotFoundMessage);
@@ -210,7 +209,7 @@ namespace Services.Services
                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             List<RoleListDto> mappedDatas = _mapper.Map<List<RoleListDto>>(roles);
-
+            Paginate<RoleListDto> paginatedData = new(mappedDatas, skip, take);
             foreach (var data in mappedDatas)
             {
                 var role = roles.FirstOrDefault(u => u.Id == data.Id);
@@ -219,7 +218,13 @@ namespace Services.Services
                 data.UsersCount = usersRole.Count;
             }
 
-            Paginate<RoleListDto> paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
+            if (skip == 0 && take == 0)
+            {
+                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, mappedDatas.Count);
+                return paginatedData;
+            }
+
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
 
             return paginatedData;
         }
@@ -228,7 +233,7 @@ namespace Services.Services
         {
             List<AppUser> existUsers = await _userManager.Users.ToListAsync();
             List<UserListDto> mappedDatas = _mapper.Map<List<UserListDto>>(existUsers);
-
+            Paginate<UserListDto> paginatedData = new(mappedDatas, skip, take);
             foreach (var data in mappedDatas)
             {
                 AppUser user = existUsers.FirstOrDefault(m => m.Id == data.Id)
@@ -248,7 +253,13 @@ namespace Services.Services
                 data.Image = images;
             }
 
-            Paginate<UserListDto> paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
+            if (skip == 0 && take == 0)
+            {
+                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, mappedDatas.Count);
+                return paginatedData;
+            }
+
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
             return paginatedData;
         }
 

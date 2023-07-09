@@ -13,9 +13,6 @@ using Repository.Repositories.İnterfaces;
 using Repository.Repositories;
 using Services.Helpers.AccountSetting;
 using Microsoft.OpenApi.Models;
-using Microsoft.Data.SqlClient;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Domain.Helpers.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +58,6 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 });
 
 
-
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -94,7 +90,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.AllowedForNewUsers = true;
 
     // User settings.
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = true;
 });
 
 builder.Services.AddCors(options =>
@@ -184,6 +180,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors();
 
 app.UseHttpsRedirection();
