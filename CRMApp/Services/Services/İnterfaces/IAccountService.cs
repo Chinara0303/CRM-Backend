@@ -21,5 +21,6 @@ namespace Services.Services.İnterfaces
         Task<UserDto> Profile();
         Task LogoutAsync();
         Task UserUpdateRoleAsync(string userId,UserRoleUpdateDto model);
+        Task DeleteRoleAsync(string userId,DeleteRoleDto model);
     }
 }

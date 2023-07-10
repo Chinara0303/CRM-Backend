@@ -19,6 +19,7 @@ using CRMApp.Helpers;
 using Repository.Repositories.İnterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Services.Services
 {
@@ -74,7 +75,6 @@ namespace Services.Services
                     Errors = result.Errors.Select(e => e.Description).ToList()
                 };
             }
-
             var existUser = await _userManager.FindByIdAsync(user.Id);
 
             foreach (var item in model.RoleIds)
@@ -88,11 +88,11 @@ namespace Services.Services
             {
                 Errors = null,
                 StatusMessage = ExceptionResponseMessages.UserSuccesMessage,
-                User = user
+                UserEmail = user.Email
             };
         }
 
-        [AllowAnonymous]
+     
         public async Task<SignInResponse> SignInAsync(SignInDto model)
         {
             AppUser user = await _userManager.FindByEmailAsync(model.Email);
@@ -113,7 +113,9 @@ namespace Services.Services
                     Errors = new List<string>() { ExceptionResponseMessages.WrongMessage }
                 };
 
-            string token = GenerateJwtToken(user.UserName);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            string token = GenerateJwtToken(user.UserName, (List<string>)roles);
 
             return new SignInResponse
             {
@@ -141,24 +143,8 @@ namespace Services.Services
 
             IdentityRole existRole = await _roleManager.FindByIdAsync(id)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-            //var usersByRole = await _userManager.GetRolesAsync(await _userManager.FindByIdAsync());
 
-            //IEnumerable<> existStaffPosition = await _staffPositionRepo.GetAllAsync();
-
-            //List<StaffPosition> staffPositionByStaffId = existStaffPosition
-            //                        .Where(e => e.StaffId == existStaff.Id)
-            //                        .ToList();
             RoleDto mappedData = _mapper.Map<RoleDto>(existRole);
-
-            //List<int> positionIds = new();
-
-            //foreach (var item in staffPositionByStaffId)
-            //{
-            //    positionIds.Add(item.PositionId);
-            //    mappedData.PositionIds = positionIds;
-            //}
-
-            //mappedData.Image = Convert.ToBase64String(existStaff.Image);
 
             return mappedData;
         }
@@ -174,10 +160,14 @@ namespace Services.Services
 
             UserDto mappedData = _mapper.Map<UserDto>(existUser);
 
+            List<string> roleNames = new();
+
             foreach (var userRole in usersRole)
             {
-                mappedData.RoleNames.Add(userRole);
+                roleNames.Add(userRole);
             }
+
+            mappedData.RoleNames = roleNames;
 
             mappedData.Image = Convert.ToBase64String(existUser.Image);
 
@@ -192,12 +182,17 @@ namespace Services.Services
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             UserDto mappedData = _mapper.Map<UserDto>(user);
+
             IList<string> usersRole = await _userManager.GetRolesAsync(user);
+
+            List<string> roleNames = new();
 
             foreach (var userRole in usersRole)
             {
-                mappedData.RoleNames.Add(userRole);
+                roleNames.Add(userRole);
+                mappedData.RoleNames = roleNames;
             }
+
             mappedData.Image = Convert.ToBase64String(user.Image);
 
             return mappedData;
@@ -369,31 +364,26 @@ namespace Services.Services
         {
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
-
             AppUser existUser = await _userManager.FindByIdAsync(userId)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             var existingRoles = await _userManager.GetRolesAsync(existUser);
-            List<string> rolNames = new();
+
+            List<string> roleNames = new();
+
             foreach (var roleId in model.RoleIds)
             {
                 var existRole = await _roleManager.FindByIdAsync(roleId);
-                rolNames.Add(existRole.Name);
+                roleNames.Add(existRole.Name);
             }
 
-            var result = await _userManager.AddToRolesAsync(existUser, rolNames.Except(existingRoles));
+            var result = await _userManager.AddToRolesAsync(existUser, roleNames.Except(existingRoles));
 
             if (!result.Succeeded)
             {
                 throw new InvalidException(ExceptionResponseMessages.FailedMessage);
             }
 
-            result = await _userManager.RemoveFromRolesAsync(existUser, existingRoles.Except(rolNames));
-
-            if (!result.Succeeded)
-            {
-                throw new InvalidException(ExceptionResponseMessages.FailedMessage);
-            }
 
         }
 
@@ -405,6 +395,33 @@ namespace Services.Services
                             ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             await _accountRepo.SoftDeleteAsync(existUser);
+        }
+
+        public async Task DeleteRoleAsync(string userId, DeleteRoleDto model)
+        {
+            ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(model.RoleName, ExceptionResponseMessages.ParametrNotFoundMessage);
+
+            AppUser existUser = await _userManager.FindByIdAsync(userId)
+               ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+            IList<string> usersRole = await _userManager.GetRolesAsync(existUser);
+
+            if (usersRole.Count > 1)
+            {
+                List<string> roleNames = new List<string>();
+                roleNames.Add(model.RoleName);
+                var result = await _userManager.RemoveFromRolesAsync(existUser, usersRole.Except(roleNames));
+
+                if (!result.Succeeded)
+                {
+                    throw new InvalidException(ExceptionResponseMessages.FailedMessage);
+                }
+            }
+            else
+            {
+                throw new InvalidException(ExceptionResponseMessages.DeleteFailedMessage);
+            }
         }
 
         public async Task ChangePasswordAsync(ChangePasswordDto model)
@@ -423,7 +440,8 @@ namespace Services.Services
             await _signInManager.SignOutAsync();
 
         }
-        private string GenerateJwtToken(string username)
+
+        private string GenerateJwtToken(string username, List<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -432,10 +450,10 @@ namespace Services.Services
                 new Claim(ClaimTypes.NameIdentifier, username)
             };
 
-            //roles.ForEach(role =>
-            //{
-            //    claims.Add(new Claim(ClaimTypes.Role, role));
-            //});
+            roles.ForEach(role =>
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            });
 
             var keyy = _jwtSetting.Key;
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.Key));

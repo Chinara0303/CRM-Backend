@@ -1,4 +1,6 @@
-﻿using Domain.Common.Exceptions;
+﻿using CRMApp.Helpers;
+using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.About;
@@ -16,6 +18,8 @@ namespace CRMApp.Controllers
             _service = service;
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -52,6 +56,7 @@ namespace CRMApp.Controllers
         }
 
 
+        [Authorize(Roles = "Admin,HR")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(StudentUpdateDto))]
@@ -85,12 +90,12 @@ namespace CRMApp.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-
         public async Task<IActionResult> SoftDelete([FromRoute] int? id)
         {
             try
@@ -118,7 +123,6 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(StudentDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-
         public async Task<IActionResult> GetById([FromRoute] int? id)
         {
             try

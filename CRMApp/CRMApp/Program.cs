@@ -75,23 +75,48 @@ builder.Services.AddControllers()
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-builder.Services.Configure<IdentityOptions>(options =>
+builder.Services.Configure<IdentityOptions>(opt =>
 {
-    // Password settings.
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 8;
+        opt.Password.RequiredLength = 8;
+        opt.Password.RequireDigit = true;
+        opt.Password.RequireLowercase = true;
+        opt.Password.RequireUppercase = true;
+        opt.Password.RequireNonAlphanumeric = true;
 
-    // Lockout settings.
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 3;
-    options.Lockout.AllowedForNewUsers = true;
+        opt.User.RequireUniqueEmail = true;
+        opt.SignIn.RequireConfirmedEmail = true;
+        opt.Lockout.MaxFailedAccessAttempts = 3;
+        opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        opt.Lockout.AllowedForNewUsers = true;
+    //// Password settings.
+    //options.Password.RequireDigit = true;
+    //options.Password.RequireLowercase = true;
+    //options.Password.RequireUppercase = true;
+    //options.Password.RequireNonAlphanumeric = true;
+    //options.Password.RequiredLength = 8;
 
-    // User settings.
-    options.User.RequireUniqueEmail = true;
+    //// Lockout settings.
+    //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    //options.Lockout.MaxFailedAccessAttempts = 3;
+    //options.Lockout.AllowedForNewUsers = true;
+
+    //// User settings.
+    //options.User.RequireUniqueEmail = true;
 });
+
+//var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: MyAllowSpecificOrigins,
+//                      policy =>
+//                      {
+//                          policy.WithOrigins("http://webfulleducation-001-site1.atempurl.com")
+//                          .AllowAnyHeader()
+//                          .AllowAnyMethod(); ;
+//                      });
+//});
+
 
 builder.Services.AddCors(options =>
 {
@@ -101,7 +126,6 @@ builder.Services.AddCors(options =>
             builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
         });
 });
-
 
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
@@ -129,6 +153,7 @@ builder.Services
         };
     });
 
+//builder.Services.AddAuthorization();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IPaginateRepository<>), typeof(PaginateRepository<>));
@@ -181,8 +206,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
 
+//app.UseCors(MyAllowSpecificOrigins);
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

@@ -11,5 +11,6 @@ namespace Domain.Common.Constants
         public const string UserFailedMessage = "User could not be created";
         public const string UserSuccesMessage = "User created";
         public const string SuccesMessage = "Success";
+        public const string DeleteFailedMessage = "İtem must be minimum one";
     }
 }

@@ -61,7 +61,7 @@ namespace Services.Services
             TeacherSocial existSocial = await _repo.GetByIdAsync(id) 
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-            _ = await _teacherRepo.GetByIdAsync(model.TeacherId)
+            Teacher teacher = await _teacherRepo.GetByIdAsync(model.TeacherId)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
             _mapper.Map(model, existSocial);

@@ -128,9 +128,11 @@ namespace Services.Services
 
             Group group = groups.FirstOrDefault(g => g.Id == id)
                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+            
             IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
 
             GroupDto mappedData = _mapper.Map<GroupDto>(group);
+           
             List<TeacherInfoDto> teachersInfo = new();
 
             foreach (var item in teachers)
@@ -141,6 +143,7 @@ namespace Services.Services
                     FullName = item.FullName,
                     Image = Convert.ToBase64String(item.Image)
                 };
+
                 teachersInfo.Add(infoDto);
             }
             mappedData.TeachersInfo = teachersInfo;
@@ -211,7 +214,7 @@ namespace Services.Services
 
             TeacherGroup teacherGroup = teacherGroups.FirstOrDefault(t => t.TeacherId == teacherId)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-
+            
             await _teacherGroupRepo.DeleteAsync(teacherGroup);
         }
 

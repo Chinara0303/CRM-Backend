@@ -1,4 +1,5 @@
 ﻿using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Group;
 using Services.Services.İnterfaces;
@@ -14,6 +15,7 @@ namespace CRMApp.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -41,7 +43,7 @@ namespace CRMApp.Controllers
             }
         }
 
-
+       
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<GroupListDto>))]
@@ -88,6 +90,7 @@ namespace CRMApp.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin,Assistant")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(GroupUpdateDto))]
@@ -123,12 +126,13 @@ namespace CRMApp.Controllers
            
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-
         public async Task<IActionResult> SoftDelete([FromRoute] int? id)
         {
             try
@@ -147,6 +151,8 @@ namespace CRMApp.Controllers
         }
 
 
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{teacherId}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]

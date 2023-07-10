@@ -1,4 +1,5 @@
 ﻿using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Student;
@@ -16,6 +17,9 @@ namespace CRMApp.Controllers
             _service = service;
         }
 
+
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -52,6 +56,7 @@ namespace CRMApp.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TeacherUpdateDto))]
@@ -89,7 +94,7 @@ namespace CRMApp.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]

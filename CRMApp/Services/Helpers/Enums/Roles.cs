@@ -2,7 +2,9 @@
 {
     public enum Roles
     {
-        Boss = 1,
+
+        Admin = 1,
+        Boss ,
         Assistant,
         HR,
         TeachingAssistant,
@@ -12,5 +14,6 @@
         Consultant,
         SalesManager,
         SalesManagerAssistant
+
     }
 }

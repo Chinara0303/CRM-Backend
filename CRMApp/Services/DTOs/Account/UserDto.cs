@@ -9,7 +9,7 @@
         public string Age { get; set; }
         public string PhoneNumber { get; set; }
         public string Biography { get; set; }
-        public List<string> RoleNames { get; set; } = new();
+        public List<string> RoleNames { get; set; } 
         public bool SoftDelete { get; set; }
         public string Image { get; set; }
     }

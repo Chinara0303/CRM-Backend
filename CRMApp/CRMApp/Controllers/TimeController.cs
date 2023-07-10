@@ -1,4 +1,6 @@
-﻿using Domain.Common.Exceptions;
+﻿using CRMApp.Helpers;
+using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Time;
 using Services.Services.İnterfaces;
@@ -13,7 +15,9 @@ namespace CRMApp.Controllers
         {
             _service = service;
         }
+        
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -77,6 +81,8 @@ namespace CRMApp.Controllers
             }
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TimeUpdateDto))]

@@ -1,11 +1,11 @@
 ﻿
+using CRMApp.Helpers;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Domain.Helpers.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.Time;
 
 namespace CRMApp.Controllers
 {
@@ -17,6 +17,7 @@ namespace CRMApp.Controllers
             _weekRepo = weekRepo;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

@@ -1,4 +1,6 @@
-﻿using Domain.Common.Exceptions;
+﻿using CRMApp.Helpers;
+using Domain.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Seans;
 using Services.Services.İnterfaces;
@@ -14,6 +16,9 @@ namespace CRMApp.Controllers
         {
             _service = service;
         }
+
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -39,6 +44,8 @@ namespace CRMApp.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
 
         [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
@@ -77,6 +84,8 @@ namespace CRMApp.Controllers
             }
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(SeansUpdateDto))]
@@ -111,6 +120,7 @@ namespace CRMApp.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]

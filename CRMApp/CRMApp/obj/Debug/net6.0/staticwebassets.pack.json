@@ -1,8 +1,12 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\CRMApp\\wwwroot\\confirm.html",
-      "PackagePath": "staticwebassets\\confirm.html"
+      "Id": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\CRMApp\\wwwroot\\templates\\confirm.html",
+      "PackagePath": "staticwebassets\\templates\\confirm.html"
+    },
+    {
+      "Id": "C:\\Users\\User\\Desktop\\CRM-Backend\\CRMApp\\CRMApp\\wwwroot\\templates\\verify.html",
+      "PackagePath": "staticwebassets\\templates\\verify.html"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CRMApp.Microsoft.AspNetCore.StaticWebAssets.props",

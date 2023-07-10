@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Account;
 using Services.Helpers.Responses;
 using Services.Services.İnterfaces;
+using System.IO;
 
 namespace CRMApp.Controllers
 {
@@ -28,6 +29,7 @@ namespace CRMApp.Controllers
             _roleManager = roleManager;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         public async Task<IActionResult> SignUp([FromForm] SignUpDto request)
@@ -52,14 +54,13 @@ namespace CRMApp.Controllers
                 string html = string.Empty;
                 string password = request.Password;
 
-                using (StreamReader reader = new("wwwroot/verify.html"))
-                {
-                    html = reader.ReadToEnd();
-                }
-
+             
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","templates","verify.html");
+                 html = System.IO.File.ReadAllText(filePath);
+               
                 html = html.Replace("{{password}}", password);
 
-                _emailService.Send(response.User.Email, subject, html);
+                _emailService.Send(response.UserEmail, subject, html);
 
                 return Ok(response);
             }
@@ -79,6 +80,7 @@ namespace CRMApp.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{userId}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
@@ -95,10 +97,8 @@ namespace CRMApp.Controllers
                     string subject = "Confirmation message";
                     string html = string.Empty;
 
-                    using (StreamReader reader = new("wwwroot/confirm.html"))
-                    {
-                        html = reader.ReadToEnd();
-                    }
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "templates", "confirm.html");
+                    html = System.IO.File.ReadAllText(filePath);
 
                     _emailService.Send(response.Email, subject, html);
                 }
@@ -122,13 +122,13 @@ namespace CRMApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         public async Task<IActionResult> SignIn([FromForm] SignInDto request)
         {
             try
             {
                 ArgumentNullException.ThrowIfNull(request, ExceptionResponseMessages.ParametrNotFoundMessage);
-
                 return Ok(await _service.SignInAsync(request));
             }
             catch (InvalidException ex)
@@ -146,6 +146,7 @@ namespace CRMApp.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task CreateRole()
         {
@@ -167,8 +168,8 @@ namespace CRMApp.Controllers
         }
 
 
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         public async Task<IActionResult> Profile()
         {
@@ -252,13 +253,13 @@ namespace CRMApp.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
-        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UserSoftDeleteAsync([FromRoute] string id)
+        public async Task<IActionResult> UserSoftDelete([FromRoute] string id)
         {
             try
             {
@@ -274,10 +275,36 @@ namespace CRMApp.Controllers
                 return NotFound(ex.Message);
             }
         }
-     
-        
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete]
+        [Route("{userId}")]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteRole([FromRoute] string userId, [FromForm] DeleteRoleDto request)
+        {
+            try
+            {
+                await _service.DeleteRoleAsync(userId,request);
+                return Ok();
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut]
-        [Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(UserUpdateDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -309,9 +336,9 @@ namespace CRMApp.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{userId}")]
-        //[Authorize]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(UserUpdateDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -336,8 +363,8 @@ namespace CRMApp.Controllers
             }
         }
 
-        [HttpPut]
         [Authorize]
+        [HttpPut]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(ChangePasswordDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.About;
+﻿using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Slider;
 using Services.Services.İnterfaces;
 using Services.Validations.Slider;

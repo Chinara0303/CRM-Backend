@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\verify.html" />
+    <None Include="wwwroot\templates\verify.html" />
   </ItemGroup>
 
   <ItemGroup>
