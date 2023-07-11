@@ -5,10 +5,8 @@ using Repository.Repositories.İnterfaces;
 using Services.DTOs.Group;
 using Services.Services.İnterfaces;
 using Domain.Common.Exceptions;
-using static System.Net.Mime.MediaTypeNames;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.DTOs.Teacher;
-using Org.BouncyCastle.Asn1.Mozilla;
+using CRMApp.Helpers;
 
 namespace Services.Services
 {
@@ -20,6 +18,8 @@ namespace Services.Services
         private readonly IEducationRepository _eduRepo;
         private readonly ITimeRepository _timeRepo;
         private readonly IMapper _mapper;
+        private readonly IPaginateRepository<Group> _paginateRepo;
+
 
         static int MorningCount = 100;
         static int AfternoonCount = 300;
@@ -30,7 +30,8 @@ namespace Services.Services
                             IEducationRepository eduRepo,
                             ITimeRepository timeRepo,
                             ITeacherGroupRepository teacherGroupRepo,
-                            ITeacherRepository teacherRepo)
+                            ITeacherRepository teacherRepo,
+                            IPaginateRepository<Group> paginateRepo)
         {
             _repo = repo;
             _mapper = mapper;
@@ -38,6 +39,7 @@ namespace Services.Services
             _timeRepo = timeRepo;
             _teacherGroupRepo = teacherGroupRepo;
             _teacherRepo = teacherRepo;
+            _paginateRepo = paginateRepo;
         }
 
         public async Task CreateAsync(GroupCreateDto model)
@@ -88,13 +90,13 @@ namespace Services.Services
             await _repo.CreateAsync(newGroup);
         }
 
-        public async Task<IEnumerable<GroupListDto>> GetAllAsync()
+        public async Task<Paginate<GroupListDto>> GetAllAsync(int skip, int take)
         {
             IEnumerable<Group> existGroups = await _repo
                 .GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room, g => g.TeacherGroups);
 
-            IEnumerable<GroupListDto> mappedDatas = _mapper.Map<IEnumerable<GroupListDto>>(existGroups);
-
+            List<GroupListDto> mappedDatas = _mapper.Map<List<GroupListDto>>(existGroups);
+           
             foreach (var data in mappedDatas)
             {
                 Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
@@ -118,7 +120,17 @@ namespace Services.Services
                 data.StudentsCount = group.Students.Count;
             }
 
-            return mappedDatas;
+            Paginate<GroupListDto> paginatedData = new(mappedDatas, skip, take);
+
+            if (skip == 0 && take == 0)
+            {
+                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, mappedDatas.Count);
+                return paginatedData;
+            }
+
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
+
+            return paginatedData;
         }
 
         public async Task<GroupDto> GetByIdAsync(int? id)
@@ -218,13 +230,74 @@ namespace Services.Services
             await _teacherGroupRepo.DeleteAsync(teacherGroup);
         }
 
-        public async Task<IEnumerable<GroupSearchDto>> SearchAsync(string searchText)
+        public async Task<Paginate<GroupListDto>> SearchAsync(string searchText,int skip,int take)
         {
+            IEnumerable<Group> existGroups = await _repo.GetAllWithIncludes(t => t.Education);
+            List<GroupListDto> mappedDatas = new List<GroupListDto>();
+            Paginate<GroupListDto> paginatedData = new(mappedDatas, skip, take);
+
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                return _mapper.Map<IEnumerable<GroupSearchDto>>(await _repo.GetAllAsync());
+                mappedDatas = _mapper.Map<List<GroupListDto>>(existGroups);
+                foreach (var data in mappedDatas)
+                {
+                    Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
+
+                    IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
+                    List<TeacherInfoDto> teachersInfo = new();
+
+                    foreach (var teacher in teachers)
+                    {
+                        TeacherInfoDto infoDto = new()
+                        {
+                            TeacherId = teacher.Id,
+                            FullName = teacher.FullName,
+                            Image = Convert.ToBase64String(teacher.Image)
+                        };
+
+                        teachersInfo.Add(infoDto);
+                    }
+
+                    data.TeachersInfo = teachersInfo;
+                    data.StudentsCount = group.Students.Count;
+                }
+
+             
+                paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
+                return paginatedData;
             }
-            return _mapper.Map<IEnumerable<GroupSearchDto>>(await _repo.GetAllAsync(e => e.Name.ToLower().Trim().Contains(searchText.ToLower().Trim())));
+
+
+            IEnumerable<Group> filteredDatas = await _repo.GetAllAsync(e => e.Name.ToLower().Trim().Contains(searchText.ToLower().Trim()));
+            mappedDatas = _mapper.Map<List<GroupListDto>>(filteredDatas);
+
+            foreach (var data in mappedDatas)
+            {
+                Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
+
+                IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
+                List<TeacherInfoDto> teachersInfo = new();
+
+                foreach (var teacher in teachers)
+                {
+                    TeacherInfoDto infoDto = new()
+                    {
+                        TeacherId = teacher.Id,
+                        FullName = teacher.FullName,
+                        Image = Convert.ToBase64String(teacher.Image)
+                    };
+
+                    teachersInfo.Add(infoDto);
+                }
+
+                data.TeachersInfo = teachersInfo;
+                data.StudentsCount = group.Students.Count;
+            }
+
+
+            paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
+            return paginatedData;
+
         }
     }
 }

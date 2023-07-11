@@ -29,6 +29,7 @@ namespace Services.Services
         public async Task CreateAsync(TeacherCreateDto model)
         {
             ArgumentNullException.ThrowIfNull(ExceptionResponseMessages.ParametrNotFoundMessage);
+          
             if (!await _repo.CheckByEmail(model.Email))
             {
                 throw new InvalidException(ExceptionResponseMessages.ExistMessage);

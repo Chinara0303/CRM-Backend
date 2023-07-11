@@ -15,6 +15,11 @@ namespace Repository.Repositories
         {
             var datas = await _entities.ToListAsync();
             bool check = false;
+            if (datas.Count == 0)
+            {
+                check = true;
+                return check;
+            }
             if (datas.Count > 0)
             {
                 foreach (var item in datas)

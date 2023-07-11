@@ -48,11 +48,11 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<GroupListDto>))]
 
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int skip, int take)
         {
             try
             {
-                return Ok(await _service.GetAllAsync());
+                return Ok(await _service.GetAllAsync(skip,take));
             }
             catch (ArgumentNullException ex)
             {
@@ -90,7 +90,6 @@ namespace CRMApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin,Assistant")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(GroupUpdateDto))]
@@ -185,11 +184,11 @@ namespace CRMApp.Controllers
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
-        public async Task<IActionResult> Search(string searchText)
+        public async Task<IActionResult> Search(string searchText,int skip,int take)
         {
             try
             {
-                return Ok(await _service.SearchAsync(searchText));
+                return Ok(await _service.SearchAsync(searchText, skip, take));
             }
             catch (ArgumentNullException ex)
             {

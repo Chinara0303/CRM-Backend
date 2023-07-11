@@ -43,7 +43,7 @@ namespace CRMApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(EductaionUpdateDto))]
@@ -72,7 +72,7 @@ namespace CRMApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin,HR")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]

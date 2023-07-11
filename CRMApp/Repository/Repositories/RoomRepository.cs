@@ -12,7 +12,13 @@ namespace Repository.Repositories
         public async Task<bool> CheckByName(string name)
         {
             var datas = await _entities.ToListAsync();
+
             bool check = false;
+            if(datas.Count == 0)
+            {
+                check = true;
+                return check;
+            }
             foreach (var item in datas)
             {
                 if (item.Name.ToLower() != name.ToLower())

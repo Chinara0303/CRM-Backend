@@ -360,7 +360,7 @@ namespace Services.Services
             await _accountRepo.UpdateAsync(mappedData);
         }
 
-        public async Task UserUpdateRoleAsync(string userId, UserRoleUpdateDto model)
+        public async Task UserUpdateRoleAsync(string userId,UserRoleUpdateDto model)
         {
             ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
 
@@ -384,7 +384,8 @@ namespace Services.Services
                 throw new InvalidException(ExceptionResponseMessages.FailedMessage);
             }
 
-
+            await _accountRepo.SaveAsync();
+;
         }
 
         public async Task UserSoftDeleteAsync(string id)
@@ -393,14 +394,12 @@ namespace Services.Services
 
             AppUser existUser = await _userManager.FindByIdAsync(id)
                             ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-
             await _accountRepo.SoftDeleteAsync(existUser);
         }
 
-        public async Task DeleteRoleAsync(string userId, DeleteRoleDto model)
+        public async Task DeleteRoleAsync(string userId, string roleName)
         {
-            ArgumentNullException.ThrowIfNull(model, ExceptionResponseMessages.ParametrNotFoundMessage);
-            ArgumentNullException.ThrowIfNull(model.RoleName, ExceptionResponseMessages.ParametrNotFoundMessage);
+            ArgumentNullException.ThrowIfNull(roleName, ExceptionResponseMessages.ParametrNotFoundMessage);
 
             AppUser existUser = await _userManager.FindByIdAsync(userId)
                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
@@ -410,13 +409,15 @@ namespace Services.Services
             if (usersRole.Count > 1)
             {
                 List<string> roleNames = new List<string>();
-                roleNames.Add(model.RoleName);
-                var result = await _userManager.RemoveFromRolesAsync(existUser, usersRole.Except(roleNames));
+                roleNames.Add(roleName);
+                
+                var result = await _userManager.RemoveFromRolesAsync(existUser,roleNames);
 
                 if (!result.Succeeded)
                 {
                     throw new InvalidException(ExceptionResponseMessages.FailedMessage);
                 }
+                await _accountRepo.SaveAsync();
             }
             else
             {

@@ -18,7 +18,6 @@ namespace CRMApp.Controllers
             _service = service;
         }
 
-
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
@@ -56,7 +55,7 @@ namespace CRMApp.Controllers
         }
 
 
-        [Authorize(Roles = "Admin,HR")]
+        [Authorize(Roles = "Admin,HR,StudentCoordinator")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(StudentUpdateDto))]

@@ -80,7 +80,7 @@ namespace CRMApp.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
+
         [HttpPut]
         [Route("{userId}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
@@ -253,6 +253,7 @@ namespace CRMApp.Controllers
             }
         }
 
+
         [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
@@ -276,17 +277,17 @@ namespace CRMApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+
         [HttpDelete]
         [Route("{userId}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeleteRole([FromRoute] string userId, [FromForm] DeleteRoleDto request)
+        public async Task<IActionResult> DeleteRole([FromRoute] string userId, [FromQuery] string roleName)
         {
             try
             {
-                await _service.DeleteRoleAsync(userId,request);
+                await _service.DeleteRoleAsync(userId,roleName);
                 return Ok();
             }
             catch (InvalidException ex)
@@ -303,7 +304,7 @@ namespace CRMApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+       
         [HttpPut]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(UserUpdateDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
@@ -336,7 +337,6 @@ namespace CRMApp.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{userId}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(UserUpdateDto))]

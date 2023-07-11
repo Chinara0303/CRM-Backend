@@ -22,7 +22,7 @@ namespace CRMApp.Controllers
         {
             try
             {
-                return Ok(await _service.GetAllAsync());
+                return Ok( _service.GetAllWithDict());
             }
             catch (InvalidException ex)
             {
@@ -34,6 +34,25 @@ namespace CRMApp.Controllers
             }
         }
 
+        [HttpGet]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<SettingDto>))]
+
+        public async Task<IActionResult> GetSettings()
+        {
+            try
+            {
+                return Ok(_service.GetAllAsync());
+            }
+            catch (InvalidException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(SettingUpdateDto))]

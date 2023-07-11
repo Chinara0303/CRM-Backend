@@ -3,8 +3,6 @@ using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.About;
-using Services.DTOs.Banner;
 using Services.DTOs.Setting;
 using Services.Services.İnterfaces;
 
@@ -21,6 +19,15 @@ namespace Services.Services
             _mapper = mapper;   
         }
 
+        public Dictionary<string,string> GetAllWithDict()
+        {
+            Dictionary<string,string> existSettings =  _repo.GetAll();
+
+            Dictionary<string,string> mappedDatas = _mapper.Map<Dictionary<string,string>>(existSettings);
+
+            return mappedDatas;
+        }
+
         public async Task<IEnumerable<SettingDto>> GetAllAsync()
         {
             IEnumerable<Setting> existSettings = await _repo.GetAllAsync();
@@ -34,6 +41,7 @@ namespace Services.Services
             }
             return mappedDatas;
         }
+
 
         public async Task<SettingDto> GetByIdAsync(int? id)
         {

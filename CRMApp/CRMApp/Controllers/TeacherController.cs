@@ -38,6 +38,7 @@ namespace CRMApp.Controllers
                 {
                     ModelState.AddModelError("Age", "Age must be between 22 and 55");
                 }
+
                 await _service.CreateAsync(request);
                 return Ok();
             }
@@ -56,7 +57,6 @@ namespace CRMApp.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TeacherUpdateDto))]
@@ -94,7 +94,6 @@ namespace CRMApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]

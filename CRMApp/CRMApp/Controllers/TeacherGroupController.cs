@@ -17,7 +17,6 @@ namespace CRMApp.Controllers
         }
 
 
-        [Authorize(Roles = "Admin,AffairCoordinator")]
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

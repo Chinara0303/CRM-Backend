@@ -88,34 +88,9 @@ builder.Services.Configure<IdentityOptions>(opt =>
         opt.Lockout.MaxFailedAccessAttempts = 3;
         opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         opt.Lockout.AllowedForNewUsers = true;
-    //// Password settings.
-    //options.Password.RequireDigit = true;
-    //options.Password.RequireLowercase = true;
-    //options.Password.RequireUppercase = true;
-    //options.Password.RequireNonAlphanumeric = true;
-    //options.Password.RequiredLength = 8;
-
-    //// Lockout settings.
-    //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    //options.Lockout.MaxFailedAccessAttempts = 3;
-    //options.Lockout.AllowedForNewUsers = true;
-
-    //// User settings.
-    //options.User.RequireUniqueEmail = true;
+   
 });
 
-//var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy(name: MyAllowSpecificOrigins,
-//                      policy =>
-//                      {
-//                          policy.WithOrigins("http://webfulleducation-001-site1.atempurl.com")
-//                          .AllowAnyHeader()
-//                          .AllowAnyMethod(); ;
-//                      });
-//});
 
 
 builder.Services.AddCors(options =>
