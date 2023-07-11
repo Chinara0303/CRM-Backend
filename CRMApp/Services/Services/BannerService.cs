@@ -3,7 +3,6 @@ using Domain.Common.Constants;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Repository.Repositories.İnterfaces;
-using Services.DTOs.About;
 using Services.DTOs.Banner;
 using Services.Helpers.Extentions;
 using Services.Services.İnterfaces;

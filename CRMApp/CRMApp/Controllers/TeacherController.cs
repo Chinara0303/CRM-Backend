@@ -1,6 +1,5 @@
 ﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Student;
 using Services.DTOs.Teacher;

@@ -1,9 +1,6 @@
-﻿using CRMApp.Helpers;
-using Domain.Common.Exceptions;
+﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.About;
 using Services.DTOs.Student;
 using Services.Services.İnterfaces;
 using Services.Validations.Student;
@@ -12,7 +9,9 @@ namespace CRMApp.Controllers
 {
     public class StudentController : Controller
     {
+
         private readonly IStudentService _service;
+
         public StudentController(IStudentService service)
         {
             _service = service;

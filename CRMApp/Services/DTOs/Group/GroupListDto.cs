@@ -13,6 +13,6 @@ namespace Services.DTOs.Group
         public int TimeId { get; set; }
         public Weekday Weekday { get; set; }
         public int StudentsCount { get; set; }
-        public List<TeacherInfoDto> TeachersInfo { get; set; } = new();
+        public List<TeacherInfoDto> TeachersInfo { get; set; } 
     }
 }
