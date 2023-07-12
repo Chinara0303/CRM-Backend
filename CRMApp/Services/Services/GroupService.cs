@@ -102,6 +102,7 @@ namespace Services.Services
                 Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
 
                 IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
+                
                 List<TeacherInfoDto> teachersInfo = new();
 
                 foreach (var teacher in teachers)
@@ -232,13 +233,16 @@ namespace Services.Services
 
         public async Task<Paginate<GroupListDto>> SearchAsync(string searchText,int skip,int take)
         {
-            IEnumerable<Group> existGroups = await _repo.GetAllWithIncludes(t => t.Education);
+            IEnumerable<Group> existGroups = await _repo
+              .GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room, g => g.TeacherGroups);
+
             List<GroupListDto> mappedDatas = new List<GroupListDto>();
             Paginate<GroupListDto> paginatedData = new(mappedDatas, skip, take);
 
             if (string.IsNullOrWhiteSpace(searchText))
             {
                 mappedDatas = _mapper.Map<List<GroupListDto>>(existGroups);
+
                 foreach (var data in mappedDatas)
                 {
                     Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
@@ -262,7 +266,6 @@ namespace Services.Services
                     data.StudentsCount = group.Students.Count;
                 }
 
-             
                 paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
                 return paginatedData;
             }
@@ -293,7 +296,6 @@ namespace Services.Services
                 data.TeachersInfo = teachersInfo;
                 data.StudentsCount = group.Students.Count;
             }
-
 
             paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
             return paginatedData;
