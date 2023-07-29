@@ -96,13 +96,13 @@ namespace Services.Services
                 .GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room, g => g.TeacherGroups);
 
             List<GroupListDto> mappedDatas = _mapper.Map<List<GroupListDto>>(existGroups);
-           
+
             foreach (var data in mappedDatas)
             {
                 Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
 
                 IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
-                
+
                 List<TeacherInfoDto> teachersInfo = new();
 
                 foreach (var teacher in teachers)
@@ -141,11 +141,11 @@ namespace Services.Services
 
             Group group = groups.FirstOrDefault(g => g.Id == id)
                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-            
+
             IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
 
             GroupDto mappedData = _mapper.Map<GroupDto>(group);
-           
+
             List<TeacherInfoDto> teachersInfo = new();
 
             foreach (var item in teachers)
@@ -184,7 +184,7 @@ namespace Services.Services
             Group existGroup = await _repo.GetByIdAsync(id)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
 
-           IEnumerable<TeacherGroup> existTeacherGroups = await _teacherGroupRepo.GetAllAsync(m => m.GroupId == id);
+            IEnumerable<TeacherGroup> existTeacherGroups = await _teacherGroupRepo.GetAllAsync(m => m.GroupId == id);
             existGroup.TeacherGroups = (List<TeacherGroup>)existTeacherGroups;
 
             List<TeacherGroup> teacherGroups = new();
@@ -195,7 +195,7 @@ namespace Services.Services
             {
                 foreach (var teacherId in model.TeacherIds)
                 {
-                    if(existTeacherGroups.Any())
+                    if (existTeacherGroups.Any())
                     {
                         foreach (var item in existTeacherGroups)
                         {
@@ -227,11 +227,11 @@ namespace Services.Services
 
             TeacherGroup teacherGroup = teacherGroups.FirstOrDefault(t => t.TeacherId == teacherId)
                 ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
-            
+
             await _teacherGroupRepo.DeleteAsync(teacherGroup);
         }
 
-        public async Task<Paginate<GroupListDto>> SearchAsync(string searchText,int skip,int take)
+        public async Task<Paginate<GroupListDto>> SearchAsync(string searchText, int skip, int take)
         {
             IEnumerable<Group> existGroups = await _repo
               .GetAllWithIncludes(g => g.Education, g => g.Students, g => g.Room, g => g.TeacherGroups);
@@ -270,13 +270,15 @@ namespace Services.Services
                 return paginatedData;
             }
 
-
             IEnumerable<Group> filteredDatas = await _repo.GetAllAsync(e => e.Name.ToLower().Trim().Contains(searchText.ToLower().Trim()));
             mappedDatas = _mapper.Map<List<GroupListDto>>(filteredDatas);
 
-            foreach (var data in mappedDatas)
+
+            foreach (var item in mappedDatas)
             {
-                Group group = existGroups.Where(g => g.Id == data.Id).FirstOrDefault();
+                Group group = existGroups.FirstOrDefault(g => g.Id == item.Id)
+                ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
 
                 IEnumerable<Teacher> teachers = await _teacherGroupRepo.GetFullDataForTeacherAsync(group.Id);
                 List<TeacherInfoDto> teachersInfo = new();
@@ -293,9 +295,11 @@ namespace Services.Services
                     teachersInfo.Add(infoDto);
                 }
 
-                data.TeachersInfo = teachersInfo;
-                data.StudentsCount = group.Students.Count;
+                item.TeachersInfo = teachersInfo;
+                item.StudentsCount = group.Students.Count;
             }
+
+
 
             paginatedData = _paginateRepo.PaginatedData(mappedDatas, skip, take);
             return paginatedData;

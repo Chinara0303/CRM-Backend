@@ -134,7 +134,8 @@ namespace Services.Services
                 return paginatedData;
             }
 
-            var filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim()));
+            var filteredDatas = await _repo.GetAllAsync(e => e.FullName.ToLower()
+            .Trim().Contains(searchText.ToLower().Trim()));
 
             mappedDatas = _mapper.Map<List<StudentListDto>>(filteredDatas);
 

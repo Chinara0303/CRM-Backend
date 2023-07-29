@@ -287,7 +287,6 @@ namespace Services.Services
                 return paginatedData;
             }
 
-
             var filteredDatas = await _accountRepo.GetAllAsync(e => e.FullName.ToLower().Trim().Contains(searchText.ToLower().Trim()));
 
             mappedDatas = _mapper.Map<List<UserListDto>>(filteredDatas);

@@ -82,7 +82,6 @@ namespace CRMApp.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(TimeUpdateDto))]

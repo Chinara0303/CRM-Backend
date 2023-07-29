@@ -128,7 +128,6 @@ builder.Services
         };
     });
 
-//builder.Services.AddAuthorization();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IPaginateRepository<>), typeof(PaginateRepository<>));

@@ -41,7 +41,17 @@ namespace Services.Services
 
         public async Task<IEnumerable<ContactDto>> GetAllAsync()
         {
-            return _mapper.Map<IEnumerable<ContactDto>>(await _repo.GetAllAsync());
+            var existContacts = await _repo.GetAllAsync();
+            var mappedDatas = _mapper.Map<IEnumerable<ContactDto>>(existContacts);
+            foreach (var item in mappedDatas)
+            {
+                Contact contact = existContacts.FirstOrDefault(x => x.Id == item.Id)
+                    ?? throw new InvalidException(ExceptionResponseMessages.NotFoundMessage);
+
+                Education education = await _eduRepo.GetByIdAsync(contact.EducationId);
+                item.EducationName = education.Name;
+            }
+            return mappedDatas;
 
         }
 
