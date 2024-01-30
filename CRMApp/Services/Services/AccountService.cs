@@ -17,9 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Services.Helpers.Extentions;
 using CRMApp.Helpers;
 using Repository.Repositories.İnterfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Services.Services
 {
